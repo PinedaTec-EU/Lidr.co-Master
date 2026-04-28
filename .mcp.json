@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sphere-integration-hub": {
+      "command": "/Users/jmr.pineda/.dotnet/tools/sih-mcp",
+      "args": [],
+      "cwd": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "transcript": "Reunión con cliente del sector salud. Necesitan una app web para gestión de citas médicas con pacientes, historial clínico resumido, recordatorios automáticos por email y SMS, y un panel de administración para el personal médico. El sistema debe integrarse con su ERP actual vía API REST. Esperan lanzarlo en 3 meses con un equipo pequeño."
+}

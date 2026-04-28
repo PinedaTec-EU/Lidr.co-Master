@@ -1,0 +1,17 @@
+- version: 1.0
+  definitions:
+  - name: estimator-cag
+    contractType: openapi
+    openApiUrl: '{{baseUrl.local}}/openapi.json'
+    healthCheck: http://localhost:8000/health
+    readiness:
+      maxRetries: 3
+      delayMs: 500
+      timeoutMs: 3000
+      httpStatus:
+      - 200
+    baseUrl:
+      local: http://localhost:8000
+      dev: http://localhost:8000
+    port: 8000
+    basePath: /api/v1

@@ -1,0 +1,118 @@
+{
+  "ExecutionId": "01KQB3DA2FPNR21DZ70BPPDPYR",
+  "WorkflowName": "test-estimate-endpoint",
+  "WorkflowId": "48042E857AA94366A24C14B6F75E9647",
+  "WorkflowVersion": "1.0",
+  "ToolVersion": "1.7.19.274",
+  "WorkflowPath": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/workflows/test-estimate-endpoint.workflow",
+  "Environment": "local",
+  "StartedAtUtc": "2026-04-28T22:29:59.50566+00:00",
+  "FinishedAtUtc": "2026-04-28T22:30:06.678973+00:00",
+  "DurationMs": 7173,
+  "Result": "Ok",
+  "ErrorMessage": null,
+  "Mocked": false,
+  "DryRun": false,
+  "Inputs": {
+    "environment": "local",
+    "version": "1.0",
+    "variables": "{}"
+  },
+  "Output": {
+    "estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas\n\n### Desglose de tareas:\n1. **Discovery y definici\u00F3n de requerimientos funcionales**: 30 horas\n2. **Dise\u00F1o UI/UX de la interfaz de usuario**: 40 horas\n3. **Desarrollo del m\u00F3dulo de gesti\u00F3n de citas**: 60 horas\n4. **Backend para historial cl\u00EDnico resumido**: 50 horas\n5. **Implementaci\u00F3n de recordatorios autom\u00E1ticos (email y SMS)**: 32 horas\n6. **Desarrollo de panel de administraci\u00F3n para el personal m\u00E9dico**: 48 horas\n7. **Integraci\u00F3n con ERP via API REST**: 40 horas\n8. **Testing, QA y ajustes finales**: 30 horas\n\n**Total estimado: 330 horas**  \n**Equipo recomendado: 1 full-stack senior \u002B 1 frontend junior \u002B 1 QA (part-time)**  \n**Duraci\u00F3n estimada: 12 semanas**  \n\n---\n\nEsta estimaci\u00F3n contempla un equipo peque\u00F1o y un cronograma de 3 meses para llevar a cabo el desarrollo de la aplicaci\u00F3n, asegurando la integraci\u00F3n con el sistema ERP del cliente y un enfoque en la usabilidad para el personal m\u00E9dico y los pacientes.",
+    "http_status": 200
+  },
+  "Preflight": {
+    "Operations": [
+      {
+        "OperationType": "HealthCheck",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/health",
+        "Status": "Ok",
+        "Message": null,
+        "RetryCount": 0,
+        "DurationMs": 19,
+        "Attempts": [
+          {
+            "AttemptNumber": 1,
+            "RequestUri": "http://localhost:8000/health",
+            "Status": "Ok",
+            "HttpStatusCode": 200,
+            "ErrorMessage": null,
+            "StartedAtUtc": "2026-04-28T22:29:59.463617+00:00",
+            "FinishedAtUtc": "2026-04-28T22:29:59.481617+00:00",
+            "DurationMs": 18
+          }
+        ]
+      },
+      {
+        "OperationType": "SwaggerCache",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/openapi.json",
+        "Status": "Ok",
+        "Message": "Cache hit: /Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/cache/1.0/estimator-cag.json",
+        "RetryCount": 0,
+        "DurationMs": 0,
+        "Attempts": []
+      }
+    ],
+    "TotalRetries": 0,
+    "TotalDelayMs": 0,
+    "DurationMs": 19
+  },
+  "Stages": [
+    {
+      "WorkflowName": "test-estimate-endpoint",
+      "StageName": "call-estimate",
+      "StageKind": "Endpoint",
+      "Depth": 0,
+      "Status": "Ok",
+      "RunIf": null,
+      "JumpTarget": null,
+      "Mocked": false,
+      "ErrorMessage": null,
+      "StartedAtUtc": "2026-04-28T22:29:59.508379+00:00",
+      "FinishedAtUtc": "2026-04-28T22:30:06.673782+00:00",
+      "DurationMs": 7165,
+      "DelaySeconds": null,
+      "ForEachExecutionMode": null,
+      "RetryCount": 0,
+      "HttpStatusCode": 200,
+      "EnsureMode": null,
+      "EnsureStatus": null,
+      "RequestUri": "http://localhost:8000/api/v1/estimate",
+      "HttpMethod": "POST",
+      "RequestHeaders": {
+        "Content-Type": "application/json"
+      },
+      "RequestBody": "{\u0022transcript\u0022:\u0022Reuni\\u00F3n con cliente del sector salud. Necesitan una app web para gesti\\u00F3n de citas m\\u00E9dicas con pacientes, historial cl\\u00EDnico resumido, recordatorios autom\\u00E1ticos por email y SMS, y un panel de administraci\\u00F3n para el personal m\\u00E9dico. El sistema debe integrarse con su ERP actual v\\u00EDa API REST. Esperan lanzarlo en 3 meses con un equipo peque\\u00F1o.\u0022}",
+      "ResponseHeaders": {
+        "Date": "Tue, 28 Apr 2026 22:29:59 GMT",
+        "Server": "uvicorn",
+        "Content-Length": "1032",
+        "Content-Type": "application/json"
+      },
+      "ResponseBody": "{\u0022estimation\u0022:\u0022## Estimaci\\u00F3n: Sistema de Gesti\\u00F3n de Citas M\\u00E9dicas\\n\\n### Desglose de tareas:\\n1. **Discovery y definici\\u00F3n de requerimientos funcionales**: 30 horas\\n2. **Dise\\u00F1o UI/UX de la interfaz de usuario**: 40 horas\\n3. **Desarrollo del m\\u00F3dulo de gesti\\u00F3n de citas**: 60 horas\\n4. **Backend para historial cl\\u00EDnico resumido**: 50 horas\\n5. **Implementaci\\u00F3n de recordatorios autom\\u00E1ticos (email y SMS)**: 32 horas\\n6. **Desarrollo de panel de administraci\\u00F3n para el personal m\\u00E9dico**: 48 horas\\n7. **Integraci\\u00F3n con ERP via API REST**: 40 horas\\n8. **Testing, QA y ajustes finales**: 30 horas\\n\\n**Total estimado: 330 horas**  \\n**Equipo recomendado: 1 full-stack senior \\u002B 1 frontend junior \\u002B 1 QA (part-time)**  \\n**Duraci\\u00F3n estimada: 12 semanas**  \\n\\n---\\n\\nEsta estimaci\\u00F3n contempla un equipo peque\\u00F1o y un cronograma de 3 meses para llevar a cabo el desarrollo de la aplicaci\\u00F3n, asegurando la integraci\\u00F3n con el sistema ERP del cliente y un enfoque en la usabilidad para el personal m\\u00E9dico y los pacientes.\u0022}",
+      "Output": {
+        "estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas\n\n### Desglose de tareas:\n1. **Discovery y definici\u00F3n de requerimientos funcionales**: 30 horas\n2. **Dise\u00F1o UI/UX de la interfaz de usuario**: 40 horas\n3. **Desarrollo del m\u00F3dulo de gesti\u00F3n de citas**: 60 horas\n4. **Backend para historial cl\u00EDnico resumido**: 50 horas\n5. **Implementaci\u00F3n de recordatorios autom\u00E1ticos (email y SMS)**: 32 horas\n6. **Desarrollo de panel de administraci\u00F3n para el personal m\u00E9dico**: 48 horas\n7. **Integraci\u00F3n con ERP via API REST**: 40 horas\n8. **Testing, QA y ajustes finales**: 30 horas\n\n**Total estimado: 330 horas**  \n**Equipo recomendado: 1 full-stack senior \u002B 1 frontend junior \u002B 1 QA (part-time)**  \n**Duraci\u00F3n estimada: 12 semanas**  \n\n---\n\nEsta estimaci\u00F3n contempla un equipo peque\u00F1o y un cronograma de 3 meses para llevar a cabo el desarrollo de la aplicaci\u00F3n, asegurando la integraci\u00F3n con el sistema ERP del cliente y un enfoque en la usabilidad para el personal m\u00E9dico y los pacientes.",
+        "http_status": 200
+      },
+      "WorkflowInputs": {},
+      "WorkflowOutput": {},
+      "WorkflowResult": {}
+    }
+  ],
+  "Metrics": {
+    "TotalStages": 1,
+    "ExecutedStages": 1,
+    "SkippedStages": 0,
+    "FailedStages": 0,
+    "MockedStages": 0,
+    "HttpStages": 1,
+    "WorkflowStages": 0,
+    "JumpedStages": 0,
+    "TotalRetries": 0,
+    "PreflightRetries": 0
+  },
+  "OutputFilePath": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/workflows/output/test-estimate-endpoint.01KQB3DA2FPNR21DZ70BPPDPYR.workflow.output"
+}
