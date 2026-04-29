@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SIH: Run estimate workflow",
+      "type": "shell",
+      "command": "/Users/jmr.pineda/.dotnet/tools/sih",
+      "args": [
+        "--workflow", ".sphere/workflows/test-estimate-endpoint.workflow",
+        "--catalog", ".sphere/api.catalog",
+        "--env", "local",
+        "--report-format", "both",
+        "--capture-http", "bodies",
+        "--verbose"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "tab": "SIH Workflow"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SIH: Open latest report",
+      "type": "shell",
+      "command": "open $(ls -t .sphere/workflows/output/*.workflow.report.html | head -1)",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "test",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
