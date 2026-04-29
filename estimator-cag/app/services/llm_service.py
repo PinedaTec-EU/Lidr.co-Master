@@ -32,15 +32,15 @@ A continuación tienes ejemplos de estimaciones previas que debes usar como refe
 Usa estos ejemplos para calibrar la complejidad y granularidad de tus respuestas. Responde siempre en español y en formato Markdown."""
 
 
-async def get_estimation(transcript: str) -> str:
+async def get_estimation(transcription: str) -> dict:
     system_prompt = _build_system_prompt()
 
     if settings.llm_provider == "anthropic":
-        return await _call_anthropic(system_prompt, transcript)
-    return await _call_openai(system_prompt, transcript)
+        return await _call_anthropic(system_prompt, transcription)
+    return await _call_openai(system_prompt, transcription)
 
 
-async def _call_openai(system_prompt: str, transcript: str) -> str:
+async def _call_openai(system_prompt: str, transcription: str) -> dict:
     from openai import AsyncOpenAI
 
     client = AsyncOpenAI(api_key=settings.openai_api_key)
@@ -50,13 +50,23 @@ async def _call_openai(system_prompt: str, transcript: str) -> str:
         model=model,
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": transcript},
+            {"role": "user", "content": transcription},
         ],
     )
-    return response.choices[0].message.content
+    usage = response.usage
+    return {
+        "estimation": response.choices[0].message.content,
+        "model": model,
+        "provider": "openai",
+        "tokens_used": {
+            "prompt": usage.prompt_tokens,
+            "completion": usage.completion_tokens,
+            "total": usage.total_tokens,
+        },
+    }
 
 
-async def _call_anthropic(system_prompt: str, transcript: str) -> str:
+async def _call_anthropic(system_prompt: str, transcription: str) -> dict:
     import anthropic
 
     client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
@@ -65,9 +75,23 @@ async def _call_anthropic(system_prompt: str, transcript: str) -> str:
     response = await client.messages.create(
         model=model,
         max_tokens=2048,
-        system=system_prompt,
+        system=[{
+            "type": "text",
+            "text": system_prompt,
+            "cache_control": {"type": "ephemeral"},
+        }],
         messages=[
-            {"role": "user", "content": transcript},
+            {"role": "user", "content": transcription},
         ],
     )
-    return response.content[0].text
+    usage = response.usage
+    return {
+        "estimation": response.content[0].text,
+        "model": model,
+        "provider": "anthropic",
+        "tokens_used": {
+            "prompt": usage.input_tokens,
+            "completion": usage.output_tokens,
+            "total": usage.input_tokens + usage.output_tokens,
+        },
+    }

@@ -20,12 +20,20 @@ stages:
       Content-Type: application/json
     body: >-
       {
-        "transcript": "Reunión con cliente del sector salud. Necesitan una app web para gestión de citas médicas con pacientes, historial clínico resumido, recordatorios automáticos por email y SMS, y un panel de administración para el personal médico. El sistema debe integrarse con su ERP actual vía API REST. Esperan lanzarlo en 3 meses con un equipo pequeño."
+        "transcription": "Reunión con cliente del sector salud. Necesitan una app web para gestión de citas médicas con pacientes, historial clínico resumido, recordatorios automáticos por email y SMS, y un panel de administración para el personal médico. El sistema debe integrarse con su ERP actual vía API REST. Esperan lanzarlo en 3 meses con un equipo pequeño."
       }
     output:
       estimation: "{{response.body.estimation}}"
+      model: "{{response.body.model}}"
+      provider: "{{response.body.provider}}"
+      tokens_used: "{{response.body.tokens_used}}"
+      timestamp: "{{response.body.timestamp}}"
       http_status: "{{response.status}}"
 endStage:
   output:
     estimation: "{{stage:call-estimate.output.estimation}}"
+    model: "{{stage:call-estimate.output.model}}"
+    provider: "{{stage:call-estimate.output.provider}}"
+    tokens_used: "{{stage:call-estimate.output.tokens_used}}"
+    timestamp: "{{stage:call-estimate.output.timestamp}}"
     http_status: "{{stage:call-estimate.output.http_status}}"
