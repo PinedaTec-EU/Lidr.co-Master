@@ -1,0 +1,14 @@
+{
+  "openai_friendly_name": "openai",
+  "openai_provider": "openai",
+  "openai_model": "gpt-4o-mini",
+  "openai_http_status": "200",
+  "openai_tokens_total": "2542",
+  "openai_estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas\n\n### Desglose de tareas:\n1. **Relevamiento de requisitos y an\u00E1lisis funcional**: 30 horas\n2. **Dise\u00F1o UX/UI para la app y panel de administraci\u00F3n**: 40 horas\n3. **Desarrollo del backend para gesti\u00F3n de citas y pacientes**: 64 horas\n4. **Implementaci\u00F3n del historial cl\u00EDnico resumido**: 52 horas\n5. **Configuraci\u00F3n de recordatorios autom\u00E1ticos por email y SMS**: 36 horas\n6. **Integraci\u00F3n con ERP v\u00EDa API REST**: 42 horas\n7. **Testing y validaci\u00F3n (QA)**: 30 horas\n8. **Documentaci\u00F3n y formaci\u00F3n del personal**: 24 horas\n\n**Total estimado: 318 horas**  \n**Equipo recomendado: 1 desarrollador backend, 1 desarrollador frontend, 1 dise\u00F1ador UX/UI (part-time), 1 QA (part-time)**  \n**Duraci\u00F3n estimada: 11-13 semanas**  \n\n---\n\nLa duraci\u00F3n y el equipo han sido calibrados considerando las particularidades del sector salud y la necesidad de cumplir con normativas espec\u00EDficas que pueden influir en el tiempo de desarrollo y las pruebas.",
+  "ollama_friendly_name": "ollama",
+  "ollama_provider": "ollama",
+  "ollama_model": "gemma4:e2b",
+  "ollama_http_status": "200",
+  "ollama_tokens_total": "3309",
+  "ollama_estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas (Healthcare)\n\n**Resumen de la reuni\u00F3n:**\nCl\u00EDnica o centro de salud requiere una aplicaci\u00F3n web completa para la gesti\u00F3n de citas m\u00E9dicas, visualizaci\u00F3n de historial cl\u00EDnico resumido de los pacientes, sistema de recordatorios autom\u00E1ticos (email y SMS) y un panel de administraci\u00F3n para el personal m\u00E9dico. El sistema debe integrarse con el ERP actual a trav\u00E9s de una API REST.\n\n**Estimaci\u00F3n generada:**\n\n### Desglose de tareas:\n1. **Discovery, Arquitectura y Seguridad (Modelado de datos cl\u00EDnicos):** 40 horas\n2. **Dise\u00F1o UI/UX (Flujos de citas y dashboards):** 48 horas\n3. **Backend de Gesti\u00F3n de Citas y Usuarios:** 72 horas\n4. **M\u00F3dulo de Historial Cl\u00EDnico y Resumen (Modelado/API):** 60 horas\n5. **Panel de Administraci\u00F3n M\u00E9dico (Roles y permisos):** 36 horas\n6. **Integraci\u00F3n con ERP (Desarrollo de la conexi\u00F3n REST):** 40 horas\n7. **Sistema de Notificaciones (Email/SMS) y Automatizaci\u00F3n:** 30 horas\n8. **Frontend (Vistas de Paciente y M\u00E9dico):** 80 horas\n9. **Testing, QA y Hardening de Seguridad (Compliance):** 40 horas\n\n**Total estimado: 416 horas**\n\n**Equipo recomendado: 2 Desarrolladores Full-Stack Senior \u002B 1 Desarrollador Backend enfocado en Integraciones \u002B 1 Analista/QA (part-time)**\n\n**Duraci\u00F3n estimada: 10-12 semanas (3 meses)**\n\n---"
+}

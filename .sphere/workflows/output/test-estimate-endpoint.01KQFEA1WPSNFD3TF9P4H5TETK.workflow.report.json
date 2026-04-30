@@ -1,0 +1,74 @@
+{
+  "ExecutionId": "01KQFEA1WPSNFD3TF9P4H5TETK",
+  "WorkflowName": "test-estimate-endpoint",
+  "WorkflowId": "48042E857AA94366A24C14B6F75E9647",
+  "WorkflowVersion": "1.0",
+  "ToolVersion": "1.7.20.278",
+  "WorkflowPath": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/workflows/test-estimate-endpoint.workflow",
+  "Environment": "local",
+  "StartedAtUtc": "2026-04-30T14:57:24.888339+00:00",
+  "FinishedAtUtc": "2026-04-30T14:57:24.89077+00:00",
+  "DurationMs": 2,
+  "Result": "Error",
+  "ErrorMessage": "Required input \u0027transcription\u0027 was not provided.",
+  "Mocked": false,
+  "DryRun": false,
+  "Inputs": {
+    "environment": "local",
+    "version": "1.0",
+    "variables": "{}"
+  },
+  "Output": {},
+  "Preflight": {
+    "Operations": [
+      {
+        "OperationType": "HealthCheck",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/health",
+        "Status": "Ok",
+        "Message": null,
+        "RetryCount": 0,
+        "DurationMs": 18,
+        "Attempts": [
+          {
+            "AttemptNumber": 1,
+            "RequestUri": "http://localhost:8000/health",
+            "Status": "Ok",
+            "HttpStatusCode": 200,
+            "ErrorMessage": null,
+            "StartedAtUtc": "2026-04-30T14:57:24.851572+00:00",
+            "FinishedAtUtc": "2026-04-30T14:57:24.869572+00:00",
+            "DurationMs": 18
+          }
+        ]
+      },
+      {
+        "OperationType": "SwaggerCache",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/openapi.json",
+        "Status": "Ok",
+        "Message": "Cache hit: /Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/cache/1.0/estimator-cag.json",
+        "RetryCount": 0,
+        "DurationMs": 0,
+        "Attempts": []
+      }
+    ],
+    "TotalRetries": 0,
+    "TotalDelayMs": 0,
+    "DurationMs": 18
+  },
+  "Stages": [],
+  "Metrics": {
+    "TotalStages": 0,
+    "ExecutedStages": 0,
+    "SkippedStages": 0,
+    "FailedStages": 0,
+    "MockedStages": 0,
+    "HttpStages": 0,
+    "WorkflowStages": 0,
+    "JumpedStages": 0,
+    "TotalRetries": 0,
+    "PreflightRetries": 0
+  },
+  "OutputFilePath": null
+}

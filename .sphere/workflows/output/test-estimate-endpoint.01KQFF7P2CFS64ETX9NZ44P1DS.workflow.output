@@ -1,0 +1,14 @@
+{
+  "openai_friendly_name": "openai",
+  "openai_provider": "openai",
+  "openai_model": "gpt-4o-mini",
+  "openai_http_status": "200",
+  "openai_tokens_total": "2557",
+  "openai_estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas\n\n### Desglose de tareas:\n1. **An\u00E1lisis de requisitos y definici\u00F3n de flujos**: 24 horas\n2. **Dise\u00F1o de UI/UX para la app web**: 40 horas\n3. **Desarrollo del m\u00F3dulo de gesti\u00F3n de citas**: 58 horas\n4. **Implementaci\u00F3n del historial cl\u00EDnico resumido**: 36 horas\n5. **Configuraci\u00F3n de recordatorios autom\u00E1ticos (email y SMS)**: 30 horas\n6. **Desarrollo del panel de administraci\u00F3n para el personal m\u00E9dico**: 44 horas\n7. **Integraci\u00F3n con ERP existente a trav\u00E9s de API REST**: 50 horas\n8. **Testing, QA y correcci\u00F3n de errores**: 36 horas\n\n**Total estimado: 318 horas**  \n**Equipo recomendado: 1 backend \u002B 1 frontend \u002B 1 QA (part-time)**  \n**Duraci\u00F3n estimada: 10-12 semanas**  \n\n---\n\n### Comentarios adicionales:\nCon un plazo de lanzamiento de 3 meses y un equipo peque\u00F1o, es importante considerar la posibilidad de priorizar las funcionalidades esenciales para garantizar una entrega efectiva dentro de este marco. Es recomendable mantener una comunicaci\u00F3n constante con el cliente para ajustar expectativas y gestionar cambios en los requisitos.",
+  "ollama_friendly_name": "ollama",
+  "ollama_provider": "ollama",
+  "ollama_model": "qwen3.6:27b",
+  "ollama_http_status": "200",
+  "ollama_tokens_total": "3652",
+  "ollama_estimation": ""
+}

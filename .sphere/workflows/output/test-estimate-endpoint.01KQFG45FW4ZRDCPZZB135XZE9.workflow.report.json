@@ -1,0 +1,180 @@
+{
+  "ExecutionId": "01KQFG45FW4ZRDCPZZB135XZE9",
+  "WorkflowName": "test-estimate-endpoint",
+  "WorkflowId": "48042E857AA94366A24C14B6F75E9647",
+  "WorkflowVersion": "1.0",
+  "ToolVersion": "1.7.20.278",
+  "WorkflowPath": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/workflows/test-estimate-endpoint.workflow",
+  "Environment": "local",
+  "StartedAtUtc": "2026-04-30T15:29:09.118317+00:00",
+  "FinishedAtUtc": "2026-04-30T15:29:30.011532+00:00",
+  "DurationMs": 20893,
+  "Result": "Ok",
+  "ErrorMessage": null,
+  "Mocked": false,
+  "DryRun": false,
+  "Inputs": {
+    "environment": "local",
+    "version": "1.0",
+    "variables": "{}"
+  },
+  "Output": {
+    "openai_friendly_name": "openai",
+    "openai_provider": "openai",
+    "openai_model": "gpt-4o-mini",
+    "openai_http_status": 200,
+    "openai_tokens_total": 2485,
+    "openai_estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas\n\n### Desglose de tareas:\n1. **Relevamiento de requisitos y modelado de datos cl\u00EDnicos:** 20 horas\n2. **Dise\u00F1o de UI/UX para gesti\u00F3n de citas y panel m\u00E9dico:** 36 horas\n3. **Desarrollo del backend para gesti\u00F3n de citas y pacientes:** 60 horas\n4. **Implementaci\u00F3n de historial cl\u00EDnico resumido:** 40 horas\n5. **Sistema de recordatorios autom\u00E1ticos (email y SMS):** 30 horas\n6. **Integraci\u00F3n con ERP actual v\u00EDa API REST:** 40 horas\n7. **Testing funcional, QA y ajustes finales:** 30 horas\n\n**Total estimado: 256 horas**\n\n**Equipo recomendado: 1 full-stack developer (senior) \u002B 1 dise\u00F1ador UI/UX (part-time) \u002B 1 QA (part-time)**\n\n**Duraci\u00F3n estimada: 12 semanas**",
+    "ollama_friendly_name": "ollama",
+    "ollama_provider": "ollama",
+    "ollama_model": "gemma4:e2b",
+    "ollama_http_status": 200,
+    "ollama_tokens_total": 3575,
+    "ollama_estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas Cl\u00EDnicas (Health Management System)\n\nEste proyecto implica la creaci\u00F3n de una plataforma web sensible que maneja datos cl\u00EDnicos y es altamente regulada. La integraci\u00F3n con el ERP es un punto cr\u00EDtico. La estimaci\u00F3n se basa en una implementaci\u00F3n robusta y segura.\n\n### Desglose de tareas:\n\n1. **Discovery, Arquitectura y Seguridad (Compliance Focus):**\n    *   Definici\u00F3n de requerimientos funcionales (citas, historial).\n    *   Dise\u00F1o de la arquitectura de la base de datos (modelado de pacientes e historial).\n    *   Dise\u00F1o de la arquitectura de seguridad y cumplimiento (roles de acceso, cifrado de datos cl\u00EDnicos).\n    *   Dise\u00F1o de la integraci\u00F3n API con el ERP existente.\n    *   **Horas estimadas: 40 horas**\n\n2. **Backend y L\u00F3gica de Negocio (Gesti\u00F3n de Citas e Historial):**\n    *   Desarrollo de la API principal (autenticaci\u00F3n y gesti\u00F3n de citas).\n    *   Implementaci\u00F3n del m\u00F3dulo de historial cl\u00EDnico resumido.\n    *   Desarrollo de la l\u00F3gica de recordatorios (triggers de email/SMS).\n    *   Implementaci\u00F3n de la integraci\u00F3n bidireccional con el ERP v\u00EDa REST.\n    *   **Horas estimadas: 100 horas**\n\n3. **Frontend (Portal Pacientes y Panel M\u00E9dico):**\n    *   Desarrollo del m\u00F3dulo de reserva y visualizaci\u00F3n de citas (Paciente).\n    *   Desarrollo del Panel de Administraci\u00F3n para personal m\u00E9dico (visualizaci\u00F3n de agenda, historial).\n    *   Dise\u00F1o UI/UX enfocado en la facilidad de uso cl\u00EDnico.\n    *   **Horas estimadas: 120 horas**\n\n4. **Integraci\u00F3n y Automatizaci\u00F3n (Alertas):**\n    *   Desarrollo del servicio de env\u00EDo de notificaciones (Email/SMS integration).\n    *   Pruebas de la sincronizaci\u00F3n de datos entre el sistema y los canales de comunicaci\u00F3n.\n    *   **Horas estimadas: 30 horas**\n\n5. **Testing, QA y Despliegue (Validaci\u00F3n Cl\u00EDnica):**\n    *   Pruebas de seguridad (pen testing b\u00E1sico).\n    *   Pruebas funcionales de flujo de citas (end-to-end).\n    *   Pruebas de carga y regresi\u00F3n.\n    *   Despliegue inicial en entorno de pruebas.\n    *   **Horas estimadas: 60 horas**\n\n---\n\n**Total estimado: 350 horas**\n\n**Equipo recomendado: 1 Full-Stack Senior (Backend/Frontend) \u002B 1 Desarrollador Backend/DevOps \u002B 1 QA (especializado en datos/seguridad)**\n\n**Duraci\u00F3n estimada: 10-12 semanas** (Ajustable a 3 meses, permitiendo iteraciones y revisi\u00F3n regulatoria)"
+  },
+  "Preflight": {
+    "Operations": [
+      {
+        "OperationType": "HealthCheck",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/health",
+        "Status": "Ok",
+        "Message": null,
+        "RetryCount": 0,
+        "DurationMs": 59,
+        "Attempts": [
+          {
+            "AttemptNumber": 1,
+            "RequestUri": "http://localhost:8000/health",
+            "Status": "Ok",
+            "HttpStatusCode": 200,
+            "ErrorMessage": null,
+            "StartedAtUtc": "2026-04-30T15:29:09.03897+00:00",
+            "FinishedAtUtc": "2026-04-30T15:29:09.09797+00:00",
+            "DurationMs": 59
+          }
+        ]
+      },
+      {
+        "OperationType": "SwaggerCache",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/openapi.json",
+        "Status": "Ok",
+        "Message": "Cache hit: /Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/cache/1.0/estimator-cag.json",
+        "RetryCount": 0,
+        "DurationMs": 0,
+        "Attempts": []
+      }
+    ],
+    "TotalRetries": 0,
+    "TotalDelayMs": 0,
+    "DurationMs": 59
+  },
+  "Stages": [
+    {
+      "WorkflowName": "test-estimate-endpoint",
+      "StageName": "call-openai",
+      "StageKind": "Endpoint",
+      "Depth": 0,
+      "Status": "Ok",
+      "RunIf": null,
+      "JumpTarget": null,
+      "Mocked": false,
+      "ErrorMessage": null,
+      "StartedAtUtc": "2026-04-30T15:29:09.121279+00:00",
+      "FinishedAtUtc": "2026-04-30T15:29:17.292308+00:00",
+      "DurationMs": 8171,
+      "DelaySeconds": null,
+      "ForEachExecutionMode": null,
+      "RetryCount": 0,
+      "HttpStatusCode": 200,
+      "EnsureMode": null,
+      "EnsureStatus": null,
+      "RequestUri": "http://localhost:8000/api/v1/estimate",
+      "HttpMethod": "POST",
+      "RequestHeaders": {
+        "Content-Type": "application/json"
+      },
+      "RequestBody": "{\u0022transcription\u0022:\u0022Reuni\\u00F3n con cliente del sector salud. Necesitan una app web para gesti\\u00F3n de citas m\\u00E9dicas con pacientes, historial cl\\u00EDnico resumido, recordatorios autom\\u00E1ticos por email y SMS, y un panel de administraci\\u00F3n para el personal m\\u00E9dico. El sistema debe integrarse con su ERP actual v\\u00EDa API REST. Esperan lanzarlo en 3 meses con un equipo peque\\u00F1o.\u0022,\u0022friendly_name\u0022:\u0022openai\u0022}",
+      "ResponseHeaders": {
+        "Date": "Thu, 30 Apr 2026 15:29:08 GMT",
+        "Server": "uvicorn",
+        "Content-Length": "906",
+        "Content-Type": "application/json"
+      },
+      "ResponseBody": "{\u0022estimation\u0022:\u0022## Estimaci\\u00F3n: Sistema de Gesti\\u00F3n de Citas M\\u00E9dicas\\n\\n### Desglose de tareas:\\n1. **Relevamiento de requisitos y modelado de datos cl\\u00EDnicos:** 20 horas\\n2. **Dise\\u00F1o de UI/UX para gesti\\u00F3n de citas y panel m\\u00E9dico:** 36 horas\\n3. **Desarrollo del backend para gesti\\u00F3n de citas y pacientes:** 60 horas\\n4. **Implementaci\\u00F3n de historial cl\\u00EDnico resumido:** 40 horas\\n5. **Sistema de recordatorios autom\\u00E1ticos (email y SMS):** 30 horas\\n6. **Integraci\\u00F3n con ERP actual v\\u00EDa API REST:** 40 horas\\n7. **Testing funcional, QA y ajustes finales:** 30 horas\\n\\n**Total estimado: 256 horas**\\n\\n**Equipo recomendado: 1 full-stack developer (senior) \\u002B 1 dise\\u00F1ador UI/UX (part-time) \\u002B 1 QA (part-time)**\\n\\n**Duraci\\u00F3n estimada: 12 semanas**\u0022,\u0022model\u0022:\u0022gpt-4o-mini\u0022,\u0022provider\u0022:\u0022openai\u0022,\u0022tokens_used\u0022:\u0022***REDACTED***\u0022,\u0022timestamp\u0022:\u00222026-04-30T15:29:17.274945\\u002B00:00\u0022}",
+      "Output": {
+        "friendly_name": "openai",
+        "estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas M\u00E9dicas\n\n### Desglose de tareas:\n1. **Relevamiento de requisitos y modelado de datos cl\u00EDnicos:** 20 horas\n2. **Dise\u00F1o de UI/UX para gesti\u00F3n de citas y panel m\u00E9dico:** 36 horas\n3. **Desarrollo del backend para gesti\u00F3n de citas y pacientes:** 60 horas\n4. **Implementaci\u00F3n de historial cl\u00EDnico resumido:** 40 horas\n5. **Sistema de recordatorios autom\u00E1ticos (email y SMS):** 30 horas\n6. **Integraci\u00F3n con ERP actual v\u00EDa API REST:** 40 horas\n7. **Testing funcional, QA y ajustes finales:** 30 horas\n\n**Total estimado: 256 horas**\n\n**Equipo recomendado: 1 full-stack developer (senior) \u002B 1 dise\u00F1ador UI/UX (part-time) \u002B 1 QA (part-time)**\n\n**Duraci\u00F3n estimada: 12 semanas**",
+        "model": "gpt-4o-mini",
+        "provider": "openai",
+        "tokens_prompt": 2287,
+        "tokens_completion": 198,
+        "tokens_total": 2485,
+        "http_status": 200
+      },
+      "WorkflowInputs": {},
+      "WorkflowOutput": {},
+      "WorkflowResult": {}
+    },
+    {
+      "WorkflowName": "test-estimate-endpoint",
+      "StageName": "call-ollama",
+      "StageKind": "Endpoint",
+      "Depth": 0,
+      "Status": "Ok",
+      "RunIf": null,
+      "JumpTarget": null,
+      "Mocked": false,
+      "ErrorMessage": null,
+      "StartedAtUtc": "2026-04-30T15:29:17.293284+00:00",
+      "FinishedAtUtc": "2026-04-30T15:29:30.003745+00:00",
+      "DurationMs": 12710,
+      "DelaySeconds": null,
+      "ForEachExecutionMode": null,
+      "RetryCount": 0,
+      "HttpStatusCode": 200,
+      "EnsureMode": null,
+      "EnsureStatus": null,
+      "RequestUri": "http://localhost:8000/api/v1/estimate",
+      "HttpMethod": "POST",
+      "RequestHeaders": {
+        "Content-Type": "application/json"
+      },
+      "RequestBody": "{\u0022transcription\u0022:\u0022Reuni\\u00F3n con cliente del sector salud. Necesitan una app web para gesti\\u00F3n de citas m\\u00E9dicas con pacientes, historial cl\\u00EDnico resumido, recordatorios autom\\u00E1ticos por email y SMS, y un panel de administraci\\u00F3n para el personal m\\u00E9dico. El sistema debe integrarse con su ERP actual v\\u00EDa API REST. Esperan lanzarlo en 3 meses con un equipo peque\\u00F1o.\u0022,\u0022friendly_name\u0022:\u0022ollama\u0022}",
+      "ResponseHeaders": {
+        "Date": "Thu, 30 Apr 2026 15:29:17 GMT",
+        "Server": "uvicorn",
+        "Content-Length": "2586",
+        "Content-Type": "application/json"
+      },
+      "ResponseBody": "{\u0022estimation\u0022:\u0022## Estimaci\\u00F3n: Sistema de Gesti\\u00F3n de Citas Cl\\u00EDnicas (Health Management System)\\n\\nEste proyecto implica la creaci\\u00F3n de una plataforma web sensible que maneja datos cl\\u00EDnicos y es altamente regulada. La integraci\\u00F3n con el ERP es un punto cr\\u00EDtico. La estimaci\\u00F3n se basa en una implementaci\\u00F3n robusta y segura.\\n\\n### Desglose de tareas:\\n\\n1. **Discovery, Arquitectura y Seguridad (Compliance Focus):**\\n    *   Definici\\u00F3n de requerimientos funcionales (citas, historial).\\n    *   Dise\\u00F1o de la arquitectura de la base de datos (modelado de pacientes e historial).\\n    *   Dise\\u00F1o de la arquitectura de seguridad y cumplimiento (roles de acceso, cifrado de datos cl\\u00EDnicos).\\n    *   Dise\\u00F1o de la integraci\\u00F3n API con el ERP existente.\\n    *   **Horas estimadas: 40 horas**\\n\\n2. **Backend y L\\u00F3gica de Negocio (Gesti\\u00F3n de Citas e Historial):**\\n    *   Desarrollo de la API principal (autenticaci\\u00F3n y gesti\\u00F3n de citas).\\n    *   Implementaci\\u00F3n del m\\u00F3dulo de historial cl\\u00EDnico resumido.\\n    *   Desarrollo de la l\\u00F3gica de recordatorios (triggers de email/SMS).\\n    *   Implementaci\\u00F3n de la integraci\\u00F3n bidireccional con el ERP v\\u00EDa REST.\\n    *   **Horas estimadas: 100 horas**\\n\\n3. **Frontend (Portal Pacientes y Panel M\\u00E9dico):**\\n    *   Desarrollo del m\\u00F3dulo de reserva y visualizaci\\u00F3n de citas (Paciente).\\n    *   Desarrollo del Panel de Administraci\\u00F3n para personal m\\u00E9dico (visualizaci\\u00F3n de agenda, historial).\\n    *   Dise\\u00F1o UI/UX enfocado en la facilidad de uso cl\\u00EDnico.\\n    *   **Horas estimadas: 120 horas**\\n\\n4. **Integraci\\u00F3n y Automatizaci\\u00F3n (Alertas):**\\n    *   Desarrollo del servicio de env\\u00EDo de notificaciones (Email/SMS integration).\\n    *   Pruebas de la sincronizaci\\u00F3n de datos entre el sistema y los canales de comunicaci\\u00F3n.\\n    *   **Horas estimadas: 30 horas**\\n\\n5. **Testing, QA y Despliegue (Validaci\\u00F3n Cl\\u00EDnica):**\\n    *   Pruebas de seguridad (pen testing b\\u00E1sico).\\n    *   Pruebas funcionales de flujo de citas (end-to-end).\\n    *   Pruebas de carga y regresi\\u00F3n.\\n    *   Despliegue inicial en entorno de pruebas.\\n    *   **Horas estimadas: 60 horas**\\n\\n---\\n\\n**Total estimado: 350 horas**\\n\\n**Equipo recomendado: 1 Full-Stack Senior (Backend/Frontend) \\u002B 1 Desarrollador Backend/DevOps \\u002B 1 QA (especializado en datos/seguridad)**\\n\\n**Duraci\\u00F3n estimada: 10-12 semanas** (Ajustable a 3 meses, permitiendo iteraciones y revisi\\u00F3n regulatoria)\u0022,\u0022model\u0022:\u0022gemma4:e2b\u0022,\u0022provider\u0022:\u0022ollama\u0022,\u0022tokens_used\u0022:\u0022***REDACTED***\u0022,\u0022timestamp\u0022:\u00222026-04-30T15:29:30.001112\\u002B00:00\u0022}",
+      "Output": {
+        "friendly_name": "ollama",
+        "estimation": "## Estimaci\u00F3n: Sistema de Gesti\u00F3n de Citas Cl\u00EDnicas (Health Management System)\n\nEste proyecto implica la creaci\u00F3n de una plataforma web sensible que maneja datos cl\u00EDnicos y es altamente regulada. La integraci\u00F3n con el ERP es un punto cr\u00EDtico. La estimaci\u00F3n se basa en una implementaci\u00F3n robusta y segura.\n\n### Desglose de tareas:\n\n1. **Discovery, Arquitectura y Seguridad (Compliance Focus):**\n    *   Definici\u00F3n de requerimientos funcionales (citas, historial).\n    *   Dise\u00F1o de la arquitectura de la base de datos (modelado de pacientes e historial).\n    *   Dise\u00F1o de la arquitectura de seguridad y cumplimiento (roles de acceso, cifrado de datos cl\u00EDnicos).\n    *   Dise\u00F1o de la integraci\u00F3n API con el ERP existente.\n    *   **Horas estimadas: 40 horas**\n\n2. **Backend y L\u00F3gica de Negocio (Gesti\u00F3n de Citas e Historial):**\n    *   Desarrollo de la API principal (autenticaci\u00F3n y gesti\u00F3n de citas).\n    *   Implementaci\u00F3n del m\u00F3dulo de historial cl\u00EDnico resumido.\n    *   Desarrollo de la l\u00F3gica de recordatorios (triggers de email/SMS).\n    *   Implementaci\u00F3n de la integraci\u00F3n bidireccional con el ERP v\u00EDa REST.\n    *   **Horas estimadas: 100 horas**\n\n3. **Frontend (Portal Pacientes y Panel M\u00E9dico):**\n    *   Desarrollo del m\u00F3dulo de reserva y visualizaci\u00F3n de citas (Paciente).\n    *   Desarrollo del Panel de Administraci\u00F3n para personal m\u00E9dico (visualizaci\u00F3n de agenda, historial).\n    *   Dise\u00F1o UI/UX enfocado en la facilidad de uso cl\u00EDnico.\n    *   **Horas estimadas: 120 horas**\n\n4. **Integraci\u00F3n y Automatizaci\u00F3n (Alertas):**\n    *   Desarrollo del servicio de env\u00EDo de notificaciones (Email/SMS integration).\n    *   Pruebas de la sincronizaci\u00F3n de datos entre el sistema y los canales de comunicaci\u00F3n.\n    *   **Horas estimadas: 30 horas**\n\n5. **Testing, QA y Despliegue (Validaci\u00F3n Cl\u00EDnica):**\n    *   Pruebas de seguridad (pen testing b\u00E1sico).\n    *   Pruebas funcionales de flujo de citas (end-to-end).\n    *   Pruebas de carga y regresi\u00F3n.\n    *   Despliegue inicial en entorno de pruebas.\n    *   **Horas estimadas: 60 horas**\n\n---\n\n**Total estimado: 350 horas**\n\n**Equipo recomendado: 1 Full-Stack Senior (Backend/Frontend) \u002B 1 Desarrollador Backend/DevOps \u002B 1 QA (especializado en datos/seguridad)**\n\n**Duraci\u00F3n estimada: 10-12 semanas** (Ajustable a 3 meses, permitiendo iteraciones y revisi\u00F3n regulatoria)",
+        "model": "gemma4:e2b",
+        "provider": "ollama",
+        "tokens_prompt": 2401,
+        "tokens_completion": 1174,
+        "tokens_total": 3575,
+        "http_status": 200
+      },
+      "WorkflowInputs": {},
+      "WorkflowOutput": {},
+      "WorkflowResult": {}
+    }
+  ],
+  "Metrics": {
+    "TotalStages": 2,
+    "ExecutedStages": 2,
+    "SkippedStages": 0,
+    "FailedStages": 0,
+    "MockedStages": 0,
+    "HttpStages": 2,
+    "WorkflowStages": 0,
+    "JumpedStages": 0,
+    "TotalRetries": 0,
+    "PreflightRetries": 0
+  },
+  "OutputFilePath": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/workflows/output/test-estimate-endpoint.01KQFG45FW4ZRDCPZZB135XZE9.workflow.output"
+}
