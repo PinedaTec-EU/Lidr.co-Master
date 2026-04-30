@@ -1,0 +1,105 @@
+{
+  "ExecutionId": "01KQETER1JXP414X9FGSE7JMFG",
+  "WorkflowName": "test-estimate-endpoint",
+  "WorkflowId": "48042E857AA94366A24C14B6F75E9647",
+  "WorkflowVersion": "1.0",
+  "ToolVersion": "1.7.19.274",
+  "WorkflowPath": "/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/workflows/test-estimate-endpoint.workflow",
+  "Environment": "local",
+  "StartedAtUtc": "2026-04-30T09:10:27.1246+00:00",
+  "FinishedAtUtc": "2026-04-30T09:10:27.13308+00:00",
+  "DurationMs": 8,
+  "Result": "Error",
+  "ErrorMessage": "Stage \u0027call-estimate\u0027 failed with exception: Stage \u0027call-estimate\u0027 request body field \u0027$.transcript\u0027 is required.",
+  "Mocked": false,
+  "DryRun": false,
+  "Inputs": {
+    "environment": "local",
+    "version": "1.0",
+    "variables": "{}"
+  },
+  "Output": {},
+  "Preflight": {
+    "Operations": [
+      {
+        "OperationType": "HealthCheck",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/health",
+        "Status": "Ok",
+        "Message": null,
+        "RetryCount": 0,
+        "DurationMs": 20,
+        "Attempts": [
+          {
+            "AttemptNumber": 1,
+            "RequestUri": "http://localhost:8000/health",
+            "Status": "Ok",
+            "HttpStatusCode": 200,
+            "ErrorMessage": null,
+            "StartedAtUtc": "2026-04-30T09:10:27.084471+00:00",
+            "FinishedAtUtc": "2026-04-30T09:10:27.103471+00:00",
+            "DurationMs": 19
+          }
+        ]
+      },
+      {
+        "OperationType": "SwaggerCache",
+        "DefinitionName": "estimator-cag",
+        "Target": "http://localhost:8000/openapi.json",
+        "Status": "Ok",
+        "Message": "Cache hit: /Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/cache/1.0/estimator-cag.json",
+        "RetryCount": 0,
+        "DurationMs": 0,
+        "Attempts": []
+      }
+    ],
+    "TotalRetries": 0,
+    "TotalDelayMs": 0,
+    "DurationMs": 20
+  },
+  "Stages": [
+    {
+      "WorkflowName": "test-estimate-endpoint",
+      "StageName": "call-estimate",
+      "StageKind": "Endpoint",
+      "Depth": 0,
+      "Status": "Error",
+      "RunIf": null,
+      "JumpTarget": null,
+      "Mocked": false,
+      "ErrorMessage": "Stage \u0027call-estimate\u0027 failed with exception: Stage \u0027call-estimate\u0027 request body field \u0027$.transcript\u0027 is required.",
+      "StartedAtUtc": "2026-04-30T09:10:27.127279+00:00",
+      "FinishedAtUtc": "2026-04-30T09:10:27.132538+00:00",
+      "DurationMs": 5,
+      "DelaySeconds": null,
+      "ForEachExecutionMode": null,
+      "RetryCount": 0,
+      "HttpStatusCode": null,
+      "EnsureMode": null,
+      "EnsureStatus": null,
+      "RequestUri": null,
+      "HttpMethod": null,
+      "RequestHeaders": null,
+      "RequestBody": null,
+      "ResponseHeaders": null,
+      "ResponseBody": null,
+      "Output": {},
+      "WorkflowInputs": {},
+      "WorkflowOutput": {},
+      "WorkflowResult": {}
+    }
+  ],
+  "Metrics": {
+    "TotalStages": 1,
+    "ExecutedStages": 1,
+    "SkippedStages": 0,
+    "FailedStages": 1,
+    "MockedStages": 0,
+    "HttpStages": 1,
+    "WorkflowStages": 0,
+    "JumpedStages": 0,
+    "TotalRetries": 0,
+    "PreflightRetries": 0
+  },
+  "OutputFilePath": null
+}

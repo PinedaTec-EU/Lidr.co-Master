@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en" data-theme="light"><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workflow Report - test-estimate-endpoint</title>
+<style>
+:root {
+  --bg:#f5f7fa;--surface:#fff;--border:#e2e8f0;--text:#1e293b;--text-muted:#64748b;--text-subtle:#94a3b8;
+  --th-bg:#f8fafc;--header-bg:#0f172a;--header-text:#f1f5f9;--header-muted:#475569;
+  --ok-bg:#f0fdf4;--ok-c:#15803d;--err-bg:#fff1f2;--err-c:#be123c;--skip-bg:#fefce8;--skip-c:#a16207;
+  --btn-bg:#1e293b;--btn-c:#94a3b8;--btn-border:#334155;--btn-hover-bg:#334155;--btn-hover-c:#f1f5f9;
+  --pre-bg:#f8fafc;--pre-border:#e2e8f0;--pre-text:#475569;
+}
+[data-theme="dark"] {
+  --bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8;--text-subtle:#64748b;
+  --th-bg:#1e293b;--header-bg:#020617;--header-text:#f1f5f9;--header-muted:#64748b;
+  --ok-bg:#052e16;--ok-c:#4ade80;--err-bg:#4c0519;--err-c:#fda4af;--skip-bg:#422006;--skip-c:#fcd34d;
+  --btn-bg:#334155;--btn-c:#94a3b8;--btn-border:#475569;--btn-hover-bg:#475569;--btn-hover-c:#f1f5f9;
+  --pre-bg:#0f172a;--pre-border:#334155;--pre-text:#94a3b8;
+}
+*,*::before,*::after { box-sizing: border-box; }
+body { margin: 0; font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; font-size: 13px; background: var(--bg); color: var(--text); transition: background .2s, color .2s; }
+header { background: var(--header-bg); color: var(--header-text); padding: 12px 24px; display: flex; align-items: center; gap: 12px; }
+.header-logo { width: 28px; height: 28px; flex-shrink: 0; }
+.header-brand { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--header-muted); white-space: nowrap; }
+.header-sep { color: #334155; font-size: 16px; }
+.header-title { font-size: 15px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn { background: var(--btn-bg); color: var(--btn-c); border: 1px solid var(--btn-border); padding: 5px 11px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; transition: background .15s, color .15s; }
+.btn:hover { background: var(--btn-hover-bg); color: var(--btn-hover-c); }
+.btn-icon { padding: 5px 9px; font-size: 14px; }
+main { padding: 24px; max-width: 1100px; }
+h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-subtle); margin: 24px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+table { border-collapse: collapse; width: 100%; margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: background .2s; }
+th, td { border-bottom: 1px solid var(--border); padding: 7px 12px; vertical-align: top; text-align: left; font-size: 12.5px; }
+tr:last-child th, tr:last-child td { border-bottom: none; }
+th { background: var(--th-bg); color: var(--text-muted); font-weight: 600; font-size: 11.5px; white-space: nowrap; }
+.badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+.ok { background: var(--ok-bg); color: var(--ok-c); }
+.error { background: var(--err-bg); color: var(--err-c); }
+.skipped { background: var(--skip-bg); color: var(--skip-c); }
+pre { background: var(--pre-bg); border: 1px solid var(--pre-border); border-radius: 6px; padding: 12px 14px; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size: 11.5px; color: var(--pre-text); white-space: pre-wrap; word-break: break-word; margin: 0; transition: background .2s, border-color .2s; }
+</style>
+</head>
+<body>
+<header>
+  <svg class="header-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Sphere Integration Hub icon">
+  <defs>
+    <radialGradient id="sphereGrad" cx="42%" cy="38%" r="58%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="55%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </radialGradient>
+    <radialGradient id="nodeGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="nodeGlow" x="-80%" y="-80%" width="360%" height="360%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="60" cy="60" rx="50" ry="50" fill="none" stroke="#6d28d9" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.35"/>
+  <line x1="60" y1="60" x2="60" y2="14" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="60" y1="60" x2="100" y2="35" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="60" y1="60" x2="100" y2="85" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="60" y1="60" x2="60" y2="106" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="60" y1="60" x2="20" y2="85" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="60" y1="60" x2="20" y2="35" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+  <circle cx="60" cy="14" r="5" fill="url(#nodeGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="100" cy="35" r="5" fill="url(#nodeGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="100" cy="85" r="5" fill="url(#nodeGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="60" cy="106" r="5" fill="url(#nodeGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="20" cy="85" r="5" fill="url(#nodeGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="20" cy="35" r="5" fill="url(#nodeGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="60" cy="60" r="22" fill="url(#sphereGrad)" filter="url(#glow)"/>
+  <ellipse cx="60" cy="60" rx="22" ry="9" fill="none" stroke="#c4b5fd" stroke-width="0.7" opacity="0.45"/>
+  <line x1="60" y1="38" x2="60" y2="82" stroke="#c4b5fd" stroke-width="0.7" opacity="0.45"/>
+  <ellipse cx="53" cy="52" rx="7" ry="4.5" fill="white" opacity="0.18" transform="rotate(-20 53 52)"/>
+</svg>
+  <span class="header-brand">Sphere Integration Hub (SIH)</span>
+  <span class="header-sep">·</span>
+  <span class="header-title">Workflow Report</span>
+  <button class="btn btn-icon" id="theme-toggle" title="Toggle dark/light mode" onclick="toggleTheme()">🌙</button>
+</header>
+<main>
+<h2>Summary &mdash; test-estimate-endpoint</h2>
+<table><tbody>
+<tr><th>Execution Id</th><td>01KQETER1JXP414X9FGSE7JMFG</td></tr>
+<tr><th>Workflow Id</th><td>48042E857AA94366A24C14B6F75E9647</td></tr>
+<tr><th>Version</th><td>1.0</td></tr>
+<tr><th>Environment</th><td>local</td></tr>
+<tr><th>Result</th><td><span class="badge error">Error</span></td></tr>
+<tr><th>Duration (ms)</th><td>8</td></tr>
+<tr><th>Output File</th><td></td></tr>
+</tbody></table>
+<h2>Preflight</h2>
+<table><tbody>
+<tr><th>Operations</th><td>2</td></tr>
+<tr><th>Retries</th><td>0</td></tr>
+<tr><th>Duration (ms)</th><td>20</td></tr>
+</tbody></table>
+<table><thead><tr><th>Type</th><th>Definition</th><th>Status</th><th>Target</th><th>Retries</th><th>Duration (ms)</th><th>Message</th></tr></thead><tbody>
+<tr>
+<td>HealthCheck</td>
+<td>estimator-cag</td>
+<td><span class="badge ok">Ok</span></td>
+<td>http://localhost:8000/health</td>
+<td>0</td>
+<td>20</td>
+<td></td>
+</tr>
+<tr>
+<td>SwaggerCache</td>
+<td>estimator-cag</td>
+<td><span class="badge ok">Ok</span></td>
+<td>http://localhost:8000/openapi.json</td>
+<td>0</td>
+<td>0</td>
+<td>Cache hit: /Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/.sphere/cache/1.0/estimator-cag.json</td>
+</tr>
+</tbody></table>
+<h2>Metrics</h2>
+<table><tbody>
+<tr><th>Total stages</th><td>1</td></tr>
+<tr><th>Executed</th><td>1</td></tr>
+<tr><th>Skipped</th><td>0</td></tr>
+<tr><th>Failed</th><td>1</td></tr>
+<tr><th>Mocked</th><td>0</td></tr>
+<tr><th>Retries</th><td>0</td></tr>
+<tr><th>Preflight retries</th><td>0</td></tr>
+</tbody></table>
+<h2>Stages</h2>
+<table><thead><tr><th>Workflow</th><th>Stage</th><th>Status</th><th>HTTP</th><th>Jump</th><th>Retries</th><th>Duration (ms)</th><th>Error</th></tr></thead><tbody>
+<tr>
+<td>test-estimate-endpoint</td>
+<td>call-estimate</td>
+<td><span class="badge error">Error</span></td>
+<td></td>
+<td></td>
+<td>0</td>
+<td>5</td>
+<td>Stage &#39;call-estimate&#39; failed with exception: Stage &#39;call-estimate&#39; request body field &#39;$.transcript&#39; is required.</td>
+</tr>
+</tbody></table>
+<h2>Output</h2>
+<pre>{}</pre>
+</main>
+<script>
+function applyTheme(dark) {
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  document.getElementById('theme-toggle').textContent = dark ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const dark = document.documentElement.dataset.theme !== 'dark';
+  localStorage.setItem('sphere-theme', dark ? 'dark' : 'light');
+  applyTheme(dark);
+}
+(function() {
+  const saved = localStorage.getItem('sphere-theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved ? saved === 'dark' : prefersDark);
+})();
+</script>
+</body></html>
