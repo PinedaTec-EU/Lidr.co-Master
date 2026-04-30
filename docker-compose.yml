@@ -1,0 +1,53 @@
+services:
+  estimator-cag:
+    build:
+      context: ./estimator-cag
+      dockerfile: Dockerfile
+    env_file:
+      - ./estimator-cag/.env
+    environment:
+      APP_ENV: development
+      LOG_LEVEL: info
+      OLLAMA_API_KEY: ollama
+      OLLAMA_BASE_URL: http://ollama:11434/v1
+      OLLAMA_PORT: 11434
+    ports:
+      - "8000:8000"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+
+  ollama-pull:
+    image: ollama/ollama:latest
+    profiles:
+      - setup
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["ollama", "pull", "gemma4:e2b"]
+
+volumes:
+  ollama-data:
