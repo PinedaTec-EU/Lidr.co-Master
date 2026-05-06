@@ -1,3 +1,4 @@
+from collections.abc import AsyncIterator
 from dataclasses import dataclass, replace
 
 from app.config import settings
@@ -65,6 +66,25 @@ A continuación tienes ejemplos de estimaciones previas que debes usar como refe
 {examples_text}
 
 Usa estos ejemplos para calibrar la complejidad y granularidad de tus respuestas. Responde siempre en español y en formato Markdown."""
+
+
+def get_system_prompt() -> str:
+    return _build_system_prompt()
+
+
+def get_context_summary() -> dict:
+    return {
+        "examples_count": len(ESTIMATION_EXAMPLES),
+        "examples": [
+            {
+                "title": example["meeting_summary"],
+                "transcription": example["meeting_summary"],
+                "estimation": example["estimation"].strip(),
+                "estimation_preview": example["estimation"].strip().splitlines()[0],
+            }
+            for example in ESTIMATION_EXAMPLES
+        ],
+    }
 
 
 def get_available_friendly_names() -> list[str]:
@@ -146,6 +166,24 @@ async def get_estimation(
     return await _call_openai(system_prompt, transcription, route)
 
 
+async def stream_estimation(
+    transcription: str,
+    friendly_name: str | None = None,
+    provider: str | None = None,
+    model: str | None = None,
+) -> AsyncIterator[dict]:
+    system_prompt = _build_system_prompt()
+    route = _resolve_route(friendly_name, provider, model)
+
+    if route.provider == "anthropic":
+        async for event in _stream_anthropic(system_prompt, transcription, route):
+            yield event
+        return
+
+    async for event in _stream_openai_compatible(system_prompt, transcription, route):
+        yield event
+
+
 async def _call_openai(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
     from openai import AsyncOpenAI
 
@@ -192,6 +230,46 @@ async def _call_ollama(system_prompt: str, transcription: str, route: ModelRoute
     }
 
 
+async def _stream_openai_compatible(
+    system_prompt: str,
+    transcription: str,
+    route: ModelRoute,
+) -> AsyncIterator[dict]:
+    from openai import AsyncOpenAI
+
+    client_kwargs = {"api_key": route.api_key}
+    if route.base_url:
+        client_kwargs["base_url"] = route.base_url
+
+    client = AsyncOpenAI(**client_kwargs)
+    request_kwargs = {
+        "model": route.model,
+        "max_tokens": MAX_COMPLETION_TOKENS,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": transcription},
+        ],
+        "stream": True,
+    }
+    if route.provider == "openai":
+        request_kwargs["stream_options"] = {"include_usage": True}
+
+    stream = await client.chat.completions.create(**request_kwargs)
+
+    async for chunk in stream:
+        if chunk.choices:
+            delta = chunk.choices[0].delta.content
+            if delta:
+                yield {"type": "delta", "content": delta}
+        if chunk.usage:
+            yield {
+                "type": "metadata",
+                "model": route.model,
+                "provider": route.provider,
+                "tokens_used": _tokens_used(chunk.usage),
+            }
+
+
 async def _call_anthropic(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
     import anthropic
 
@@ -224,3 +302,44 @@ async def _call_anthropic(system_prompt: str, transcription: str, route: ModelRo
             "total": usage.input_tokens + usage.output_tokens,
         },
     }
+
+
+async def _stream_anthropic(
+    system_prompt: str,
+    transcription: str,
+    route: ModelRoute,
+) -> AsyncIterator[dict]:
+    import anthropic
+
+    client_kwargs = {"api_key": route.api_key}
+    if route.base_url:
+        client_kwargs["base_url"] = route.base_url
+
+    client = anthropic.AsyncAnthropic(**client_kwargs)
+    async with client.messages.stream(
+        model=route.model,
+        max_tokens=2048,
+        system=[{
+            "type": "text",
+            "text": system_prompt,
+            "cache_control": {"type": "ephemeral"},
+        }],
+        messages=[
+            {"role": "user", "content": transcription},
+        ],
+    ) as stream:
+        async for text in stream.text_stream:
+            yield {"type": "delta", "content": text}
+
+        final_message = await stream.get_final_message()
+        usage = final_message.usage
+        yield {
+            "type": "metadata",
+            "model": route.model,
+            "provider": "anthropic",
+            "tokens_used": {
+                "prompt": usage.input_tokens,
+                "completion": usage.output_tokens,
+                "total": usage.input_tokens + usage.output_tokens,
+            },
+        }
