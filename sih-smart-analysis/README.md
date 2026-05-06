@@ -260,6 +260,16 @@ Override it when needed:
 SIH_SMART_REPORTS_DIR=sample-reports uvicorn app.main:app --reload --port 8010
 ```
 
+### Conversational Streamlit wrapper
+
+The Streamlit wrapper reuses the same analyzers as the FastAPI endpoints without changing the public API contract.
+
+```bash
+streamlit run streamlit_app.py
+```
+
+The UI provides a sidebar with sample reports, recent-window and semantic-source controls, a main analysis panel, chat-style history, and a modal with the active SIH Smart Analysis context.
+
 ## Test
 
 ```bash
