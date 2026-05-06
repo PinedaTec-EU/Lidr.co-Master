@@ -15,6 +15,33 @@ El modelo devuelve una estimación calibrada en el mismo estilo y formato que lo
 **Proveedores soportados:**
 - OpenAI (`gpt-4o-mini` por defecto)
 - Anthropic (`claude-haiku-4-5-20251001` por defecto, con prompt caching activado)
+- Configuraciones por `friendly_name`, usadas por el workflow SIH piloto para comparar `openai` y `ollama`.
+
+---
+
+## Fases del proyecto
+
+```mermaid
+flowchart TD
+    A["Entrada<br/>transcripción de reunión"] --> B["API FastAPI<br/>POST /api/v1/estimate"]
+    B --> C["CAG<br/>inyecta ejemplos estáticos"]
+    C --> D{"Proveedor LLM"}
+    D --> E["OpenAI"]
+    D --> F["Anthropic"]
+    D --> G["Otros por friendly_name<br/>ej. ollama"]
+    E --> H["Estimación Markdown"]
+    F --> H
+    G --> H
+```
+
+Este proyecto es deliberadamente CAG:
+
+- No tiene ingesta documental.
+- No tiene vector store.
+- No hace retrieval.
+- El conocimiento de referencia está en `app/context/examples.py`.
+
+La transición a RAG no se implementa aquí. La evolución natural está en `sih-smart-analysis`, que consume los reports generados por SIH al ejecutar esta API.
 
 ---
 
@@ -30,7 +57,7 @@ estimator-cag/
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
-│       └── llm_service.py     # Lógica de llamada a OpenAI / Anthropic
+│       └── llm_service.py     # Lógica de llamada a proveedores LLM
 ├── streamlit_app.py           # Chat web conversacional para el estimador CAG
 ├── pyproject.toml
 └── .env                       # Variables de entorno (no comitear)
@@ -39,6 +66,10 @@ estimator-cag/
 ---
 
 ## Endpoints
+
+Número de endpoints funcionales: **2** bajo `/api/v1`.
+
+Número de endpoints operativos: **1** fuera de `/api/v1`.
 
 ### `GET /health`
 
@@ -62,9 +93,21 @@ Genera una estimación de software a partir de la transcripción de una reunión
 **Request body:**
 ```json
 {
-  "transcription": "El cliente necesita una app web para gestión de reservas..."
+  "transcription": "El cliente necesita una app web para gestión de reservas...",
+  "friendly_name": "openai",
+  "provider": null,
+  "model": null
 }
 ```
+
+Campos:
+
+| Campo | Obligatorio | Descripción |
+|-------|-------------|-------------|
+| `transcription` | Sí | Texto de la reunión o descripción funcional a estimar. |
+| `friendly_name` | No | Alias de configuración de proveedor/modelo. Ejemplo: `openai`, `ollama`. |
+| `provider` | No | Override directo del proveedor. |
+| `model` | No | Override directo del modelo. |
 
 **Respuesta:**
 ```json
@@ -89,6 +132,22 @@ Genera una estimación de software a partir de la transcripción de una reunión
 
 ---
 
+### `GET /api/v1/estimate/friendly-names`
+
+Devuelve los alias de proveedores/modelos configurados.
+
+**Respuesta:**
+
+```json
+{
+  "friendly_names": ["openai", "ollama"]
+}
+```
+
+Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede invocar sin hardcodear configuraciones.
+
+---
+
 ### `GET /docs`
 
 Swagger UI con documentación interactiva de la API.
@@ -102,26 +161,24 @@ Documentación alternativa en formato ReDoc.
 ## Flujo de la petición
 
 ```
-Cliente
-  │
-  │  POST /api/v1/estimate  { transcription: "..." }
-  ▼
-Router (estimations.py)
-  │  Valida que transcription no esté vacía
-  ▼
-LLM Service (llm_service.py)
-  │  _build_system_prompt()
-  │    └─ Inyecta 10 ejemplos de estimaciones (ESTIMATION_EXAMPLES)
-  │
-  ├─ provider = "openai"    → AsyncOpenAI.chat.completions.create()
-  └─ provider = "anthropic" → AsyncAnthropic.messages.create()
-                               (con cache_control ephemeral en system prompt)
-  ▼
-Router
-  │  Construye EstimationResponse con timestamp UTC
-  ▼
-Cliente
-     { estimation, model, provider, tokens_used, timestamp }
+```mermaid
+sequenceDiagram
+    participant C as Cliente / SIH
+    participant API as FastAPI estimator-cag
+    participant S as LLM Service
+    participant CTX as Context examples
+    participant LLM as LLM Provider
+
+    C->>API: POST /api/v1/estimate
+    API->>API: valida transcription
+    API->>S: get_estimation(transcription, friendly_name/provider/model)
+    S->>CTX: carga ESTIMATION_EXAMPLES
+    S->>S: construye system prompt CAG
+    S->>LLM: envía prompt + transcripción
+    LLM-->>S: estimation + usage
+    S-->>API: resultado normalizado
+    API-->>C: EstimationResponse
+```
 ```
 
 El `system_prompt` se construye en cada llamada concatenando los ejemplos estáticos. En Anthropic, el system prompt se marca con `cache_control: ephemeral` para aprovechar el prompt caching y reducir latencia y coste en llamadas sucesivas.
@@ -178,7 +235,25 @@ La interfaz permite pegar una transcripción en un chat, mantiene el historial d
 
 ## Validación con SIH (Sphere Integration Hub)
 
-SIH permite ejecutar y validar los endpoints del servicio mediante workflows declarativos sin necesidad de herramientas externas.
+SIH permite ejecutar y validar los endpoints del servicio mediante workflows declarativos.
+
+En este repo el workflow piloto está en:
+
+```text
+.sphere/workflows/test-estimate-endpoint.workflow
+```
+
+Ese workflow ejecuta dos stages HTTP contra `POST /api/v1/estimate`:
+
+```mermaid
+flowchart LR
+    SIH["SIH CLI"] --> W["test-estimate-endpoint.workflow"]
+    W --> OAI["call-openai<br/>friendly_name=openai"]
+    W --> OLL["call-ollama<br/>friendly_name=ollama"]
+    OAI --> API["estimator-cag<br/>POST /api/v1/estimate"]
+    OLL --> API
+    API --> Reports[".sphere/workflows/output<br/>report JSON/HTML"]
+```
 
 ### 1. Listar workflows disponibles
 
