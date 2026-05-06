@@ -1,0 +1,2 @@
+[mcp_servers.sphere-integration-hub]
+command = "/Users/jmr.pineda/.dotnet/tools/sih-mcp"
