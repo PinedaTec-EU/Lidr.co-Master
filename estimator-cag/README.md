@@ -31,6 +31,7 @@ estimator-cag/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
 │       └── llm_service.py     # Lógica de llamada a OpenAI / Anthropic
+├── streamlit_app.py           # Chat web conversacional para el estimador CAG
 ├── pyproject.toml
 └── .env                       # Variables de entorno (no comitear)
 ```
@@ -162,6 +163,16 @@ uvicorn app.main:app --reload
 ```
 
 El servicio queda disponible en `http://localhost:8000`.
+
+### Interfaz conversacional con Streamlit
+
+El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedores que el endpoint `POST /api/v1/estimate`.
+
+```bash
+streamlit run streamlit_app.py
+```
+
+La interfaz permite pegar una transcripción en un chat, mantiene el historial durante la sesión y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados y las métricas básicas de la última llamada.
 
 ---
 
