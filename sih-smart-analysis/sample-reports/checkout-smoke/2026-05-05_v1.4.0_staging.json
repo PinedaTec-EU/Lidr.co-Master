@@ -1,0 +1,23 @@
+{
+  "run_id": "checkout-smoke-20260505-090000",
+  "workflow": "checkout-smoke",
+  "environment": "staging",
+  "version": "1.4.0",
+  "started_at": "2026-05-05T09:00:00Z",
+  "status": "failed",
+  "duration_ms": 18420,
+  "stages": [
+    {"name": "login", "status": "passed", "duration_ms": 450, "http_status": 200},
+    {"name": "create-customer", "status": "passed", "duration_ms": 2300, "http_status": 201},
+    {
+      "name": "create-order",
+      "status": "failed",
+      "duration_ms": 7100,
+      "http_status": 400,
+      "error_type": "contract_validation",
+      "message": "required field payment.method missing"
+    },
+    {"name": "confirm-order", "status": "skipped", "duration_ms": 0}
+  ]
+}
+

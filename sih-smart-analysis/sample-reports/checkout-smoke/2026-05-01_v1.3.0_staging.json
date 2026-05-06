@@ -1,0 +1,16 @@
+{
+  "run_id": "checkout-smoke-20260501-090000",
+  "workflow": "checkout-smoke",
+  "environment": "staging",
+  "version": "1.3.0",
+  "started_at": "2026-05-01T09:00:00Z",
+  "status": "passed",
+  "duration_ms": 9200,
+  "stages": [
+    {"name": "login", "status": "passed", "duration_ms": 420, "http_status": 200},
+    {"name": "create-customer", "status": "passed", "duration_ms": 1800, "http_status": 201},
+    {"name": "create-order", "status": "passed", "duration_ms": 3100, "http_status": 201},
+    {"name": "confirm-order", "status": "passed", "duration_ms": 3880, "http_status": 200}
+  ]
+}
+

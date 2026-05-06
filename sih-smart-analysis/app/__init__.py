@@ -1,0 +1,2 @@
+"""SIH Smart Analysis application."""
+
