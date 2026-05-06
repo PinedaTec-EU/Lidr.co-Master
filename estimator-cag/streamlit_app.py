@@ -222,7 +222,6 @@ def _send_transcription(transcription: str, selected_friendly_name: str) -> None
         st.session_state.last_model = metadata.get("model", "")
         st.session_state.last_provider = metadata.get("provider", "")
         st.session_state.last_response_time = metadata.get("response_time", 0.0)
-    st.session_state.transcription_text = ""
     st.rerun()
 
 
