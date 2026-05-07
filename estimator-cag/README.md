@@ -17,6 +17,8 @@ El modelo devuelve una estimación calibrada en el mismo estilo y formato que lo
 - Anthropic (`claude-haiku-4-5-20251001` por defecto, con prompt caching activado)
 - Configuraciones por `friendly_name`, usadas por el workflow SIH piloto para comparar `openai` y `ollama`.
 
+Las llamadas a modelos se enrutan mediante **LiteLLM**, manteniendo un formato común para completions y streaming entre proveedores.
+
 ---
 
 ## Fases del proyecto
@@ -181,7 +183,7 @@ sequenceDiagram
 ```
 ```
 
-El `system_prompt` se construye en cada llamada concatenando los ejemplos estáticos. En Anthropic, el system prompt se marca con `cache_control: ephemeral` para aprovechar el prompt caching y reducir latencia y coste en llamadas sucesivas.
+El `system_prompt` se construye en cada llamada concatenando los ejemplos estáticos. La invocación a proveedores se centraliza con LiteLLM para evitar wrappers específicos por SDK y mantener el mismo flujo para respuesta completa y streaming.
 
 ---
 

@@ -1,5 +1,6 @@
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, replace
+from typing import Any
 
 from app.config import settings
 from app.context.examples import ESTIMATION_EXAMPLES
@@ -22,7 +23,7 @@ def _model_routes() -> dict[str, ModelRoute]:
         "openai": ModelRoute(
             friendly_name="openai",
             provider="openai",
-            model="gpt-4o-mini",
+            model="openai/gpt-4o-mini",
             api_key=settings.openai_api_key,
             base_url=settings.openai_base_url or None,
             port=None,
@@ -30,7 +31,7 @@ def _model_routes() -> dict[str, ModelRoute]:
         "ollama": ModelRoute(
             friendly_name="ollama",
             provider="ollama",
-            model="gemma4:e2b",
+            model="ollama/gemma4:e2b",
             api_key=settings.ollama_api_key,
             base_url=settings.ollama_base_url,
             port=settings.ollama_port,
@@ -109,27 +110,34 @@ def _resolve_route(
     resolved_provider = provider or settings.llm_provider
     resolved_model = model or settings.llm_model
     if resolved_provider == "ollama":
+        resolved_model = resolved_model or "llama3.2"
         return ModelRoute(
             friendly_name="custom",
             provider="ollama",
-            model=resolved_model or "llama3.2",
+            model=resolved_model if resolved_model.startswith("ollama/") else f"ollama/{resolved_model}",
             api_key=settings.ollama_api_key,
             base_url=settings.ollama_base_url,
             port=settings.ollama_port,
         )
     if resolved_provider == "anthropic":
+        resolved_model = resolved_model or "claude-haiku-4-5-20251001"
         return ModelRoute(
             friendly_name="custom",
             provider="anthropic",
-            model=resolved_model or "claude-haiku-4-5-20251001",
+            model=(
+                resolved_model
+                if resolved_model.startswith("anthropic/")
+                else f"anthropic/{resolved_model}"
+            ),
             api_key=settings.anthropic_api_key,
             base_url=settings.anthropic_base_url or None,
             port=None,
         )
+    resolved_model = resolved_model or "gpt-4o-mini"
     return ModelRoute(
         friendly_name="custom",
         provider="openai",
-        model=resolved_model or "gpt-4o-mini",
+        model=resolved_model if resolved_model.startswith("openai/") else f"openai/{resolved_model}",
         api_key=settings.openai_api_key,
         base_url=settings.openai_base_url or None,
         port=None,
@@ -140,14 +148,49 @@ def _tokens_used(usage) -> dict:
     if usage is None:
         return {"prompt": 0, "completion": 0, "total": 0}
 
-    prompt = getattr(usage, "prompt_tokens", 0) or 0
-    completion = getattr(usage, "completion_tokens", 0) or 0
-    total = getattr(usage, "total_tokens", None)
+    if isinstance(usage, dict):
+        prompt = usage.get("prompt_tokens", 0) or 0
+        completion = usage.get("completion_tokens", 0) or 0
+        total = usage.get("total_tokens")
+    else:
+        prompt = getattr(usage, "prompt_tokens", 0) or 0
+        completion = getattr(usage, "completion_tokens", 0) or 0
+        total = getattr(usage, "total_tokens", None)
     return {
         "prompt": prompt,
         "completion": completion,
         "total": total if total is not None else prompt + completion,
     }
+
+
+def _litellm_kwargs(route: ModelRoute) -> dict[str, Any]:
+    kwargs: dict[str, Any] = {"model": route.model}
+    if route.api_key:
+        kwargs["api_key"] = route.api_key
+    if route.base_url:
+        kwargs["api_base"] = (
+            route.base_url.removesuffix("/v1")
+            if route.provider == "ollama"
+            else route.base_url
+        )
+    return kwargs
+
+
+def _messages(system_prompt: str, transcription: str) -> list[dict[str, str]]:
+    return [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": transcription},
+    ]
+
+
+def _chunk_delta_content(chunk) -> str | None:
+    if not chunk.choices:
+        return None
+
+    delta = chunk.choices[0].delta
+    if isinstance(delta, dict):
+        return delta.get("content")
+    return getattr(delta, "content", None)
 
 
 async def get_estimation(
@@ -159,11 +202,7 @@ async def get_estimation(
     system_prompt = _build_system_prompt()
     route = _resolve_route(friendly_name, provider, model)
 
-    if route.provider == "anthropic":
-        return await _call_anthropic(system_prompt, transcription, route)
-    if route.provider == "ollama":
-        return await _call_ollama(system_prompt, transcription, route)
-    return await _call_openai(system_prompt, transcription, route)
+    return await _call_litellm(system_prompt, transcription, route)
 
 
 async def stream_estimation(
@@ -175,92 +214,44 @@ async def stream_estimation(
     system_prompt = _build_system_prompt()
     route = _resolve_route(friendly_name, provider, model)
 
-    if route.provider == "anthropic":
-        async for event in _stream_anthropic(system_prompt, transcription, route):
-            yield event
-        return
-
-    async for event in _stream_openai_compatible(system_prompt, transcription, route):
+    async for event in _stream_litellm(system_prompt, transcription, route):
         yield event
 
 
-async def _call_openai(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
-    from openai import AsyncOpenAI
+async def _call_litellm(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
+    from litellm import acompletion
 
-    client_kwargs = {"api_key": route.api_key}
-    if route.base_url:
-        client_kwargs["base_url"] = route.base_url
-
-    client = AsyncOpenAI(**client_kwargs)
-
-    response = await client.chat.completions.create(
-        model=route.model,
+    response = await acompletion(
+        **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": transcription},
-        ],
+        messages=_messages(system_prompt, transcription),
     )
     return {
         "estimation": response.choices[0].message.content,
         "model": route.model,
-        "provider": "openai",
+        "provider": route.provider,
         "tokens_used": _tokens_used(response.usage),
     }
 
 
-async def _call_ollama(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
-    from openai import AsyncOpenAI
-
-    client = AsyncOpenAI(base_url=route.base_url, api_key=route.api_key)
-
-    response = await client.chat.completions.create(
-        model=route.model,
-        max_tokens=MAX_COMPLETION_TOKENS,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": transcription},
-        ],
-    )
-    return {
-        "estimation": response.choices[0].message.content,
-        "model": route.model,
-        "provider": "ollama",
-        "tokens_used": _tokens_used(response.usage),
-    }
-
-
-async def _stream_openai_compatible(
+async def _stream_litellm(
     system_prompt: str,
     transcription: str,
     route: ModelRoute,
 ) -> AsyncIterator[dict]:
-    from openai import AsyncOpenAI
+    from litellm import acompletion
 
-    client_kwargs = {"api_key": route.api_key}
-    if route.base_url:
-        client_kwargs["base_url"] = route.base_url
-
-    client = AsyncOpenAI(**client_kwargs)
-    request_kwargs = {
-        "model": route.model,
-        "max_tokens": MAX_COMPLETION_TOKENS,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": transcription},
-        ],
-        "stream": True,
-    }
-    if route.provider == "openai":
-        request_kwargs["stream_options"] = {"include_usage": True}
-
-    stream = await client.chat.completions.create(**request_kwargs)
+    stream = await acompletion(
+        **_litellm_kwargs(route),
+        max_tokens=MAX_COMPLETION_TOKENS,
+        messages=_messages(system_prompt, transcription),
+        stream=True,
+    )
 
     async for chunk in stream:
-        if chunk.choices:
-            delta = chunk.choices[0].delta.content
-            if delta:
-                yield {"type": "delta", "content": delta}
+        delta = _chunk_delta_content(chunk)
+        if delta:
+            yield {"type": "delta", "content": delta}
         if chunk.usage:
             yield {
                 "type": "metadata",
@@ -268,78 +259,3 @@ async def _stream_openai_compatible(
                 "provider": route.provider,
                 "tokens_used": _tokens_used(chunk.usage),
             }
-
-
-async def _call_anthropic(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
-    import anthropic
-
-    client_kwargs = {"api_key": route.api_key}
-    if route.base_url:
-        client_kwargs["base_url"] = route.base_url
-
-    client = anthropic.AsyncAnthropic(**client_kwargs)
-
-    response = await client.messages.create(
-        model=route.model,
-        max_tokens=2048,
-        system=[{
-            "type": "text",
-            "text": system_prompt,
-            "cache_control": {"type": "ephemeral"},
-        }],
-        messages=[
-            {"role": "user", "content": transcription},
-        ],
-    )
-    usage = response.usage
-    return {
-        "estimation": response.content[0].text,
-        "model": route.model,
-        "provider": "anthropic",
-        "tokens_used": {
-            "prompt": usage.input_tokens,
-            "completion": usage.output_tokens,
-            "total": usage.input_tokens + usage.output_tokens,
-        },
-    }
-
-
-async def _stream_anthropic(
-    system_prompt: str,
-    transcription: str,
-    route: ModelRoute,
-) -> AsyncIterator[dict]:
-    import anthropic
-
-    client_kwargs = {"api_key": route.api_key}
-    if route.base_url:
-        client_kwargs["base_url"] = route.base_url
-
-    client = anthropic.AsyncAnthropic(**client_kwargs)
-    async with client.messages.stream(
-        model=route.model,
-        max_tokens=2048,
-        system=[{
-            "type": "text",
-            "text": system_prompt,
-            "cache_control": {"type": "ephemeral"},
-        }],
-        messages=[
-            {"role": "user", "content": transcription},
-        ],
-    ) as stream:
-        async for text in stream.text_stream:
-            yield {"type": "delta", "content": text}
-
-        final_message = await stream.get_final_message()
-        usage = final_message.usage
-        yield {
-            "type": "metadata",
-            "model": route.model,
-            "provider": "anthropic",
-            "tokens_used": {
-                "prompt": usage.input_tokens,
-                "completion": usage.output_tokens,
-                "total": usage.input_tokens + usage.output_tokens,
-            },
-        }
