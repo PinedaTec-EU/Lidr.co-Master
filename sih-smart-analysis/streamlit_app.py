@@ -20,8 +20,9 @@ LLM_MODEL_PRESETS = {
     "OpenAI · GPT-4o mini": "openai/gpt-4o-mini",
     "Anthropic · Claude Haiku": "anthropic/claude-haiku-4-5-20251001",
     "NVIDIA NIM · Llama 3.1 8B": "nvidia_nim/meta/llama-3.1-8b-instruct",
-    "Ollama local · Llama 3.2": "ollama/llama3.2",
-    "Ollama local · Gemma 3": "ollama/gemma3",
+    "Ollama local · Qwen 3.6 27B": "ollama/qwen3.6:27b",
+    "Ollama local · Gemma 4 2EB": "ollama/gemma4:2eb",
+    "Ollama local · Qwen 3.6 35B A3B": "ollama/qwen3.6:35b-a3b",
 }
 CUSTOM_LLM_MODEL_LABEL = "Personalizado"
 
