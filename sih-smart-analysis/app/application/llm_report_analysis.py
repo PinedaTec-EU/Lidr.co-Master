@@ -74,8 +74,10 @@ class LLMReportAnalyst:
                 "content": (
                     "Eres un analista senior de calidad e integraciones SIH. "
                     "Evalua reports de ejecucion, detecta problemas probables, "
-                    "riesgos de regresion y siguientes acciones. Responde en español, "
-                    "conciso y en Markdown."
+                    "riesgos de regresion y siguientes acciones. No te limites a repetir "
+                    "el score determinista: interpreta outputs, respuestas HTTP, diferencias "
+                    "entre modelos/proveedores y señales latentes. Responde en español, "
+                    "concreto y en Markdown."
                 ),
             },
             {
@@ -96,16 +98,12 @@ class LLMReportAnalyst:
     def _build_prompt(self, result: AnalysisResult, reports: list[RunReport]) -> str:
         report_lines = []
         for report in reports:
-            stages = "; ".join(
-                (
-                    f"{stage.name}: {stage.status}, {stage.duration_ms}ms, "
-                    f"http={stage.http_status}, error={stage.error_type}"
-                )
-                for stage in report.stages
-            )
+            stages = "\n".join(self._stage_line(stage) for stage in report.stages)
+            run_context = f"\n  contexto ejecucion: {report.context}" if report.context else ""
             report_lines.append(
                 f"- {report.run_id} | {report.started_at.isoformat()} | "
-                f"{report.status} | {report.duration_ms}ms | {stages}"
+                f"{report.status} | {report.duration_ms}ms{run_context}\n"
+                f"  stages:\n{stages}"
             )
 
         regression_lines = [
@@ -130,6 +128,15 @@ Reports usados como contexto:
 
 Genera:
 1. Diagnóstico probable.
-2. Riesgos o problemas latentes no obvios.
-3. Siguientes acciones recomendadas.
-4. Qué dato falta para confirmar la hipótesis."""
+2. Problemas concretos o señales sospechosas vistas en outputs/stages.
+3. Riesgos o problemas latentes no obvios.
+4. Siguientes acciones recomendadas.
+5. Qué dato falta para confirmar la hipótesis."""
+
+    def _stage_line(self, stage) -> str:
+        context = f", contexto={stage.context}" if stage.context else ""
+        return (
+            f"  - {stage.name}: {stage.status}, {stage.duration_ms}ms, "
+            f"http={stage.http_status}, error={stage.error_type}, "
+            f"message={stage.message}{context}"
+        )

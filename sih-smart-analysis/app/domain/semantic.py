@@ -9,10 +9,11 @@ from app.domain.models import RunReport
 class RunSemanticText:
     def build(self, run: RunReport) -> str:
         failed = " ".join(
-            f"{stage.name} {stage.status} {stage.error_type} {stage.http_status or ''} {stage.message or ''}"
+            f"{stage.name} {stage.status} {stage.error_type} {stage.http_status or ''} "
+            f"{stage.message or ''} {stage.context or ''}"
             for stage in run.stages
         )
-        return f"{run.workflow} {run.environment} {run.version} {run.status} {failed}"
+        return f"{run.workflow} {run.environment} {run.version} {run.status} {run.context or ''} {failed}"
 
 
 class TokenSimilarity:
@@ -30,4 +31,3 @@ class TokenSimilarity:
 
     def _tokens(self, text: str) -> Counter[str]:
         return Counter(re.findall(r"[a-z0-9_:-]+", text.lower()))
-

@@ -291,6 +291,8 @@ The LLM model can also be changed from the sidebar for local comparison runs. Pr
 
 When LLM analysis is enabled, the Streamlit wrapper streams `llm_insights` into the chat while LiteLLM returns deltas. The sidebar shows the active model, estimated input tokens, generated output tokens, total tokens, elapsed time, and output tokens per second for the last LLM analysis.
 
+LLM analysis receives the deterministic score plus compacted report evidence from run-level and stage-level fields such as `Output`, `WorkflowOutput`, `WorkflowResult`, request/response bodies, preflight data, token metrics, model names, and provider outputs. This keeps the UI useful when validating reports from other repositories with richer or slightly different SIH output shapes.
+
 ## Test
 
 ```bash

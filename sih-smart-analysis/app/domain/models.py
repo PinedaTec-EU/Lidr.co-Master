@@ -39,6 +39,7 @@ class StageReport:
     message: str | None = None
     request_uri: str | None = None
     http_method: str | None = None
+    context: str | None = None
 
     @property
     def failed(self) -> bool:
@@ -56,6 +57,7 @@ class RunReport:
     duration_ms: int
     tool_version: str | None = None
     stages: tuple[StageReport, ...] = field(default_factory=tuple)
+    context: str | None = None
 
     @property
     def failed_stages(self) -> tuple[StageReport, ...]:

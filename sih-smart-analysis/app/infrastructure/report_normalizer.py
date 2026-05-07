@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import json
 from typing import Any
 
 from app.domain.models import FailureType, RunReport, RunStatus, StageReport
@@ -22,6 +23,15 @@ class ReportNormalizer:
             duration_ms=duration_ms,
             tool_version=self._get(raw, "tool_version", "ToolVersion"),
             stages=stages,
+            context=self._context(
+                raw,
+                "Inputs",
+                "Output",
+                "WorkflowOutput",
+                "WorkflowResult",
+                "ErrorMessage",
+                "Preflight",
+            ),
         )
 
     def _stage(self, raw: dict[str, Any]) -> StageReport:
@@ -36,6 +46,17 @@ class ReportNormalizer:
             message=message,
             request_uri=self._get(raw, "request_uri", "RequestUri", default=None),
             http_method=self._get(raw, "http_method", "HttpMethod", default=None),
+            context=self._context(
+                raw,
+                "Output",
+                "WorkflowInputs",
+                "WorkflowOutput",
+                "WorkflowResult",
+                "RequestBody",
+                "ResponseBody",
+                "EnsureMode",
+                "EnsureStatus",
+            ),
         )
 
     def _datetime(self, value: str | None) -> datetime:
@@ -52,6 +73,51 @@ class ReportNormalizer:
             if key in raw:
                 return raw[key]
         return default
+
+    def _context(self, raw: dict[str, Any], *keys: str, max_chars: int = 1600) -> str | None:
+        parts = []
+        for key in keys:
+            value = raw.get(key)
+            if value in (None, "", {}, []):
+                continue
+            parts.append(f"{key}: {self._serialize(value, max_chars=max_chars // 2)}")
+
+        if not parts:
+            return None
+        text = "\n".join(parts)
+        return text[:max_chars]
+
+    def _serialize(self, value: Any, max_chars: int) -> str:
+        if isinstance(value, str):
+            return value[:max_chars]
+        if isinstance(value, dict):
+            scalar_items = []
+            complex_items = []
+            for key, item in value.items():
+                target = scalar_items if item is None or isinstance(item, str | int | float | bool) else complex_items
+                target.append((key, item))
+
+            compact = {}
+            for key, item in [*scalar_items, *complex_items]:
+                if isinstance(item, str):
+                    compact[key] = item[:500]
+                elif isinstance(item, list):
+                    compact[key] = item[:3]
+                elif isinstance(item, dict):
+                    compact[key] = {nested_key: nested_value for nested_key, nested_value in list(item.items())[:12]}
+                else:
+                    compact[key] = item
+
+            try:
+                text = json.dumps(compact, ensure_ascii=False)
+            except TypeError:
+                text = str(compact)
+            return text[:max_chars]
+        try:
+            text = json.dumps(value, ensure_ascii=False, sort_keys=True)
+        except TypeError:
+            text = str(value)
+        return text[:max_chars]
 
     def _status(self, value: Any) -> RunStatus:
         normalized = str(value or "").lower()

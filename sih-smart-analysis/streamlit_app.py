@@ -270,6 +270,7 @@ def _select_report(path: Path) -> None:
 
 
 def _render_result(result: AnalysisResult) -> str:
+    context_sources = sum(1 for run_id in result.sources if run_id)
     lines = [
         f"## {result.mode}",
         f"**Workflow:** {result.workflow}",
@@ -277,6 +278,7 @@ def _render_result(result: AnalysisResult) -> str:
         f"**Current run:** {result.current_run_id}",
         f"**Health score:** {result.health_score}",
         f"**Failure type:** {result.failure_type.value}",
+        f"**Reports in context:** {context_sources}",
         "",
         result.summary,
     ]
