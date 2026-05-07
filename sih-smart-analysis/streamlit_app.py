@@ -67,6 +67,7 @@ def _init_state() -> None:
             "tokens_per_second": 0.0,
             "elapsed_seconds": 0.0,
         }
+    _sync_workflow_with_catalog()
 
 
 def _apply_styles() -> None:
@@ -145,6 +146,7 @@ def _set_reports_dir(path: Path) -> None:
     st.session_state.reports_dir_override = path.as_posix()
     paths = sorted(path.rglob("*.json"), reverse=True) if path.exists() else []
     st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
+    _sync_workflow_with_catalog(force=True)
 
 
 def _llm_settings():
@@ -183,6 +185,27 @@ def _selected_report_path() -> Path | None:
         return None
     path = Path(selected)
     return path if path.exists() else None
+
+
+def _sync_workflow_with_catalog(force: bool = False) -> None:
+    selected_path = _selected_report_path()
+    if not selected_path:
+        return
+
+    selected_report = _load_report(selected_path)
+    repository = _repository()
+    current_workflow = st.session_state.get("workflow", "")
+    current_environment = st.session_state.get("environment", "")
+    has_current_reports = bool(
+        repository.latest(
+            workflow=current_workflow,
+            environment=current_environment,
+            limit=1,
+        )
+    )
+    if force or not has_current_reports:
+        st.session_state.workflow = selected_report.workflow
+        st.session_state.environment = selected_report.environment
 
 
 def _select_report(path: Path) -> None:
@@ -444,6 +467,7 @@ def _render_sidebar() -> None:
                 st.session_state.reports_dir_override = ""
                 paths = _report_paths()
                 st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
+                _sync_workflow_with_catalog(force=True)
                 st.rerun()
 
         if not active_dir.exists():
