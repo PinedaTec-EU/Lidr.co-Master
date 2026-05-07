@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 import json
 from pathlib import Path
+import subprocess
 from time import perf_counter
 
 import streamlit as st
@@ -150,6 +151,38 @@ def _set_reports_dir(path: Path) -> None:
 
 
 def _choose_reports_dir(initial_dir: Path) -> Path | None:
+    initial = initial_dir if initial_dir.exists() else Path.home()
+    try:
+        return _choose_reports_dir_macos(initial)
+    except Exception as macos_exc:
+        try:
+            return _choose_reports_dir_tk(initial)
+        except Exception as tk_exc:
+            raise RuntimeError(
+                f"macOS picker failed: {macos_exc}; tkinter picker failed: {tk_exc}"
+            ) from tk_exc
+
+
+def _choose_reports_dir_macos(initial_dir: Path) -> Path | None:
+    script = (
+        'POSIX path of (choose folder with prompt "Elegir la carpeta del sistema" '
+        f'default location POSIX file "{initial_dir.as_posix()}")'
+    )
+    result = subprocess.run(
+        ["osascript", "-e", script],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        message = result.stderr.strip() or result.stdout.strip() or "folder selection cancelled"
+        raise RuntimeError(message)
+
+    selected = result.stdout.strip()
+    return _normalized_path(selected) if selected else None
+
+
+def _choose_reports_dir_tk(initial_dir: Path) -> Path | None:
     try:
         from tkinter import Tk, filedialog
     except Exception as exc:
@@ -161,7 +194,7 @@ def _choose_reports_dir(initial_dir: Path) -> Path | None:
     try:
         selected = filedialog.askdirectory(
             title="Elegir la carpeta del sistema",
-            initialdir=initial_dir.as_posix() if initial_dir.exists() else Path.home().as_posix(),
+            initialdir=initial_dir.as_posix(),
             mustexist=True,
         )
     finally:
