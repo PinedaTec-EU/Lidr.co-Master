@@ -34,4 +34,4 @@ class AnalysisResponse(BaseModel):
     regressions: list[RegressionSignalResponse]
     recommendations: list[str]
     sources: list[str]
-
+    llm_insights: str | None = None

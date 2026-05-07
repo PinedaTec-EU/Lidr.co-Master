@@ -173,9 +173,12 @@ Response shape:
   "failure_type": "none",
   "regressions": [],
   "recommendations": [],
-  "sources": []
+  "sources": [],
+  "llm_insights": "..."
 }
 ```
+
+`llm_insights` is generated through LiteLLM when `SIH_SMART_LLM_ENABLED=true`. The deterministic scoring and regression signals are computed first; then the LLM receives those signals plus the reports used as context to produce a narrative diagnosis.
 
 ### `POST /api/v1/analysis/semantic`
 
@@ -259,6 +262,16 @@ Override it when needed:
 ```bash
 SIH_SMART_REPORTS_DIR=sample-reports uvicorn app.main:app --reload --port 8010
 ```
+
+LLM narrative analysis is enabled by default through LiteLLM:
+
+```bash
+SIH_SMART_LLM_ENABLED=true
+SIH_SMART_LLM_MODEL=openai/gpt-4o-mini
+SIH_SMART_LLM_MAX_TOKENS=600
+```
+
+LiteLLM reads provider credentials from the usual provider environment variables, such as `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`.
 
 ### Conversational Streamlit wrapper
 

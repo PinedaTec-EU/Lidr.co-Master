@@ -68,5 +68,5 @@ def _response(result: AnalysisResult) -> AnalysisResponse:
         ],
         recommendations=list(result.recommendations),
         sources=list(result.sources),
+        llm_insights=result.llm_insights,
     )
-

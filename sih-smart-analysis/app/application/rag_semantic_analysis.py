@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from app.application.cag_recent_analysis import RecentRunsAnalyzer
+from app.application.llm_report_analysis import LLMReportAnalyst
+from app.config import get_settings
 from app.domain.models import AnalysisResult, RunReport
 from app.domain.repositories import RunReportRepository
 from app.domain.semantic import RunSemanticText, TokenSimilarity
@@ -40,9 +42,10 @@ class SemanticRunsAnalyzer:
             workflow=current.workflow,
             environment=current.environment,
             limit=min(top_k + 1, len(similar) + 1),
+            enrich_with_llm=False,
         )
 
-        return AnalysisResult(
+        semantic_result = AnalysisResult(
             mode="semantic-rag",
             workflow=result.workflow,
             environment=result.environment,
@@ -53,6 +56,10 @@ class SemanticRunsAnalyzer:
             regressions=result.regressions,
             recommendations=result.recommendations,
             sources=sources,
+        )
+        return LLMReportAnalyst(get_settings()).enrich(
+            semantic_result,
+            [current, *[run for run, _ in similar]],
         )
 
 
@@ -67,4 +74,3 @@ class _InMemoryWindowRepository:
 
     def all(self) -> list[RunReport]:
         return list(self._runs)
-

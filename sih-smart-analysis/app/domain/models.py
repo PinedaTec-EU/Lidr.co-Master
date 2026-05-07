@@ -86,3 +86,4 @@ class AnalysisResult:
     regressions: tuple[RegressionSignal, ...]
     recommendations: tuple[str, ...]
     sources: tuple[str, ...] = field(default_factory=tuple)
+    llm_insights: str | None = None

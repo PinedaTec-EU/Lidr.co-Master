@@ -3,6 +3,8 @@ from __future__ import annotations
 from app.domain.models import AnalysisResult, RegressionSignal, RunReport, RunStatus, Severity
 from app.domain.repositories import RunReportRepository
 from app.domain.scoring import HealthScorer
+from app.application.llm_report_analysis import LLMReportAnalyst
+from app.config import get_settings
 
 
 class RecentRunsAnalyzer:
@@ -10,7 +12,13 @@ class RecentRunsAnalyzer:
         self._repository = repository
         self._scorer = scorer or HealthScorer()
 
-    def analyze(self, workflow: str, environment: str, limit: int = 5) -> AnalysisResult:
+    def analyze(
+        self,
+        workflow: str,
+        environment: str,
+        limit: int = 5,
+        enrich_with_llm: bool = True,
+    ) -> AnalysisResult:
         if limit < 2:
             raise ValueError("limit must be at least 2 to compare the current run with history")
 
@@ -24,7 +32,7 @@ class RecentRunsAnalyzer:
         failure_type = self._scorer.dominant_failure_type(current)
         health_score = self._scorer.score(current, history)
 
-        return AnalysisResult(
+        result = AnalysisResult(
             mode="recent-cag",
             workflow=current.workflow,
             environment=current.environment,
@@ -36,6 +44,9 @@ class RecentRunsAnalyzer:
             recommendations=tuple(self._recommend(current, regressions)),
             sources=tuple(run.run_id for run in runs),
         )
+        if not enrich_with_llm:
+            return result
+        return LLMReportAnalyst(get_settings()).enrich(result, runs)
 
     def _detect_regressions(self, current: RunReport, history: list[RunReport]) -> list[RegressionSignal]:
         signals: list[RegressionSignal] = []
@@ -112,4 +123,3 @@ class RecentRunsAnalyzer:
             recommendations.append("Compare stage timings with the last green baseline before promoting the version.")
 
         return recommendations or ["No immediate corrective action detected from the recent execution window."]
-

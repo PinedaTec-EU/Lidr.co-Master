@@ -8,6 +8,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     reports_dir: Path = Path("../.sphere/workflows/output")
     sih_command: Path = Path.home() / ".dotnet/tools/sih"
+    llm_enabled: bool = True
+    llm_model: str = "openai/gpt-4o-mini"
+    llm_max_tokens: int = 600
 
     model_config = SettingsConfigDict(env_prefix="SIH_SMART_", env_file=".env")
 

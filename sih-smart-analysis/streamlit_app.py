@@ -140,6 +140,9 @@ def _render_result(result: AnalysisResult) -> str:
         lines.extend(["", "### Sources"])
         lines.extend(f"- {source}" for source in result.sources)
 
+    if result.llm_insights:
+        lines.extend(["", "### LLM insights", result.llm_insights])
+
     return "\n".join(lines)
 
 
@@ -252,6 +255,9 @@ def _show_context_dialog() -> None:
         "ui_active_reports_dir": str(_active_reports_dir()),
         "recent_mode": "CAG determinista sobre las últimas N ejecuciones",
         "semantic_mode": "RAG local por similitud de tokens sobre reports históricos",
+        "llm_enabled": settings.llm_enabled,
+        "llm_model": settings.llm_model,
+        "llm_max_tokens": settings.llm_max_tokens,
         "public_endpoints": [
             "POST /api/v1/analysis/recent",
             "POST /api/v1/analysis/semantic",
