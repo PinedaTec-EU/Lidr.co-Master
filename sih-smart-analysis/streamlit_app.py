@@ -149,6 +149,27 @@ def _set_reports_dir(path: Path) -> None:
     _sync_workflow_with_catalog(force=True)
 
 
+def _choose_reports_dir(initial_dir: Path) -> Path | None:
+    try:
+        from tkinter import Tk, filedialog
+    except Exception as exc:
+        raise RuntimeError("tkinter is not available in this Python runtime") from exc
+
+    root = Tk()
+    root.withdraw()
+    root.attributes("-topmost", True)
+    try:
+        selected = filedialog.askdirectory(
+            title="Elegir la carpeta del sistema",
+            initialdir=initial_dir.as_posix() if initial_dir.exists() else Path.home().as_posix(),
+            mustexist=True,
+        )
+    finally:
+        root.destroy()
+
+    return _normalized_path(selected) if selected else None
+
+
 def _llm_settings():
     model = st.session_state.get("llm_model_override") or get_settings().llm_model
     return get_settings().model_copy(update={"llm_model": model})
@@ -457,6 +478,15 @@ def _render_sidebar() -> None:
             value=active_dir.as_posix(),
             placeholder="/ruta/al/repo/.sphere/workflows/output",
         )
+        if st.button("Elegir carpeta del sistema", use_container_width=True):
+            try:
+                selected_dir = _choose_reports_dir(active_dir)
+                if selected_dir:
+                    _set_reports_dir(selected_dir)
+                    st.rerun()
+            except Exception as exc:
+                st.warning(f"No se pudo abrir el selector nativo: {exc}")
+
         col_apply, col_reset = st.columns(2)
         with col_apply:
             if st.button("Aplicar ruta", use_container_width=True):
