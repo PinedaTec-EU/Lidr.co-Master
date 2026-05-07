@@ -16,6 +16,16 @@ from app.infrastructure.file_report_repository import FileRunReportRepository
 from app.infrastructure.report_normalizer import ReportNormalizer
 
 
+LLM_MODEL_PRESETS = {
+    "OpenAI · GPT-4o mini": "openai/gpt-4o-mini",
+    "Anthropic · Claude Haiku": "anthropic/claude-haiku-4-5-20251001",
+    "NVIDIA NIM · Llama 3.1 8B": "nvidia_nim/meta/llama-3.1-8b-instruct",
+    "Ollama local · Llama 3.2": "ollama/llama3.2",
+    "Ollama local · Gemma 3": "ollama/gemma3",
+}
+CUSTOM_LLM_MODEL_LABEL = "Personalizado"
+
+
 st.set_page_config(
     page_title="SIH Smart Analysis",
     page_icon="📊",
@@ -42,12 +52,14 @@ def _init_state() -> None:
         st.session_state.top_k = 5
     if "reports_dir_override" not in st.session_state:
         st.session_state.reports_dir_override = ""
+    if "llm_model_override" not in st.session_state:
+        st.session_state.llm_model_override = get_settings().llm_model
     if "selected_report_path" not in st.session_state:
         paths = _report_paths()
         st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
     if "llm_metrics" not in st.session_state:
         st.session_state.llm_metrics = {
-            "model": get_settings().llm_model,
+            "model": _llm_settings().llm_model,
             "input_tokens": 0,
             "output_tokens": 0,
             "total_tokens": 0,
@@ -132,6 +144,15 @@ def _set_reports_dir(path: Path) -> None:
     st.session_state.reports_dir_override = path.as_posix()
     paths = sorted(path.rglob("*.json"), reverse=True) if path.exists() else []
     st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
+
+
+def _llm_settings():
+    model = st.session_state.get("llm_model_override") or get_settings().llm_model
+    return get_settings().model_copy(update={"llm_model": model})
+
+
+def _active_llm_model() -> str:
+    return _llm_settings().llm_model
 
 
 def _report_paths() -> list[Path]:
@@ -240,7 +261,7 @@ def _render_metrics(metrics: dict) -> None:
 
 
 def _stream_llm_insights(result: AnalysisResult, reports: list[RunReport]) -> AnalysisResult:
-    settings = get_settings()
+    settings = _llm_settings()
     if not settings.llm_enabled:
         return result
 
@@ -354,6 +375,34 @@ def _render_sidebar() -> None:
         st.number_input("Fuentes semánticas", min_value=1, max_value=30, key="top_k")
 
         st.divider()
+        st.subheader("Modelo LLM")
+        current_model = _active_llm_model()
+        preset_labels = list(LLM_MODEL_PRESETS)
+        current_label = next(
+            (label for label, model in LLM_MODEL_PRESETS.items() if model == current_model),
+            CUSTOM_LLM_MODEL_LABEL,
+        )
+        selected_model_label = st.selectbox(
+            "Proveedor/modelo",
+            [*preset_labels, CUSTOM_LLM_MODEL_LABEL],
+            index=[*preset_labels, CUSTOM_LLM_MODEL_LABEL].index(current_label),
+        )
+        manual_model = st.text_input(
+            "Modelo LiteLLM",
+            value=LLM_MODEL_PRESETS.get(selected_model_label, current_model),
+            placeholder="ollama/llama3.2",
+        )
+        selected_model = LLM_MODEL_PRESETS.get(selected_model_label, manual_model).strip()
+        if selected_model and selected_model != current_model:
+            st.session_state.llm_model_override = selected_model
+            st.session_state.llm_metrics = {
+                **st.session_state.llm_metrics,
+                "model": selected_model,
+            }
+            st.rerun()
+        st.caption("Ejemplos: `openai/gpt-4o-mini`, `nvidia_nim/...`, `ollama/llama3.2`.")
+
+        st.divider()
         st.subheader("Consumo LLM")
         _render_metrics(st.session_state.llm_metrics)
 
@@ -427,7 +476,7 @@ def _render_sidebar() -> None:
 
 @st.dialog("Contexto activo SIH Smart Analysis", width="large")
 def _show_context_dialog() -> None:
-    settings = get_settings()
+    settings = _llm_settings()
     context = {
         "reports_dir": str(settings.reports_dir),
         "ui_active_reports_dir": str(_active_reports_dir()),
@@ -435,6 +484,7 @@ def _show_context_dialog() -> None:
         "semantic_mode": "RAG local por similitud de tokens sobre reports históricos",
         "llm_enabled": settings.llm_enabled,
         "llm_model": settings.llm_model,
+        "llm_model_source": "streamlit session override",
         "llm_max_tokens": settings.llm_max_tokens,
         "public_endpoints": [
             "POST /api/v1/analysis/recent",
