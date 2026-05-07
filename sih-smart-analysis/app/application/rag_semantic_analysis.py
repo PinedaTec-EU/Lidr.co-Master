@@ -33,7 +33,12 @@ class SemanticRunsAnalyzer:
         ]
         return sorted(scored, key=lambda item: item[1], reverse=True)[:top_k]
 
-    def analyze(self, current: RunReport, top_k: int = 8) -> AnalysisResult:
+    def analyze(
+        self,
+        current: RunReport,
+        top_k: int = 8,
+        enrich_with_llm: bool = True,
+    ) -> AnalysisResult:
         similar = self.retrieve_similar(current, top_k=top_k)
         sources = tuple(run.run_id for run, score in similar if score > 0)
 
@@ -57,10 +62,12 @@ class SemanticRunsAnalyzer:
             recommendations=result.recommendations,
             sources=sources,
         )
-        return LLMReportAnalyst(get_settings()).enrich(
-            semantic_result,
-            [current, *[run for run, _ in similar]],
-        )
+        if not enrich_with_llm:
+            return semantic_result
+        return LLMReportAnalyst(get_settings()).enrich(semantic_result, self.context_reports(current, top_k))
+
+    def context_reports(self, current: RunReport, top_k: int = 8) -> list[RunReport]:
+        return [current, *[run for run, _ in self.retrieve_similar(current, top_k=top_k)]]
 
 
 class _InMemoryWindowRepository:

@@ -285,6 +285,8 @@ The UI provides a sidebar catalog of available report files, recent-window and s
 
 Reports are selected from the catalog instead of pasted manually. CAG mode analyzes the latest `N` reports for the selected workflow/environment. Semantic mode uses the selected catalog report as the current execution and retrieves similar historical reports from the repository.
 
+When LLM analysis is enabled, the Streamlit wrapper streams `llm_insights` into the chat while LiteLLM returns deltas. The sidebar shows the active model, estimated input tokens, generated output tokens, total tokens, elapsed time, and output tokens per second for the last LLM analysis.
+
 ## Test
 
 ```bash

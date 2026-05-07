@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import json
 from pathlib import Path
+from time import perf_counter
 
 import streamlit as st
 
 from app.application.cag_recent_analysis import RecentRunsAnalyzer
+from app.application.llm_report_analysis import LLMReportAnalyst
 from app.application.rag_semantic_analysis import SemanticRunsAnalyzer
 from app.config import get_settings
-from app.domain.models import AnalysisResult
+from app.domain.models import AnalysisResult, RunReport
 from app.infrastructure.file_report_repository import FileRunReportRepository
 from app.infrastructure.report_normalizer import ReportNormalizer
 
@@ -40,6 +43,15 @@ def _init_state() -> None:
     if "selected_report_path" not in st.session_state:
         paths = _report_paths()
         st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
+    if "llm_metrics" not in st.session_state:
+        st.session_state.llm_metrics = {
+            "model": get_settings().llm_model,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "tokens_per_second": 0.0,
+            "elapsed_seconds": 0.0,
+        }
 
 
 def _apply_styles() -> None:
@@ -169,22 +181,103 @@ def _render_conversation() -> None:
                 st.json(message["result"])
 
 
+def _metrics(
+    *,
+    model: str,
+    input_tokens: int,
+    output_tokens: int,
+    elapsed_seconds: float,
+) -> dict:
+    return {
+        "model": model,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": input_tokens + output_tokens,
+        "tokens_per_second": round(output_tokens / elapsed_seconds, 2) if elapsed_seconds > 0 else 0.0,
+        "elapsed_seconds": round(elapsed_seconds, 2),
+    }
+
+
+def _render_metrics(metrics: dict) -> None:
+    st.caption(f"Modelo: `{metrics['model']}`")
+    col_a, col_b = st.columns(2)
+    col_a.metric("Tokens entrada", metrics["input_tokens"])
+    col_b.metric("Tokens salida", metrics["output_tokens"])
+    col_c, col_d = st.columns(2)
+    col_c.metric("Tokens total", metrics["total_tokens"])
+    col_d.metric("Tokens/s", metrics["tokens_per_second"])
+
+
+def _stream_llm_insights(result: AnalysisResult, reports: list[RunReport]) -> AnalysisResult:
+    settings = get_settings()
+    if not settings.llm_enabled:
+        return result
+
+    analyst = LLMReportAnalyst(settings)
+    messages = analyst.messages(result, reports)
+    input_tokens = analyst.count_tokens(messages=messages)
+    started = perf_counter()
+    insight = ""
+
+    st.markdown("### LLM insights")
+    insight_placeholder = st.empty()
+    metrics_placeholder = st.empty()
+
+    try:
+        for delta in analyst.stream_insight(result, reports):
+            insight += delta
+            elapsed = max(perf_counter() - started, 0.001)
+            output_tokens = analyst.count_tokens(text=insight)
+            metrics = _metrics(
+                model=settings.llm_model,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                elapsed_seconds=elapsed,
+            )
+            st.session_state.llm_metrics = metrics
+            insight_placeholder.markdown(insight)
+            with metrics_placeholder.container():
+                _render_metrics(metrics)
+    except Exception as exc:
+        insight = f"LLM analysis unavailable: {exc}"
+        insight_placeholder.warning(insight)
+
+    elapsed = max(perf_counter() - started, 0.001)
+    output_tokens = analyst.count_tokens(text=insight) if insight else 0
+    st.session_state.llm_metrics = _metrics(
+        model=settings.llm_model,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+        elapsed_seconds=elapsed,
+    )
+    return replace(result, llm_insights=insight or None)
+
+
 def _run_recent(workflow: str, environment: str, limit: int) -> None:
-    result = RecentRunsAnalyzer(_repository_for(workflow, environment)).analyze(
+    repository = _repository_for(workflow, environment)
+    result = RecentRunsAnalyzer(repository).analyze(
         workflow=workflow,
         environment=environment,
         limit=limit,
+        enrich_with_llm=False,
+    )
+    reports = repository.latest(workflow=workflow, environment=environment, limit=limit)
+    user_message = (
+        f"Analiza las últimas {limit} ejecuciones de `{workflow}` "
+        f"en `{environment}`."
     )
     st.session_state.messages.append(
         {
             "role": "user",
-            "content": (
-                f"Analiza las últimas {limit} ejecuciones de `{workflow}` "
-                f"en `{environment}`."
-            ),
+            "content": user_message,
             "result": None,
         }
     )
+    with st.chat_message("user"):
+        st.markdown(user_message)
+    with st.chat_message("assistant"):
+        st.markdown(_render_result(result))
+        result = _stream_llm_insights(result, reports)
     st.session_state.messages.append(
         {
             "role": "assistant",
@@ -197,14 +290,22 @@ def _run_recent(workflow: str, environment: str, limit: int) -> None:
 
 def _run_semantic(path: Path, top_k: int) -> None:
     current = _load_report(path)
-    result = SemanticRunsAnalyzer(_repository()).analyze(current=current, top_k=top_k)
+    analyzer = SemanticRunsAnalyzer(_repository())
+    result = analyzer.analyze(current=current, top_k=top_k, enrich_with_llm=False)
+    reports = analyzer.context_reports(current, top_k=top_k)
+    user_message = f"Analiza semánticamente `{current.run_id}` contra {top_k} fuentes."
     st.session_state.messages.append(
         {
             "role": "user",
-            "content": f"Analiza semánticamente `{current.run_id}` contra {top_k} fuentes.",
+            "content": user_message,
             "result": None,
         }
     )
+    with st.chat_message("user"):
+        st.markdown(user_message)
+    with st.chat_message("assistant"):
+        st.markdown(_render_result(result))
+        result = _stream_llm_insights(result, reports)
     st.session_state.messages.append(
         {
             "role": "assistant",
@@ -220,6 +321,10 @@ def _render_sidebar() -> None:
         st.subheader("Configuración")
         st.number_input("Ventana reciente", min_value=2, max_value=20, key="limit")
         st.number_input("Fuentes semánticas", min_value=1, max_value=30, key="top_k")
+
+        st.divider()
+        st.subheader("Consumo LLM")
+        _render_metrics(st.session_state.llm_metrics)
 
         if st.button("Limpiar conversación", use_container_width=True):
             st.session_state.clear()
