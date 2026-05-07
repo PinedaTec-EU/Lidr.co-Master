@@ -281,7 +281,9 @@ The Streamlit wrapper reuses the same analyzers as the FastAPI endpoints without
 streamlit run streamlit_app.py
 ```
 
-The UI provides a sidebar with sample reports, recent-window and semantic-source controls, a main analysis panel, chat-style history, and a modal with the active SIH Smart Analysis context.
+The UI provides a sidebar catalog of available report files, recent-window and semantic-source controls, a main analysis panel, chat-style history, and a modal with the active SIH Smart Analysis context.
+
+Reports are selected from the catalog instead of pasted manually. CAG mode analyzes the latest `N` reports for the selected workflow/environment. Semantic mode uses the selected catalog report as the current execution and retrieves similar historical reports from the repository.
 
 ## Test
 

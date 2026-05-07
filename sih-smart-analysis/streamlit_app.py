@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
 
 import streamlit as st
 
@@ -38,8 +37,9 @@ def _init_state() -> None:
         st.session_state.limit = 5
     if "top_k" not in st.session_state:
         st.session_state.top_k = 5
-    if "current_report_json" not in st.session_state:
-        st.session_state.current_report_json = ""
+    if "selected_report_path" not in st.session_state:
+        paths = _report_paths()
+        st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
 
 
 def _apply_styles() -> None:
@@ -94,22 +94,37 @@ def _active_reports_dir() -> Path:
     return reports_dir
 
 
-def _sample_report_paths() -> list[Path]:
-    sample_dir = Path("sample-reports")
-    if not sample_dir.exists():
-        return []
-    return sorted(sample_dir.rglob("*.json"), reverse=True)
+def _report_paths() -> list[Path]:
+    return sorted(_active_reports_dir().rglob("*.json"), reverse=True)
 
 
-def _load_json(path: Path) -> dict[str, Any]:
+def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _report_label(report: dict[str, Any], path: Path) -> str:
-    workflow = report.get("workflow") or report.get("WorkflowName") or "workflow"
-    status = report.get("status") or report.get("Status") or "status"
-    started = report.get("started_at") or report.get("StartedAtUtc") or path.stem
-    return f"{workflow} · {status} · {started}"
+def _load_report(path: Path):
+    return ReportNormalizer().normalize(_load_json(path))
+
+
+def _report_label(path: Path) -> str:
+    report = _load_report(path)
+    started = report.started_at.strftime("%Y-%m-%d %H:%M")
+    return f"{report.workflow} · {report.environment} · {report.status.value} · {started}"
+
+
+def _selected_report_path() -> Path | None:
+    selected = st.session_state.get("selected_report_path", "")
+    if not selected:
+        return None
+    path = Path(selected)
+    return path if path.exists() else None
+
+
+def _select_report(path: Path) -> None:
+    report = _load_report(path)
+    st.session_state.selected_report_path = path.as_posix()
+    st.session_state.workflow = report.workflow
+    st.session_state.environment = report.environment
 
 
 def _render_result(result: AnalysisResult) -> str:
@@ -180,15 +195,8 @@ def _run_recent(workflow: str, environment: str, limit: int) -> None:
     st.rerun()
 
 
-def _run_semantic(current_report_json: str, top_k: int) -> None:
-    if not current_report_json.strip():
-        paths = _sample_report_paths()
-        if not paths:
-            raise ValueError("current_report JSON is required")
-        current_report_json = json.dumps(_load_json(paths[0]), indent=2, ensure_ascii=False)
-
-    current_report = json.loads(current_report_json)
-    current = ReportNormalizer().normalize(current_report)
+def _run_semantic(path: Path, top_k: int) -> None:
+    current = _load_report(path)
     result = SemanticRunsAnalyzer(_repository()).analyze(current=current, top_k=top_k)
     st.session_state.messages.append(
         {
@@ -218,33 +226,27 @@ def _render_sidebar() -> None:
             st.rerun()
 
         st.divider()
-        st.subheader("Reports de ejemplo")
-        paths = _sample_report_paths()
+        st.subheader("Catálogo de reports")
+        paths = _report_paths()
         st.caption(f"{len(paths)} reports disponibles")
-        for index, path in enumerate(paths, 1):
-            report = _load_json(path)
-            with st.expander(f"Report {index}", expanded=False):
-                st.markdown(_report_label(report, path))
-                st.markdown(
-                    f'<div class="report-meta">{path.as_posix()}</div>',
-                    unsafe_allow_html=True,
-                )
-                if st.button(
-                    "Usar como current_report",
-                    key=f"use_report_{index}",
-                    use_container_width=True,
-                ):
-                    st.session_state.current_report_json = json.dumps(
-                        report,
-                        indent=2,
-                        ensure_ascii=False,
+        base_dir = _active_reports_dir()
+        by_folder: dict[Path, list[Path]] = {}
+        for path in paths:
+            by_folder.setdefault(path.parent.relative_to(base_dir), []).append(path)
+
+        for folder, folder_paths in by_folder.items():
+            folder_label = folder.as_posix() if folder.as_posix() != "." else base_dir.name
+            with st.expander(folder_label, expanded=False):
+                for path in folder_paths:
+                    selected = path.as_posix() == st.session_state.selected_report_path
+                    label = f"{'✓ ' if selected else ''}{path.name}"
+                    if st.button(label, key=f"select_{path.as_posix()}", use_container_width=True):
+                        _select_report(path)
+                        st.rerun()
+                    st.markdown(
+                        f'<div class="report-meta">{_report_label(path)}</div>',
+                        unsafe_allow_html=True,
                     )
-                    st.session_state.workflow = report.get("workflow", st.session_state.workflow)
-                    st.session_state.environment = report.get(
-                        "environment",
-                        st.session_state.environment,
-                    )
-                    st.rerun()
 
 
 @st.dialog("Contexto activo SIH Smart Analysis", width="large")
@@ -293,15 +295,18 @@ if mode == "Recent CAG":
             st.error(f"No se pudo analizar la ventana reciente: {exc}")
 
 else:
-    report_json = st.text_area(
-        "Current report JSON",
-        key="current_report_json",
-        height=300,
-        placeholder="Pega un report JSON o usa uno del panel lateral.",
-    )
+    selected_path = _selected_report_path()
+    if selected_path:
+        st.info(f"Report seleccionado: `{selected_path.relative_to(_active_reports_dir())}`")
+        st.caption(_report_label(selected_path))
+    else:
+        st.warning("No hay ningún report seleccionado en el catálogo.")
+
     if st.button("Analizar por similitud semántica", use_container_width=True):
         try:
-            _run_semantic(report_json, int(st.session_state.top_k))
+            if not selected_path:
+                raise ValueError("selecciona un report del catálogo")
+            _run_semantic(selected_path, int(st.session_state.top_k))
         except Exception as exc:
             st.error(f"No se pudo analizar el report actual: {exc}")
 
