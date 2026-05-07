@@ -40,6 +40,8 @@ def _init_state() -> None:
         st.session_state.limit = 5
     if "top_k" not in st.session_state:
         st.session_state.top_k = 5
+    if "reports_dir_override" not in st.session_state:
+        st.session_state.reports_dir_override = ""
     if "selected_report_path" not in st.session_state:
         paths = _report_paths()
         st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
@@ -84,30 +86,59 @@ def _apply_styles() -> None:
 
 
 def _repository() -> FileRunReportRepository:
-    reports_dir = get_settings().reports_dir
-    if not list(reports_dir.rglob("*.json")) and Path("sample-reports").exists():
-        reports_dir = Path("sample-reports")
-    return FileRunReportRepository(reports_dir)
+    return FileRunReportRepository(_active_reports_dir())
 
 
 def _repository_for(workflow: str, environment: str) -> FileRunReportRepository:
     repository = _repository()
     if repository.latest(workflow=workflow, environment=environment, limit=1):
         return repository
-    if Path("sample-reports").exists():
-        return FileRunReportRepository(Path("sample-reports"))
     return repository
 
 
+def _normalized_path(value: str | Path) -> Path:
+    return Path(value).expanduser().resolve()
+
+
 def _active_reports_dir() -> Path:
+    override = st.session_state.get("reports_dir_override", "")
+    if override:
+        return _normalized_path(override)
+
     reports_dir = get_settings().reports_dir
     if not list(reports_dir.rglob("*.json")) and Path("sample-reports").exists():
-        return Path("sample-reports")
-    return reports_dir
+        return _normalized_path("sample-reports")
+    return _normalized_path(reports_dir)
+
+
+def _known_report_dirs() -> list[Path]:
+    candidates = [
+        get_settings().reports_dir,
+        Path("../.sphere/workflows/output"),
+        Path("sample-reports"),
+    ]
+    seen: set[Path] = set()
+    existing: list[Path] = []
+    for candidate in candidates:
+        path = _normalized_path(candidate)
+        if path in seen or not path.exists():
+            continue
+        seen.add(path)
+        existing.append(path)
+    return existing
+
+
+def _set_reports_dir(path: Path) -> None:
+    st.session_state.reports_dir_override = path.as_posix()
+    paths = sorted(path.rglob("*.json"), reverse=True) if path.exists() else []
+    st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
 
 
 def _report_paths() -> list[Path]:
-    return sorted(_active_reports_dir().rglob("*.json"), reverse=True)
+    reports_dir = _active_reports_dir()
+    if not reports_dir.exists():
+        return []
+    return sorted(reports_dir.rglob("*.json"), reverse=True)
 
 
 def _load_json(path: Path) -> dict:
@@ -329,6 +360,46 @@ def _render_sidebar() -> None:
         if st.button("Limpiar conversación", use_container_width=True):
             st.session_state.clear()
             st.rerun()
+
+        st.divider()
+        st.subheader("Directorio de reports")
+        active_dir = _active_reports_dir()
+        known_dirs = _known_report_dirs()
+        if known_dirs:
+            labels = [path.as_posix() for path in known_dirs]
+            if active_dir.as_posix() not in labels:
+                labels.insert(0, active_dir.as_posix())
+            selected_index = labels.index(active_dir.as_posix()) if active_dir.as_posix() in labels else 0
+            selected_label = st.selectbox(
+                "Rutas conocidas",
+                labels,
+                index=selected_index,
+            )
+            if selected_label and _normalized_path(selected_label) != active_dir:
+                _set_reports_dir(_normalized_path(selected_label))
+                st.rerun()
+
+        custom_dir = st.text_input(
+            "Ruta manual",
+            value=active_dir.as_posix(),
+            placeholder="/ruta/al/repo/.sphere/workflows/output",
+        )
+        col_apply, col_reset = st.columns(2)
+        with col_apply:
+            if st.button("Aplicar ruta", use_container_width=True):
+                _set_reports_dir(_normalized_path(custom_dir))
+                st.rerun()
+        with col_reset:
+            if st.button("Reset ruta", use_container_width=True):
+                st.session_state.reports_dir_override = ""
+                paths = _report_paths()
+                st.session_state.selected_report_path = paths[0].as_posix() if paths else ""
+                st.rerun()
+
+        if not active_dir.exists():
+            st.warning("La ruta activa no existe.")
+        else:
+            st.caption(active_dir.as_posix())
 
         st.divider()
         st.subheader("Catálogo de reports")
