@@ -5,9 +5,9 @@ from app.routers.estimations import router as estimations_router
 app = FastAPI(
     title="Software Estimator CAG",
     description=(
-        "API de estimación de software basada en Claude AI con generación aumentada por contexto (CAG). "
-        "Analiza historias de usuario y genera estimaciones de esfuerzo en puntos de historia "
-        "junto con una justificación detallada."
+        "API de estimación de software con Context Augmented Generation (CAG). "
+        "Recibe la transcripción de una reunión, inyecta ejemplos estáticos de estimaciones "
+        "y devuelve una propuesta de esfuerzo, equipo y duración."
     ),
     version="0.1.0",
     docs_url="/docs",
