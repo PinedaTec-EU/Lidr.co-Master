@@ -8,7 +8,7 @@ No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada a
 
 ## Descripción
 
-El servicio actúa como un estimador experto entrenado por contexto estático. Al recibir una transcripción, construye un `system prompt` que incluye 10 ejemplos de proyectos reales con sus estimaciones — desglose de tareas, horas, equipo recomendado y duración — y envía la petición al LLM configurado (OpenAI o Anthropic).
+El servicio actúa como un estimador experto entrenado por contexto estático. Al recibir una transcripción, construye un `system prompt` que incluye 10 ejemplos de proyectos reales con sus estimaciones, desglose de tareas, horas, equipo recomendado y duración, y envía la petición al LLM configurado.
 
 El modelo devuelve una estimación calibrada en el mismo estilo y formato que los ejemplos, garantizando consistencia sin fine-tuning.
 
@@ -61,8 +61,10 @@ estimator-cag/
 │   └── services/
 │       └── llm_service.py     # Lógica de llamada a proveedores LLM
 ├── streamlit_app.py           # Chat web conversacional para el estimador CAG
+├── tests/                     # Tests API y validación del contrato HTTP
 ├── pyproject.toml
-└── .env                       # Variables de entorno (no comitear)
+├── .env.example               # Plantilla de variables de entorno
+└── .env                       # Variables de entorno reales (no comitear)
 ```
 
 ---
@@ -162,7 +164,6 @@ Documentación alternativa en formato ReDoc.
 
 ## Flujo de la petición
 
-```
 ```mermaid
 sequenceDiagram
     participant C as Cliente / SIH
@@ -181,7 +182,6 @@ sequenceDiagram
     S-->>API: resultado normalizado
     API-->>C: EstimationResponse
 ```
-```
 
 El `system_prompt` se construye en cada llamada concatenando los ejemplos estáticos. La invocación a proveedores se centraliza con LiteLLM para evitar wrappers específicos por SDK y mantener el mismo flujo para respuesta completa y streaming.
 
@@ -192,22 +192,25 @@ El `system_prompt` se construye en cada llamada concatenando los ejemplos estát
 ### Requisitos
 
 - Python 3.11 o superior
+- Una API key válida del proveedor LLM que vayas a usar
+- Opcional: Ollama local si quieres probar la ruta `friendly_name=ollama`
 
 ### Configuración
 
-Crea un archivo `.env` en la raíz del proyecto:
+Copia la plantilla y edita tus credenciales:
+
+```bash
+cd estimator-cag
+cp .env.example .env
+```
+
+Contenido mínimo recomendado para OpenAI:
 
 ```env
-# Proveedor activo: openai | anthropic
 LLM_PROVIDER=openai
 
-# Claves de API (solo la del proveedor activo es obligatoria)
 OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-
-# Modelo concreto (opcional — usa el default del proveedor si se omite)
 LLM_MODEL=
-
 APP_ENV=development
 LOG_LEVEL=info
 ```
@@ -216,12 +219,80 @@ LOG_LEVEL=info
 
 ```bash
 cd estimator-cag
-python -m venv .venv && source .venv/bin/activate
-pip install -e .
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
 uvicorn app.main:app --reload
 ```
 
 El servicio queda disponible en `http://localhost:8000`.
+
+## Validación rápida para una persona externa
+
+Estos pasos validan el entregable sin necesidad de conocer el repo:
+
+### 1. Arrancar la API
+
+```bash
+cd estimator-cag
+source .venv/bin/activate
+uvicorn app.main:app --reload
+```
+
+### 2. Comprobar healthcheck
+
+```bash
+curl http://localhost:8000/health
+```
+
+Respuesta esperada:
+
+```json
+{"status":"ok","service":"estimator-cag","version":"0.1.0"}
+```
+
+### 3. Abrir Swagger
+
+Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que aparecen:
+- `POST /api/v1/estimate`
+- `GET /api/v1/estimate/friendly-names`
+- `GET /health`
+
+### 4. Probar el endpoint principal
+
+```bash
+curl -X POST http://localhost:8000/api/v1/estimate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transcription": "El cliente necesita una landing page con formulario de contacto, integración con HubSpot y un blog editable. El diseño ya existe en Figma y quiere tenerlo en producción en 4 semanas.",
+    "friendly_name": "openai"
+  }'
+```
+
+Respuesta esperada:
+- `status 200`
+- JSON con `estimation`, `model`, `provider`, `tokens_used` y `timestamp`
+- `provider="openai"` si usas la ruta de OpenAI
+
+## Tests automatizados
+
+El proyecto incluye tests de contrato HTTP para que cualquier persona pueda verificar lo básico sin consumir LLM real.
+
+### Ejecutar tests
+
+```bash
+cd estimator-cag
+source .venv/bin/activate
+pytest
+```
+
+Cobertura actual de tests:
+- `GET /health`
+- `GET /api/v1/estimate/friendly-names`
+- rechazo de `transcription` vacía
+- respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
+
+Los tests no llaman a OpenAI, Anthropic ni Ollama. Validan el contrato HTTP y el comportamiento base de la API.
 
 ### Interfaz conversacional con Streamlit
 
@@ -327,9 +398,12 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 
 | Variable | Valores posibles | Default |
 |----------|-----------------|---------|
-| `LLM_PROVIDER` | `openai` \| `anthropic` | `openai` |
+| `LLM_PROVIDER` | `openai` \| `anthropic` \| `ollama` | `openai` |
 | `LLM_MODEL` | cualquier model ID | vacío (usa default del proveedor) |
 | `OPENAI_API_KEY` | `sk-...` | — |
 | `ANTHROPIC_API_KEY` | `sk-ant-...` | — |
+| `OLLAMA_API_KEY` | cualquier string | `ollama` |
+| `OLLAMA_BASE_URL` | URL LiteLLM/Ollama | `http://localhost:11434/v1` |
+| `OLLAMA_PORT` | puerto entero | `11434` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |
