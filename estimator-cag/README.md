@@ -1,85 +1,74 @@
 # estimator-cag
 
-Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe la transcripción de una reunión con un cliente, inyecta un conjunto de estimaciones previas directamente en el prompt del modelo y devuelve una estimación detallada de esfuerzo en formato Markdown.
+Servicio FastAPI para estimar proyectos software con un contrato tipado y prompts versionados en Jinja2.
 
-No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada al LLM.
+Este proyecto implementa el ejercicio de pasar de un chat libre a una interfaz de producto:
+- el cliente ya no envía una transcripción arbitraria como chat
+- el servicio recibe un `EstimationRequest` tipado
+- el prompt ya no vive como `f-string` en código
+- los prompts están versionados en `app/prompts/estimation/v1/*.j2`
 
----
-
-## Descripción
-
-El servicio actúa como un estimador experto entrenado por contexto estático. Al recibir una transcripción, construye un `system prompt` que incluye 10 ejemplos de proyectos reales con sus estimaciones, desglose de tareas, horas, equipo recomendado y duración, y envía la petición al LLM configurado.
-
-El modelo devuelve una estimación calibrada en el mismo estilo y formato que los ejemplos, garantizando consistencia sin fine-tuning.
-
-**Proveedores soportados:**
-- OpenAI (`gpt-4o-mini` por defecto)
-- Anthropic (`claude-haiku-4-5-20251001` por defecto, con prompt caching activado)
-- Configuraciones por `friendly_name`, usadas por el workflow SIH piloto para comparar `openai` y `ollama`.
-
-Las llamadas a modelos se enrutan mediante **LiteLLM**, manteniendo un formato común para completions y streaming entre proveedores.
-
----
-
-## Fases del proyecto
+## Arquitectura
 
 ```mermaid
-flowchart TD
-    A["Entrada<br/>transcripción de reunión"] --> B["API FastAPI<br/>POST /api/v1/estimate"]
-    B --> C["CAG<br/>inyecta ejemplos estáticos"]
-    C --> D{"Proveedor LLM"}
-    D --> E["OpenAI"]
-    D --> F["Anthropic"]
-    D --> G["Otros por friendly_name<br/>ej. ollama"]
-    E --> H["Estimación Markdown"]
-    F --> H
-    G --> H
+flowchart LR
+    UI["Streamlit form"]
+    API["FastAPI POST /api/v1/estimate"]
+    USECASE["EstimationService"]
+    PROMPTS["Jinja renderer<br/>system.j2 + user.j2 + examples.j2"]
+    LLM["LiteLLM gateway"]
+
+    UI --> API
+    API --> USECASE
+    USECASE --> PROMPTS
+    USECASE --> LLM
 ```
 
-Este proyecto es deliberadamente CAG:
+### Responsabilidades
 
-- No tiene ingesta documental.
-- No tiene vector store.
-- No hace retrieval.
-- El conocimiento de referencia está en `app/context/examples.py`.
+- [app/schemas.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/schemas.py): contrato de entrada y salida.
+- [app/application/estimation.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/application/estimation.py): caso de uso y puertos.
+- [app/prompts/loader.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/loader.py): renderer Jinja2 con `StrictUndefined`.
+- [app/prompts/estimation/v1/system.j2](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/estimation/v1/system.j2): reglas del modelo.
+- [app/prompts/estimation/v1/user.j2](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/estimation/v1/user.j2): bloque de descripción del proyecto.
+- [app/prompts/estimation/v1/examples.j2](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/estimation/v1/examples.j2): few-shot examples.
+- [app/services/llm_service.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/services/llm_service.py): gateway LiteLLM y resolución de rutas de modelo.
+- [streamlit_app.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/streamlit_app.py): formulario tipado que hace `POST` a la API.
 
-La transición a RAG no se implementa aquí. La evolución natural está en `sih-smart-analysis`, que consume los reports generados por SIH al ejecutar esta API.
+## Estructura
 
----
-
-## Estructura del proyecto
-
-```
+```text
 estimator-cag/
 ├── app/
-│   ├── config.py              # Settings desde variables de entorno
-│   ├── main.py                # Aplicación FastAPI + router + health
-│   ├── context/
-│   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
+│   ├── application/
+│   │   └── estimation.py
+│   ├── prompts/
+│   │   ├── loader.py
+│   │   └── estimation/
+│   │       └── v1/
+│   │           ├── examples.j2
+│   │           ├── system.j2
+│   │           └── user.j2
 │   ├── routers/
-│   │   └── estimations.py     # Endpoint POST /api/v1/estimate
-│   └── services/
-│       └── llm_service.py     # Lógica de llamada a proveedores LLM
-├── streamlit_app.py           # Chat web conversacional para el estimador CAG
-├── tests/                     # Tests API y validación del contrato HTTP
-├── pyproject.toml
-├── .env.example               # Plantilla de variables de entorno
-└── .env                       # Variables de entorno reales (no comitear)
+│   │   └── estimations.py
+│   ├── services/
+│   │   └── llm_service.py
+│   ├── config.py
+│   ├── dependencies.py
+│   ├── main.py
+│   └── schemas.py
+├── tests/
+│   ├── prompts/
+│   │   └── test_estimation_v1.py
+│   └── test_api.py
+├── streamlit_app.py
+└── pyproject.toml
 ```
 
----
-
-## Endpoints
-
-Número de endpoints funcionales: **2** bajo `/api/v1`.
-
-Número de endpoints operativos: **1** fuera de `/api/v1`.
+## API
 
 ### `GET /health`
 
-Comprueba que el servicio está activo.
-
-**Respuesta:**
 ```json
 {
   "status": "ok",
@@ -88,197 +77,127 @@ Comprueba que el servicio está activo.
 }
 ```
 
----
-
 ### `POST /api/v1/estimate`
 
-Genera una estimación de software a partir de la transcripción de una reunión.
+Request:
 
-**Request body:**
 ```json
 {
-  "transcription": "El cliente necesita una app web para gestión de reservas...",
-  "friendly_name": "openai",
-  "provider": null,
-  "model": null
+  "description": "Necesitamos una plataforma SaaS para reservas con pagos, roles y panel operativo.",
+  "project_type": "web_saas",
+  "detail_level": "medium",
+  "output_format": "phases_table"
 }
 ```
 
-Campos:
+Response:
 
-| Campo | Obligatorio | Descripción |
-|-------|-------------|-------------|
-| `transcription` | Sí | Texto de la reunión o descripción funcional a estimar. |
-| `friendly_name` | No | Alias de configuración de proveedor/modelo. Ejemplo: `openai`, `ollama`. |
-| `provider` | No | Override directo del proveedor. |
-| `model` | No | Override directo del modelo. |
-
-**Respuesta:**
 ```json
 {
-  "estimation": "## Estimación: ...\n\n### Desglose de tareas:\n...",
-  "model": "gpt-4o-mini",
-  "provider": "openai",
-  "tokens_used": {
-    "prompt": 2840,
-    "completion": 512,
-    "total": 3352
-  },
-  "timestamp": "2026-04-30T10:23:45.123456+00:00"
+  "text": "## Estimación...\n",
+  "prompt_version": "v1"
 }
 ```
-
-**Errores:**
-| Código | Causa |
-|--------|-------|
-| `400`  | `transcription` vacía o solo espacios |
-| `500`  | Error en la llamada al LLM |
-
----
 
 ### `GET /api/v1/estimate/friendly-names`
 
-Devuelve los alias de proveedores/modelos configurados.
+Devuelve aliases de proveedor disponibles para la infraestructura LiteLLM actual.
 
-**Respuesta:**
+## Contrato tipado
 
-```json
-{
-  "friendly_names": ["openai", "ollama"]
-}
+`EstimationRequest`:
+- `description`: `str`, min 20, max 2000
+- `project_type`: `mobile_app | web_saas | internal_tool | data_pipeline`
+- `detail_level`: `summary | medium | detailed`
+- `output_format`: `phases_table | line_items | narrative`
+
+`EstimationResponse`:
+- `text`
+- `prompt_version`
+
+## Prompts versionados
+
+La carpeta requerida por el ejercicio ya existe:
+
+```text
+app/prompts/
+├── loader.py
+└── estimation/
+    └── v1/
+        ├── system.j2
+        ├── user.j2
+        └── examples.j2
 ```
 
-Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede invocar sin hardcodear configuraciones.
+El loader expone:
 
----
-
-### `GET /docs`
-
-Swagger UI con documentación interactiva de la API.
-
-### `GET /redoc`
-
-Documentación alternativa en formato ReDoc.
-
----
-
-## Flujo de la petición
-
-```mermaid
-sequenceDiagram
-    participant C as Cliente / SIH
-    participant API as FastAPI estimator-cag
-    participant S as LLM Service
-    participant CTX as Context examples
-    participant LLM as LLM Provider
-
-    C->>API: POST /api/v1/estimate
-    API->>API: valida transcription
-    API->>S: get_estimation(transcription, friendly_name/provider/model)
-    S->>CTX: carga ESTIMATION_EXAMPLES
-    S->>S: construye system prompt CAG
-    S->>LLM: envía prompt + transcripción
-    LLM-->>S: estimation + usage
-    S-->>API: resultado normalizado
-    API-->>C: EstimationResponse
+```python
+render_estimation_prompt(request, version="v1") -> tuple[str, str]
 ```
 
-El `system_prompt` se construye en cada llamada concatenando los ejemplos estáticos. La invocación a proveedores se centraliza con LiteLLM para evitar wrappers específicos por SDK y mantener el mismo flujo para respuesta completa y streaming.
+Detalles de implementación:
+- `Environment`
+- `StrictUndefined`
+- `trim_blocks=True`
+- `lstrip_blocks=True`
 
----
+## Cliente Streamlit
 
-## Instalación y arranque
+El cliente ya no es un chat. Ahora usa `st.form` y hace `POST` al servicio.
 
-### Requisitos
-
-- Python 3.11 o superior
-- Una API key válida del proveedor LLM que vayas a usar
-- Opcional: Ollama local si quieres probar la ruta `friendly_name=ollama`
-
-### Configuración
-
-Copia la plantilla y edita tus credenciales:
+Variable opcional para el cliente:
 
 ```bash
-cd estimator-cag
-cp .env.example .env
+export ESTIMATOR_API_BASE_URL=http://localhost:8000/api/v1
 ```
 
-Contenido mínimo recomendado para OpenAI:
-
-```env
-LLM_PROVIDER=openai
-
-OPENAI_API_KEY=sk-...
-LLM_MODEL=
-APP_ENV=development
-LOG_LEVEL=info
-```
-
-### Instalar dependencias y arrancar
+## Instalación
 
 ```bash
 cd estimator-cag
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
+```
+
+## Arranque
+
+API:
+
+```bash
 uvicorn app.main:app --reload
 ```
 
-El servicio queda disponible en `http://localhost:8000`.
-
-## Validación rápida para una persona externa
-
-Estos pasos validan el entregable sin necesidad de conocer el repo:
-
-### 1. Arrancar la API
+Cliente:
 
 ```bash
-cd estimator-cag
-source .venv/bin/activate
-uvicorn app.main:app --reload
+streamlit run streamlit_app.py
 ```
 
-### 2. Comprobar healthcheck
-
-```bash
-curl http://localhost:8000/health
-```
-
-Respuesta esperada:
-
-```json
-{"status":"ok","service":"estimator-cag","version":"0.1.0"}
-```
-
-### 3. Abrir Swagger
-
-Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que aparecen:
-- `POST /api/v1/estimate`
-- `GET /api/v1/estimate/friendly-names`
-- `GET /health`
-
-### 4. Probar el endpoint principal
+## Validación manual
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/estimate \
   -H "Content-Type: application/json" \
   -d '{
-    "transcription": "El cliente necesita una landing page con formulario de contacto, integración con HubSpot y un blog editable. El diseño ya existe en Figma y quiere tenerlo en producción en 4 semanas.",
-    "friendly_name": "openai"
+    "description": "Necesitamos una herramienta interna para gestionar solicitudes de compra, aprobaciones y auditoría operativa para tres departamentos.",
+    "project_type": "internal_tool",
+    "detail_level": "detailed",
+    "output_format": "phases_table"
   }'
 ```
 
-Respuesta esperada:
-- `status 200`
-- JSON con `estimation`, `model`, `provider`, `tokens_used` y `timestamp`
-- `provider="openai"` si usas la ruta de OpenAI
+## Tests
 
-## Tests automatizados
+Tests esperados:
+- contrato HTTP de la API
+- render de templates sin llamadas externas
 
-El proyecto incluye tests de contrato HTTP para que cualquier persona pueda verificar lo básico sin consumir LLM real.
+Ficheros principales:
+- [tests/test_api.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/tests/test_api.py)
+- [tests/prompts/test_estimation_v1.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/tests/prompts/test_estimation_v1.py)
 
-### Ejecutar tests
+Ejecución:
 
 ```bash
 cd estimator-cag
@@ -286,124 +205,4 @@ source .venv/bin/activate
 pytest
 ```
 
-Cobertura actual de tests:
-- `GET /health`
-- `GET /api/v1/estimate/friendly-names`
-- rechazo de `transcription` vacía
-- respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
-
-Los tests no llaman a OpenAI, Anthropic ni Ollama. Validan el contrato HTTP y el comportamiento base de la API.
-
-### Interfaz conversacional con Streamlit
-
-El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedores que el endpoint `POST /api/v1/estimate`.
-
-```bash
-streamlit run streamlit_app.py
-```
-
-La interfaz permite pegar una transcripción en un chat, mantiene el historial durante la sesión y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados y las métricas básicas de la última llamada.
-
----
-
-## Validación con SIH (Sphere Integration Hub)
-
-SIH permite ejecutar y validar los endpoints del servicio mediante workflows declarativos.
-
-En este repo el workflow piloto está en:
-
-```text
-.sphere/workflows/test-estimate-endpoint.workflow
-```
-
-Ese workflow ejecuta dos stages HTTP contra `POST /api/v1/estimate`:
-
-```mermaid
-flowchart LR
-    SIH["SIH CLI"] --> W["test-estimate-endpoint.workflow"]
-    W --> OAI["call-openai<br/>friendly_name=openai"]
-    W --> OLL["call-ollama<br/>friendly_name=ollama"]
-    OAI --> API["estimator-cag<br/>POST /api/v1/estimate"]
-    OLL --> API
-    API --> Reports[".sphere/workflows/output<br/>report JSON/HTML"]
-```
-
-### 1. Listar workflows disponibles
-
-```
-mcp__sphere-integration-hub__list_available_workflows
-```
-
-Muestra los workflows registrados para este proyecto. Busca los que incluyan `estimator` o `estimate`.
-
-### 2. Inspeccionar el workflow de estimación
-
-```
-mcp__sphere-integration-hub__get_workflow_inputs_outputs
-  workflow: "estimate-workflow"
-```
-
-Devuelve los campos de entrada requeridos (`transcription`) y la estructura de salida esperada.
-
-### 3. Planificar la ejecución antes de lanzarla
-
-```
-mcp__sphere-integration-hub__plan_workflow_execution
-  workflow: "estimate-workflow"
-  inputs:
-    transcription: "Startup de salud necesita app móvil para gestión de citas médicas y historial clínico básico."
-```
-
-Muestra los pasos que se ejecutarán y las llamadas HTTP que se realizarán contra el servicio.
-
-### 4. Validar el workflow
-
-```
-mcp__sphere-integration-hub__validate_workflow
-  workflow: "estimate-workflow"
-```
-
-Comprueba que la estructura del workflow es correcta y que los campos de entrada/salida están bien definidos antes de ejecutarlo.
-
-### 5. Ejecutar y leer el reporte
-
-Tras la ejecución, lista los reportes disponibles:
-
-```
-mcp__sphere-integration-hub__list_execution_reports
-```
-
-Y lee el último:
-
-```
-mcp__sphere-integration-hub__read_execution_report
-  report: "<id-del-reporte>"
-```
-
-El reporte incluye el resultado de cada stage, los tokens consumidos y el Markdown de estimación generado.
-
-### Ejemplo de payload para prueba manual (curl)
-
-```bash
-curl -X POST http://localhost:8000/api/v1/estimate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "transcription": "Startup de salud necesita app móvil para gestión de citas médicas y historial clínico básico. El equipo del cliente no tiene desarrolladores propios y quieren lanzar en 3 meses."
-  }'
-```
-
----
-
-## Variables de entorno de referencia
-
-| Variable | Valores posibles | Default |
-|----------|-----------------|---------|
-| `LLM_PROVIDER` | `openai` \| `anthropic` \| `ollama` | `openai` |
-| `LLM_MODEL` | cualquier model ID | vacío (usa default del proveedor) |
-| `OPENAI_API_KEY` | `sk-...` | — |
-| `ANTHROPIC_API_KEY` | `sk-ant-...` | — |
-| `OLLAMA_API_KEY` | cualquier string | `ollama` |
-| `OLLAMA_BASE_URL` | URL LiteLLM/Ollama | `http://localhost:11434/v1` |
-| `OLLAMA_PORT` | puerto entero | `11434` |
-| `APP_ENV` | `development` \| `production` | `development` |
-| `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |
+Los tests de prompt deben correr en milisegundos y no consumen LLM real.
