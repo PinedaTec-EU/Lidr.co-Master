@@ -1,10 +1,7 @@
-from collections.abc import AsyncIterator
 from dataclasses import dataclass, replace
 from typing import Any
 
 from app.config import settings
-from app.context.examples import ESTIMATION_EXAMPLES
-
 MAX_COMPLETION_TOKENS = 1200
 
 
@@ -36,55 +33,6 @@ def _model_routes() -> dict[str, ModelRoute]:
             base_url=settings.ollama_base_url,
             port=settings.ollama_port,
         ),
-    }
-
-
-def _build_system_prompt() -> str:
-    examples_text = ""
-    for i, example in enumerate(ESTIMATION_EXAMPLES, 1):
-        examples_text += f"""
-### Ejemplo {i}
-**Resumen de reunión:**
-{example['meeting_summary']}
-
-**Estimación generada:**
-{example['estimation']}
----
-"""
-
-    return f"""Eres un estimador de software experto con años de experiencia en proyectos de desarrollo web y mobile.
-
-Tu tarea es analizar la transcripción de una reunión con un cliente y generar una estimación detallada del proyecto de software.
-
-La estimación debe incluir:
-- Desglose de tareas con horas estimadas para cada una
-- Total de horas estimadas
-- Equipo recomendado (roles y nivel de dedicación)
-- Duración estimada del proyecto en semanas
-
-A continuación tienes ejemplos de estimaciones previas que debes usar como referencia de estilo, formato y calibración:
-
-{examples_text}
-
-Usa estos ejemplos para calibrar la complejidad y granularidad de tus respuestas. Responde siempre en español y en formato Markdown."""
-
-
-def get_system_prompt() -> str:
-    return _build_system_prompt()
-
-
-def get_context_summary() -> dict:
-    return {
-        "examples_count": len(ESTIMATION_EXAMPLES),
-        "examples": [
-            {
-                "title": example["meeting_summary"],
-                "transcription": example["meeting_summary"],
-                "estimation": example["estimation"].strip(),
-                "estimation_preview": example["estimation"].strip().splitlines()[0],
-            }
-            for example in ESTIMATION_EXAMPLES
-        ],
     }
 
 
@@ -144,25 +92,6 @@ def _resolve_route(
     )
 
 
-def _tokens_used(usage) -> dict:
-    if usage is None:
-        return {"prompt": 0, "completion": 0, "total": 0}
-
-    if isinstance(usage, dict):
-        prompt = usage.get("prompt_tokens", 0) or 0
-        completion = usage.get("completion_tokens", 0) or 0
-        total = usage.get("total_tokens")
-    else:
-        prompt = getattr(usage, "prompt_tokens", 0) or 0
-        completion = getattr(usage, "completion_tokens", 0) or 0
-        total = getattr(usage, "total_tokens", None)
-    return {
-        "prompt": prompt,
-        "completion": completion,
-        "total": total if total is not None else prompt + completion,
-    }
-
-
 def _litellm_kwargs(route: ModelRoute) -> dict[str, Any]:
     kwargs: dict[str, Any] = {"model": route.model}
     if route.api_key:
@@ -176,86 +105,31 @@ def _litellm_kwargs(route: ModelRoute) -> dict[str, Any]:
     return kwargs
 
 
-def _messages(system_prompt: str, transcription: str) -> list[dict[str, str]]:
+def _messages(system_prompt: str, user_prompt: str) -> list[dict[str, str]]:
     return [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": transcription},
+        {"role": "user", "content": user_prompt},
     ]
 
 
-def _chunk_delta_content(chunk) -> str | None:
-    if not chunk.choices:
-        return None
+class LiteLlmEstimationGateway:
+    def __init__(
+        self,
+        friendly_name: str | None = None,
+        provider: str | None = None,
+        model: str | None = None,
+    ) -> None:
+        self._friendly_name = friendly_name
+        self._provider = provider
+        self._model = model
 
-    delta = chunk.choices[0].delta
-    if isinstance(delta, dict):
-        return delta.get("content")
-    return getattr(delta, "content", None)
+    async def generate(self, *, system_prompt: str, user_prompt: str) -> str:
+        from litellm import acompletion
 
-
-async def get_estimation(
-    transcription: str,
-    friendly_name: str | None = None,
-    provider: str | None = None,
-    model: str | None = None,
-) -> dict:
-    system_prompt = _build_system_prompt()
-    route = _resolve_route(friendly_name, provider, model)
-
-    return await _call_litellm(system_prompt, transcription, route)
-
-
-async def stream_estimation(
-    transcription: str,
-    friendly_name: str | None = None,
-    provider: str | None = None,
-    model: str | None = None,
-) -> AsyncIterator[dict]:
-    system_prompt = _build_system_prompt()
-    route = _resolve_route(friendly_name, provider, model)
-
-    async for event in _stream_litellm(system_prompt, transcription, route):
-        yield event
-
-
-async def _call_litellm(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
-    from litellm import acompletion
-
-    response = await acompletion(
-        **_litellm_kwargs(route),
-        max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, transcription),
-    )
-    return {
-        "estimation": response.choices[0].message.content,
-        "model": route.model,
-        "provider": route.provider,
-        "tokens_used": _tokens_used(response.usage),
-    }
-
-
-async def _stream_litellm(
-    system_prompt: str,
-    transcription: str,
-    route: ModelRoute,
-) -> AsyncIterator[dict]:
-    from litellm import acompletion
-
-    stream = await acompletion(
-        **_litellm_kwargs(route),
-        max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, transcription),
-        stream=True,
-    )
-
-    async for chunk in stream:
-        delta = _chunk_delta_content(chunk)
-        if delta:
-            yield {"type": "delta", "content": delta}
-        if chunk.usage:
-            yield {
-                "type": "metadata",
-                "model": route.model,
-                "provider": route.provider,
-                "tokens_used": _tokens_used(chunk.usage),
-            }
+        route = _resolve_route(self._friendly_name, self._provider, self._model)
+        response = await acompletion(
+            **_litellm_kwargs(route),
+            max_tokens=MAX_COMPLETION_TOKENS,
+            messages=_messages(system_prompt, user_prompt),
+        )
+        return response.choices[0].message.content

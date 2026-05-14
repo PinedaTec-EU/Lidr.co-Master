@@ -5,9 +5,9 @@ from app.routers.estimations import router as estimations_router
 app = FastAPI(
     title="Software Estimator CAG",
     description=(
-        "API de estimación de software con Context Augmented Generation (CAG). "
-        "Recibe la transcripción de una reunión, inyecta ejemplos estáticos de estimaciones "
-        "y devuelve una propuesta de esfuerzo, equipo y duración."
+        "API de estimación de software con contrato tipado y prompts Jinja2 versionados. "
+        "Recibe una descripción de proyecto y parámetros de salida, renderiza prompts "
+        "separados de system/user y devuelve una estimación textual."
     ),
     version="0.1.0",
     docs_url="/docs",

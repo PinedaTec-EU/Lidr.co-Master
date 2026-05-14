@@ -1,7 +1,15 @@
 from fastapi.testclient import TestClient
 
+from app.application.estimation import EstimationService
+from app.dependencies import get_estimation_service
 from app.main import app
-from app.routers import estimations
+from app.schemas import (
+    DetailLevel,
+    EstimationRequest,
+    EstimationResponse,
+    OutputFormat,
+    ProjectType,
+)
 
 
 client = TestClient(app)
@@ -25,34 +33,48 @@ def test_friendly_names_endpoint() -> None:
     assert "openai" in response.json()["friendly_names"]
 
 
-def test_estimate_rejects_blank_transcription() -> None:
-    response = client.post("/api/v1/estimate", json={"transcription": "   "})
+def test_estimate_rejects_too_short_description() -> None:
+    response = client.post(
+        "/api/v1/estimate",
+        json={
+            "description": "demasiado corto",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "phases_table",
+        },
+    )
 
-    assert response.status_code == 400
-    assert response.json()["detail"] == "La transcripción no puede estar vacía"
+    assert response.status_code == 422
 
 
-def test_estimate_returns_llm_result(monkeypatch) -> None:
-    async def fake_get_estimation(transcription: str, **_: str | None) -> dict:
-        assert transcription == "Necesitamos un portal B2B con autenticación."
-        return {
-            "estimation": "## Estimación de prueba",
-            "model": "openai/gpt-4o-mini",
-            "provider": "openai",
-            "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
-        }
+def test_estimate_returns_llm_result() -> None:
+    class FakeEstimationService(EstimationService):
+        def __init__(self) -> None:
+            pass
 
-    monkeypatch.setattr(estimations, "get_estimation", fake_get_estimation)
+        async def estimate(
+            self,
+            request: EstimationRequest,
+            prompt_version: str = "v1",
+        ) -> EstimationResponse:
+            assert request.description == "Necesitamos un portal B2B con autenticación y catálogo privado."
+            assert request.project_type is ProjectType.WEB_SAAS
+            return EstimationResponse(text="## Estimación de prueba", prompt_version=prompt_version)
+
+    app.dependency_overrides[get_estimation_service] = FakeEstimationService
 
     response = client.post(
         "/api/v1/estimate",
-        json={"transcription": "Necesitamos un portal B2B con autenticación."},
+        json={
+            "description": "Necesitamos un portal B2B con autenticación y catálogo privado.",
+            "project_type": ProjectType.WEB_SAAS.value,
+            "detail_level": DetailLevel.MEDIUM.value,
+            "output_format": OutputFormat.PHASES_TABLE.value,
+        },
     )
 
     body = response.json()
     assert response.status_code == 200
-    assert body["estimation"] == "## Estimación de prueba"
-    assert body["model"] == "openai/gpt-4o-mini"
-    assert body["provider"] == "openai"
-    assert body["tokens_used"] == {"prompt": 10, "completion": 20, "total": 30}
-    assert body["timestamp"]
+    assert body["text"] == "## Estimación de prueba"
+    assert body["prompt_version"] == "v1"
+    app.dependency_overrides.clear()
