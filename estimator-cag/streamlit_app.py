@@ -14,6 +14,10 @@ from app.context.sample_transcriptions import (
     list_sample_transcriptions,
     read_sample_transcription,
 )
+from app.context.sample_documents import (
+    list_sample_documents,
+    resolve_sample_document_paths,
+)
 
 
 st.set_page_config(
@@ -91,8 +95,8 @@ def _init_state() -> None:
         st.session_state.form_detail_level = DetailLevel.MEDIUM.value
     if "form_output_format" not in st.session_state:
         st.session_state.form_output_format = OutputFormat.NARRATIVE.value
-    if "form_document_paths" not in st.session_state:
-        st.session_state.form_document_paths = ""
+    if "selected_sample_documents" not in st.session_state:
+        st.session_state.selected_sample_documents = []
     if "last_document_context" not in st.session_state:
         st.session_state.last_document_context = []
 
@@ -116,7 +120,7 @@ def _reset_conversation() -> None:
     st.session_state.form_project_type = ProjectType.WEB_SAAS.value
     st.session_state.form_detail_level = DetailLevel.MEDIUM.value
     st.session_state.form_output_format = OutputFormat.NARRATIVE.value
-    st.session_state.form_document_paths = ""
+    st.session_state.selected_sample_documents = []
     st.session_state.last_document_context = []
 
 
@@ -304,6 +308,7 @@ def _render_control_panel() -> str:
     friendly_names = get_available_friendly_names()
     context = get_context_summary()
     sample_transcriptions = list_sample_transcriptions()
+    sample_documents = list_sample_documents()
 
     with st.sidebar:
         st.subheader("Configuración")
@@ -348,6 +353,18 @@ def _render_control_panel() -> str:
                 st.rerun()
         else:
             st.caption("No hay transcripciones versionadas disponibles.")
+
+        st.divider()
+        st.subheader("Documentos del repo")
+        if sample_documents:
+            selected_documents = st.multiselect(
+                "Sample documents",
+                sample_documents,
+                default=st.session_state.selected_sample_documents,
+            )
+            st.session_state.selected_sample_documents = selected_documents
+        else:
+            st.caption("No hay documentos versionados disponibles.")
 
         st.divider()
         st.subheader("Reuniones simuladas")
@@ -419,10 +436,6 @@ def _render_conversation() -> None:
                     f"{tokens['total']} tokens · "
                     f"{message['metadata'].get('response_time', 0.0):.2f}s"
                 )
-
-
-def _parse_document_paths(raw_value: str) -> list[str]:
-    return [line.strip() for line in raw_value.splitlines() if line.strip()]
 
 
 def _send_request(
@@ -529,12 +542,6 @@ with st.form("estimation-request-form", clear_on_submit=False):
         accept_multiple_files=True,
         type=["pdf", "docx", "txt", "md"],
     )
-    document_paths = st.text_area(
-        "Rutas locales de documentos",
-        key="form_document_paths",
-        height=100,
-        placeholder="Una ruta por línea. Ejemplo:\n/abs/path/requirements.pdf\n/abs/path/notes.md",
-    )
 
     submitted = st.form_submit_button("Generar estimación", use_container_width=True)
 if submitted:
@@ -551,6 +558,6 @@ if submitted:
         _send_request(
             request,
             attachments or [],
-            _parse_document_paths(document_paths),
+            resolve_sample_document_paths(st.session_state.selected_sample_documents),
             selected_friendly_name,
         )

@@ -478,13 +478,17 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 ./launch.sh portal
 ```
 
-La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, aceptar rutas documentales locales, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` y `document_sources` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, seleccionar documentos versionados del repo desde sidebar, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` y `document_sources` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
 La zona principal añade dos acciones de inspección:
 - `Ver system prompt activo`
 - `Ver output de Docling`
 
 La segunda abre un diálogo con el texto documental exacto que entró al contexto en el último turno enriquecido.
+
+El sidebar también ofrece:
+- `Sample file` para cargar una transcripción versionada
+- `Sample documents` para añadir documentos locales versionados del repo sin escribir rutas manualmente
 
 Captura real de la UI con uno de los documentos generados para pruebas:
 
@@ -494,7 +498,7 @@ Alcance actual de esta capa:
 - formulario multi-turno tipado sobre el mismo flujo CAG del backend
 - memoria conversacional persistida por `session_id`
 - recuperación por URL vía `?chatid=...`
-- referencias documentales persistidas por ruta
+- referencias documentales persistidas por ruta, resolviendo documentos versionados del repo desde un selector
 - visibilidad de `project_metadata` y métricas básicas en sidebar
 
 Quedan fuera de esta fase:
