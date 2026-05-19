@@ -54,6 +54,7 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     session.history.add_turn("u1", "a1")
     session.remember_document_sources(["/tmp/requirements.pdf"])
     session.add_conversation_message("user", "Solicitud visible")
+    session.set_last_document_context(["--- attachment: requirements.pdf ---\nTexto"])
     store.save_session("01TESTSESSION00000000000000")
 
     reloaded = SessionStore(path=store_path)
@@ -63,3 +64,4 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     assert persisted.history.turns == [("u1", "a1")]
     assert persisted.document_sources == ["/tmp/requirements.pdf"]
     assert persisted.conversation_messages == [{"role": "user", "content": "Solicitud visible"}]
+    assert persisted.last_document_context == ["--- attachment: requirements.pdf ---\nTexto"]

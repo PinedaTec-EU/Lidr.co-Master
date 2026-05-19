@@ -93,6 +93,8 @@ def _init_state() -> None:
         st.session_state.form_output_format = OutputFormat.NARRATIVE.value
     if "form_document_paths" not in st.session_state:
         st.session_state.form_document_paths = ""
+    if "last_document_context" not in st.session_state:
+        st.session_state.last_document_context = []
 
 
 def _reset_conversation() -> None:
@@ -115,6 +117,7 @@ def _reset_conversation() -> None:
     st.session_state.form_detail_level = DetailLevel.MEDIUM.value
     st.session_state.form_output_format = OutputFormat.NARRATIVE.value
     st.session_state.form_document_paths = ""
+    st.session_state.last_document_context = []
 
 
 def _apply_pending_form_data() -> None:
@@ -263,7 +266,7 @@ async def _collect_turn(
     attachments,
     document_paths: list[str],
     display_user_message: str,
-) -> tuple[str, dict]:
+) -> tuple[str, dict, list[str]]:
     metadata = {
         "model": "",
         "provider": "",
@@ -272,7 +275,7 @@ async def _collect_turn(
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     started_at = datetime.now(timezone.utc)
-    result, project_metadata = await estimate_session_turn(
+    result, project_metadata, document_context_sections = await estimate_session_turn(
         session_id=st.session_state.session_id,
         transcript=request.description,
         project_type=request.project_type,
@@ -294,7 +297,7 @@ async def _collect_turn(
             "project_metadata": project_metadata.model_dump(),
         }
     )
-    return result["text"], metadata
+    return result["text"], metadata, document_context_sections
 
 
 def _render_control_panel() -> str:
@@ -381,9 +384,27 @@ def _show_prompt_dialog() -> None:
     st.code(get_system_prompt(project_metadata=session.project_metadata if session else None), language="markdown")
 
 
+@st.dialog("Output documental enriquecido", width="large")
+def _show_document_context_dialog() -> None:
+    session = get_session(st.session_state.session_id)
+    sections = st.session_state.last_document_context or (session.last_document_context if session else [])
+    if not sections:
+        st.info("Todavía no hay contenido documental procesado en esta sesión.")
+        return
+
+    for index, section in enumerate(sections, 1):
+        st.markdown(f"### Documento {index}")
+        st.code(section, language="markdown")
+
+
 def _render_prompt_panel() -> None:
-    if st.button("Ver system prompt activo", use_container_width=True):
-        _show_prompt_dialog()
+    col_a, col_b = st.columns(2)
+    with col_a:
+        if st.button("Ver system prompt activo", use_container_width=True):
+            _show_prompt_dialog()
+    with col_b:
+        if st.button("Ver output de Docling", use_container_width=True):
+            _show_document_context_dialog()
 
 
 def _render_conversation() -> None:
@@ -426,7 +447,7 @@ def _send_request(
 
     with st.chat_message("assistant"):
         try:
-            estimation, metadata = asyncio.run(
+            estimation, metadata, document_context_sections = asyncio.run(
                 _collect_turn(
                     request,
                     selected_friendly_name,
@@ -439,6 +460,7 @@ def _send_request(
         except Exception as exc:
             estimation = f"No se pudo generar la estimación: {exc}"
             metadata = None
+            document_context_sections = []
             st.error(estimation)
 
     st.session_state.messages.append(
@@ -449,6 +471,7 @@ def _send_request(
         st.session_state.last_model = metadata.get("model", "")
         st.session_state.last_provider = metadata.get("provider", "")
         st.session_state.last_response_time = metadata.get("response_time", 0.0)
+    st.session_state.last_document_context = document_context_sections
     st.rerun()
 
 

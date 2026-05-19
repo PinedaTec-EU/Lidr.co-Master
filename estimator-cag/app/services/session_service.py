@@ -45,15 +45,16 @@ async def estimate_session_turn(
     friendly_name: str | None = None,
     provider: str | None = None,
     model: str | None = None,
-) -> tuple[dict, ProjectMetadata]:
+) -> tuple[dict, ProjectMetadata, list[str]]:
     session = session_store.get(session_id)
     if session is None:
         raise KeyError(session_id)
 
     attachment_sections = await extract_attachments_text(attachments)
     path_sections = await extract_document_paths_text(document_paths)
+    document_context_sections = attachment_sections + path_sections
     request = EstimationRequest(
-        description=compose_description(transcript, attachment_sections + path_sections),
+        description=compose_description(transcript, document_context_sections),
         project_type=project_type,
         detail_level=detail_level,
         output_format=output_format,
@@ -81,5 +82,6 @@ async def estimate_session_turn(
         result["text"],
     )
     session.remember_document_sources(document_paths or [])
+    session.set_last_document_context(document_context_sections)
     session_store.save_session(session_id)
-    return result, session.project_metadata
+    return result, session.project_metadata, document_context_sections

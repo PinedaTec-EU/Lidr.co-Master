@@ -480,6 +480,12 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 
 La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, aceptar rutas documentales locales, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` y `document_sources` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
+La zona principal añade dos acciones de inspección:
+- `Ver system prompt activo`
+- `Ver output de Docling`
+
+La segunda abre un diálogo con el texto documental exacto que entró al contexto en el último turno enriquecido.
+
 Captura real de la UI con uno de los documentos generados para pruebas:
 
 ![Portal con sample markdown](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/docs-assets/session-05-generated-md-sample.png)

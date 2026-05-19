@@ -49,6 +49,7 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     session.history.add_turn("user one", "assistant one")
     session.remember_document_sources(["/tmp/spec.md"])
     session.add_conversation_message("user", "Solicitud visible")
+    session.set_last_document_context(["--- document_path: /tmp/spec.md ---\n# Spec"])
     store.save_session(session_id)
 
     response = client.get(f"/api/v1/sessions/{session_id}")
@@ -59,6 +60,7 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     assert body["turns"] == [["user one", "assistant one"]]
     assert body["document_sources"] == ["/tmp/spec.md"]
     assert body["conversation_messages"] == [{"role": "user", "content": "Solicitud visible"}]
+    assert body["last_document_context"] == ["--- document_path: /tmp/spec.md ---\n# Spec"]
 
 
 def test_estimate_rejects_short_description() -> None:
@@ -262,7 +264,9 @@ def test_session_estimate_document_paths_reach_request(tmp_path: Path, monkeypat
 
     assert response.status_code == 200
     assert "Integrar SSO y reporting." in captured["description"]
-    assert str(doc_path) in session_service.session_store.get(session_id).document_sources
+    persisted_session = session_service.session_store.get(session_id)
+    assert str(doc_path) in persisted_session.document_sources
+    assert any("Integrar SSO y reporting." in item for item in persisted_session.last_document_context)
 
 
 def test_session_estimate_history_respects_max_turns(monkeypatch) -> None:

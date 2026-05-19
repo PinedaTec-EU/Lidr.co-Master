@@ -37,6 +37,7 @@ async def get_session_detail(session_id: str):
         project_metadata=session.project_metadata.model_dump(),
         document_sources=session.document_sources,
         conversation_messages=session.conversation_messages,
+        last_document_context=session.last_document_context,
     )
 
 
@@ -57,7 +58,7 @@ async def estimate_session(
         raise HTTPException(status_code=404, detail="Session not found")
 
     try:
-        result, _project_metadata = await estimate_session_turn(
+        result, _project_metadata, _document_context_sections = await estimate_session_turn(
             session_id=session_id,
             transcript=transcript,
             project_type=project_type,
