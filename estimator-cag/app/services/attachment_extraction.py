@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from io import BytesIO
 
 from fastapi import UploadFile
@@ -11,11 +12,14 @@ async def extract_attachments_text(attachments: list[UploadFile] | None) -> list
 
     extracted_sections: list[str] = []
     for attachment in attachments:
-        content = await attachment.read()
-        text = _extract_text_from_bytes(attachment.filename or "attachment", content)
+        filename = getattr(attachment, "filename", None) or getattr(attachment, "name", None) or "attachment"
+        read_fn = getattr(attachment, "read")
+        read_result = read_fn()
+        content = await read_result if inspect.isawaitable(read_result) else read_result
+        text = _extract_text_from_bytes(filename, content)
         if text.strip():
             extracted_sections.append(
-                f"--- attachment: {attachment.filename or 'attachment'} ---\n{text.strip()}"
+                f"--- attachment: {filename} ---\n{text.strip()}"
             )
     return extracted_sections
 

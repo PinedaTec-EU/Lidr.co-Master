@@ -1,6 +1,6 @@
 # estimator-cag
 
-Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe la transcripción de una reunión con un cliente, inyecta un conjunto de estimaciones previas directamente en el prompt del modelo y devuelve una estimación detallada de esfuerzo en formato Markdown.
+Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales con memoria en proceso y puede enriquecer cada turno con adjuntos locales (PDF/Word/TXT) antes de llamar al modelo.
 
 No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada al LLM.
 
@@ -69,7 +69,9 @@ estimator-cag/
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
-│       └── llm_service.py     # Lógica de llamada a proveedores LLM
+│       ├── attachment_extraction.py
+│       ├── llm_service.py     # Lógica de llamada a proveedores LLM
+│       └── session_service.py # Orquestación multi-turno, memoria y adjuntos
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
 ├── streamlit_app.py           # Formulario web de producto para el estimador CAG
@@ -84,8 +86,8 @@ estimator-cag/
 
 ## Endpoints
 
-Número de endpoints funcionales: **2** bajo `/api/v1`.
 Número de endpoints funcionales: **3** bajo `/api/v1`.
+Número de endpoints funcionales: **4** bajo `/api/v1`.
 
 Número de endpoints operativos: **1** fuera de `/api/v1`.
 
@@ -176,6 +178,31 @@ Crea una sesión conversacional vacía y devuelve un identificador reutilizable.
   "session_id": "6c8d94a0-f5c2-4f24-9078-df4c8d81c1da"
 }
 ```
+
+---
+
+### `POST /api/v1/sessions/{session_id}/estimate`
+
+Continúa una conversación existente y acepta adjuntos opcionales vía `multipart/form-data`.
+
+Campos de form-data:
+- `transcript`
+- `project_type`
+- `detail_level`
+- `output_format`
+- `attachments` opcional
+
+Camino elegido para adjuntos: **extracción local**.
+Razón:
+- desacopla el flujo del proveedor multimodal
+- se puede testear en local sin Files API
+- prepara mejor el salto futuro a chunking y RAG
+
+Tipos soportados actualmente:
+- `.pdf`
+- `.docx`
+- `.txt`
+- `.md`
 
 ---
 
@@ -289,6 +316,8 @@ Respuesta esperada:
 ### 3. Abrir Swagger
 
 Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que aparecen:
+- `POST /api/v1/sessions`
+- `POST /api/v1/sessions/{session_id}/estimate`
 - `POST /api/v1/estimate`
 - `GET /api/v1/estimate/friendly-names`
 - `GET /health`
@@ -333,10 +362,15 @@ uv run pytest
 
 Cobertura actual de tests:
 - `GET /health`
+- `POST /api/v1/sessions`
 - `GET /api/v1/estimate/friendly-names`
-- rechazo de `transcription` vacía
+- rechazo de `description` inválida
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
+- actualización de `project_metadata` en sesiones multi-turno
+- influencia de adjuntos `.docx` en el request efectivo al LLM
+- recorte del historial a `MAX_TURNS`
+- rechazo de tipos de adjunto no soportados
 - validación del schema tipado del formulario de producto
 - render de templates Jinja2 por versión y variantes de formato/detalle
 - ventana deslizante de historial y store de sesión en memoria
@@ -365,17 +399,18 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 uv run streamlit run streamlit_app.py
 ```
 
-La interfaz usa `st.form` para construir una solicitud tipada con `description`, `project_type`, `detail_level` y `output_format`, mantiene el historial visible de solicitudes y respuestas y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+La interfaz usa `st.form` para construir cada turno, crea un `session_id` al cargar la página, permite adjuntar ficheros, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
 Alcance actual de esta capa:
-- formulario de producto tipado sobre el mismo flujo CAG del backend
-- streaming visual de la respuesta del modelo
-- visibilidad del contexto CAG y métricas básicas en sidebar
+- formulario multi-turno tipado sobre el mismo flujo CAG del backend
+- memoria conversacional de proceso por `session_id`
+- visibilidad de `project_metadata` y métricas básicas en sidebar
 
-Quedan fuera de este entregable de sesión 3:
+Quedan fuera de esta fase:
 - fallback automático entre proveedores
-- cacheo inteligente de respuestas
-- trazabilidad/observabilidad avanzada persistida
+- persistencia de memoria entre reinicios
+- compresión avanzada de memoria y estrategia de anclas
+- actor-critic-boss
 
 ---
 

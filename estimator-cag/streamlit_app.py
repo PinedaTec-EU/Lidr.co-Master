@@ -4,11 +4,11 @@ from datetime import datetime, timezone
 import streamlit as st
 
 from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
+from app.services.session_service import create_session, estimate_session_turn, get_session
 from app.services.llm_service import (
     get_available_friendly_names,
     get_context_summary,
     get_system_prompt,
-    stream_estimation,
 )
 from app.context.sample_transcriptions import (
     list_sample_transcriptions,
@@ -28,11 +28,13 @@ def _empty_usage() -> dict:
 
 
 def _init_state() -> None:
+    if "session_id" not in st.session_state:
+        st.session_state.session_id = create_session()
     if "messages" not in st.session_state:
         st.session_state.messages = [
             {
                 "role": "assistant",
-                "content": "Completa el formulario del proyecto y generaré una estimación de software.",
+                "content": "La sesión está lista. Añade contexto del proyecto y continuaré sobre la misma conversación.",
                 "metadata": None,
             }
         ]
@@ -46,6 +48,22 @@ def _init_state() -> None:
         st.session_state.last_response_time = 0.0
     if "pending_request_data" not in st.session_state:
         st.session_state.pending_request_data = None
+
+
+def _reset_conversation() -> None:
+    st.session_state.session_id = create_session()
+    st.session_state.messages = [
+        {
+            "role": "assistant",
+            "content": "Nueva conversación creada. Puedes empezar un proyecto distinto.",
+            "metadata": None,
+        }
+    ]
+    st.session_state.last_usage = _empty_usage()
+    st.session_state.last_model = ""
+    st.session_state.last_provider = ""
+    st.session_state.last_response_time = 0.0
+    st.session_state.pending_request_data = None
 
 
 def _project_type_label(value: ProjectType) -> str:
@@ -167,8 +185,11 @@ def _apply_styles() -> None:
     )
 
 
-async def _collect_stream(request: EstimationRequest, friendly_name: str) -> tuple[str, dict]:
-    content = ""
+async def _collect_turn(
+    request: EstimationRequest,
+    friendly_name: str,
+    attachments,
+) -> tuple[str, dict]:
     metadata = {
         "model": "",
         "provider": "",
@@ -176,20 +197,28 @@ async def _collect_stream(request: EstimationRequest, friendly_name: str) -> tup
         "tokens_used": _empty_usage(),
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
-    placeholder = st.empty()
     started_at = datetime.now(timezone.utc)
-
-    async for event in stream_estimation(request, friendly_name=friendly_name):
-        if event["type"] == "delta":
-            content += event["content"]
-            placeholder.markdown(content + "▌")
-        elif event["type"] == "metadata":
-            metadata.update(event)
-
-    placeholder.markdown(content)
+    result, project_metadata = await estimate_session_turn(
+        session_id=st.session_state.session_id,
+        transcript=request.description,
+        project_type=request.project_type,
+        detail_level=request.detail_level,
+        output_format=request.output_format,
+        attachments=attachments,
+        friendly_name=friendly_name,
+    )
     elapsed = (datetime.now(timezone.utc) - started_at).total_seconds()
-    metadata["response_time"] = elapsed
-    return content, metadata
+    metadata.update(
+        {
+            "model": result.get("model", ""),
+            "provider": result.get("provider", ""),
+            "prompt_version": result.get("prompt_version", ""),
+            "tokens_used": result.get("tokens_used", _empty_usage()),
+            "response_time": elapsed,
+            "project_metadata": project_metadata.model_dump(),
+        }
+    )
+    return result["text"], metadata
 
 
 def _render_control_panel() -> str:
@@ -200,6 +229,7 @@ def _render_control_panel() -> str:
     with st.sidebar:
         st.subheader("Configuración")
         selected_name = st.selectbox("Modelo", friendly_names, index=0)
+        st.caption(f"session_id: `{st.session_state.session_id}`")
 
         st.divider()
         st.subheader("Última llamada")
@@ -210,8 +240,13 @@ def _render_control_panel() -> str:
         st.metric("Tokens total", st.session_state.last_usage["total"])
         st.metric("Tiempo", f"{st.session_state.last_response_time:.2f}s")
 
-        if st.button("Limpiar conversación", use_container_width=True):
-            st.session_state.clear()
+        session = get_session(st.session_state.session_id)
+        st.divider()
+        st.subheader("Project metadata")
+        st.json(session.project_metadata.model_dump() if session else {}, expanded=False)
+
+        if st.button("Nueva conversación", use_container_width=True):
+            _reset_conversation()
             st.rerun()
 
         st.divider()
@@ -264,7 +299,8 @@ def _render_control_panel() -> str:
 
 @st.dialog("System prompt activo", width="large")
 def _show_prompt_dialog() -> None:
-    st.code(get_system_prompt(), language="markdown")
+    session = get_session(st.session_state.session_id)
+    st.code(get_system_prompt(project_metadata=session.project_metadata if session else None), language="markdown")
 
 
 def _render_prompt_panel() -> None:
@@ -286,8 +322,11 @@ def _render_conversation() -> None:
                 )
 
 
-def _send_request(request: EstimationRequest, selected_friendly_name: str) -> None:
+def _send_request(request: EstimationRequest, attachments, selected_friendly_name: str) -> None:
     request_summary = _request_to_message(request)
+    if attachments:
+        filenames = ", ".join(getattr(file, "name", "attachment") for file in attachments)
+        request_summary += f"\n\n#### Adjuntos\n{filenames}"
     st.session_state.messages.append(
         {"role": "user", "content": request_summary, "metadata": None}
     )
@@ -297,8 +336,9 @@ def _send_request(request: EstimationRequest, selected_friendly_name: str) -> No
     with st.chat_message("assistant"):
         try:
             estimation, metadata = asyncio.run(
-                _collect_stream(request, selected_friendly_name)
+                _collect_turn(request, selected_friendly_name, attachments)
             )
+            st.markdown(estimation)
         except Exception as exc:
             estimation = f"No se pudo generar la estimación: {exc}"
             metadata = None
@@ -320,7 +360,7 @@ _apply_styles()
 selected_friendly_name = _render_control_panel()
 
 st.title("Software Estimator CAG")
-st.caption("Formulario de producto en Streamlit usando el mismo wrapper CAG del backend.")
+st.caption("Formulario multi-turno con memoria conversacional y contexto enriquecido.")
 _render_conversation()
 
 _render_prompt_panel()
@@ -328,11 +368,11 @@ _render_prompt_panel()
 pending_data = st.session_state.pending_request_data or {}
 
 with st.form("estimation-request-form", clear_on_submit=False):
-    description = st.text_area(
-        "Descripción del proyecto",
+    transcript = st.text_area(
+        "Transcripción o nuevo contexto del turno",
         value=pending_data.get("description", ""),
         height=220,
-        placeholder="Describe el producto, alcance, flujos clave y condicionantes de entrega.",
+        placeholder="Añade nueva información sobre el proyecto actual, decisiones, alcance o restricciones.",
     )
     col_a, col_b, col_c = st.columns(3)
     with col_a:
@@ -362,6 +402,11 @@ with st.form("estimation-request-form", clear_on_submit=False):
             ),
             format_func=_output_format_label,
         )
+    attachments = st.file_uploader(
+        "Adjuntos complementarios",
+        accept_multiple_files=True,
+        type=["pdf", "docx", "txt", "md"],
+    )
 
     submitted = st.form_submit_button("Generar estimación", use_container_width=True)
 
@@ -371,7 +416,7 @@ if pending_data:
 if submitted:
     try:
         request = EstimationRequest(
-            description=description,
+            description=transcript,
             project_type=project_type,
             detail_level=detail_level,
             output_format=output_format,
@@ -379,4 +424,4 @@ if submitted:
     except Exception as exc:
         st.warning(str(exc))
     else:
-        _send_request(request, selected_friendly_name)
+        _send_request(request, attachments or [], selected_friendly_name)
