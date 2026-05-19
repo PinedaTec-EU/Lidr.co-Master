@@ -4,8 +4,16 @@ from typing import Any
 
 from app.config import settings
 from app.context.examples import ESTIMATION_EXAMPLES
+from app.prompts.loader import render_estimation_prompt
+from app.schemas import (
+    DetailLevel,
+    EstimationRequest,
+    OutputFormat,
+    ProjectType,
+)
 
 MAX_COMPLETION_TOKENS = 1200
+DEFAULT_PROMPT_VERSION = "v1"
 
 
 @dataclass(frozen=True)
@@ -47,38 +55,24 @@ def _model_routes() -> dict[str, ModelRoute]:
     }
 
 
-def _build_system_prompt() -> str:
-    examples_text = ""
-    for i, example in enumerate(ESTIMATION_EXAMPLES, 1):
-        examples_text += f"""
-### Ejemplo {i}
-**Resumen de reunión:**
-{example['meeting_summary']}
-
-**Estimación generada:**
-{example['estimation']}
----
-"""
-
-    return f"""Eres un estimador de software experto con años de experiencia en proyectos de desarrollo web y mobile.
-
-Tu tarea es analizar la transcripción de una reunión con un cliente y generar una estimación detallada del proyecto de software.
-
-La estimación debe incluir:
-- Desglose de tareas con horas estimadas para cada una
-- Total de horas estimadas
-- Equipo recomendado (roles y nivel de dedicación)
-- Duración estimada del proyecto en semanas
-
-A continuación tienes ejemplos de estimaciones previas que debes usar como referencia de estilo, formato y calibración:
-
-{examples_text}
-
-Usa estos ejemplos para calibrar la complejidad y granularidad de tus respuestas. Responde siempre en español y en formato Markdown."""
+def _default_prompt_request() -> EstimationRequest:
+    return EstimationRequest(
+        description=(
+            "Aplicación web para equipos internos con autenticación, panel operativo, "
+            "reporting y notificaciones por email para procesos diarios."
+        ),
+        project_type=ProjectType.INTERNAL_TOOL,
+        detail_level=DetailLevel.MEDIUM,
+        output_format=OutputFormat.NARRATIVE,
+    )
 
 
-def get_system_prompt() -> str:
-    return _build_system_prompt()
+def get_system_prompt(
+    request: EstimationRequest | None = None,
+    version: str = DEFAULT_PROMPT_VERSION,
+) -> str:
+    system, _user = render_estimation_prompt(request or _default_prompt_request(), version=version)
+    return system
 
 
 def get_context_summary() -> dict:
@@ -184,10 +178,10 @@ def _litellm_kwargs(route: ModelRoute) -> dict[str, Any]:
     return kwargs
 
 
-def _messages(system_prompt: str, transcription: str) -> list[dict[str, str]]:
+def _messages(system_prompt: str, user_prompt: str) -> list[dict[str, str]]:
     return [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": transcription},
+        {"role": "user", "content": user_prompt},
     ]
 
 
@@ -202,38 +196,46 @@ def _chunk_delta_content(chunk) -> str | None:
 
 
 async def get_estimation(
-    transcription: str,
+    request: EstimationRequest,
     friendly_name: str | None = None,
     provider: str | None = None,
     model: str | None = None,
+    prompt_version: str = DEFAULT_PROMPT_VERSION,
 ) -> dict:
-    system_prompt = _build_system_prompt()
+    system_prompt, user_prompt = render_estimation_prompt(request, version=prompt_version)
     route = _resolve_route(friendly_name, provider, model)
-    return await _call_litellm(system_prompt, transcription, route)
+    return await _call_litellm(system_prompt, user_prompt, route, prompt_version)
 
 
 async def stream_estimation(
-    transcription: str,
+    request: EstimationRequest,
     friendly_name: str | None = None,
     provider: str | None = None,
     model: str | None = None,
+    prompt_version: str = DEFAULT_PROMPT_VERSION,
 ) -> AsyncIterator[dict]:
-    system_prompt = _build_system_prompt()
+    system_prompt, user_prompt = render_estimation_prompt(request, version=prompt_version)
     route = _resolve_route(friendly_name, provider, model)
-    async for event in _stream_litellm(system_prompt, transcription, route):
+    async for event in _stream_litellm(system_prompt, user_prompt, route, prompt_version):
         yield event
 
 
-async def _call_litellm(system_prompt: str, transcription: str, route: ModelRoute) -> dict:
+async def _call_litellm(
+    system_prompt: str,
+    user_prompt: str,
+    route: ModelRoute,
+    prompt_version: str,
+) -> dict:
     from litellm import acompletion
 
     response = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, transcription),
+        messages=_messages(system_prompt, user_prompt),
     )
     return {
-        "estimation": response.choices[0].message.content,
+        "text": response.choices[0].message.content,
+        "prompt_version": prompt_version,
         "model": route.model,
         "provider": route.provider,
         "tokens_used": _tokens_used(response.usage),
@@ -242,15 +244,16 @@ async def _call_litellm(system_prompt: str, transcription: str, route: ModelRout
 
 async def _stream_litellm(
     system_prompt: str,
-    transcription: str,
+    user_prompt: str,
     route: ModelRoute,
+    prompt_version: str,
 ) -> AsyncIterator[dict]:
     from litellm import acompletion
 
     stream = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, transcription),
+        messages=_messages(system_prompt, user_prompt),
         stream=True,
     )
 
@@ -261,6 +264,7 @@ async def _stream_litellm(
         if chunk.usage:
             yield {
                 "type": "metadata",
+                "prompt_version": prompt_version,
                 "model": route.model,
                 "provider": route.provider,
                 "tokens_used": _tokens_used(chunk.usage),

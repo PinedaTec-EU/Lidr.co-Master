@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 import streamlit as st
 
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
 from app.services.llm_service import (
     get_available_friendly_names,
     get_context_summary,
@@ -31,7 +32,7 @@ def _init_state() -> None:
         st.session_state.messages = [
             {
                 "role": "assistant",
-                "content": "Pega una transcripción de reunión y generaré una estimación de software.",
+                "content": "Completa el formulario del proyecto y generaré una estimación de software.",
                 "metadata": None,
             }
         ]
@@ -43,10 +44,47 @@ def _init_state() -> None:
         st.session_state.last_provider = ""
     if "last_response_time" not in st.session_state:
         st.session_state.last_response_time = 0.0
-    if "transcription_text" not in st.session_state:
-        st.session_state.transcription_text = ""
-    if "pending_transcription" not in st.session_state:
-        st.session_state.pending_transcription = ""
+    if "pending_request_data" not in st.session_state:
+        st.session_state.pending_request_data = None
+
+
+def _project_type_label(value: ProjectType) -> str:
+    labels = {
+        ProjectType.MOBILE_APP: "Mobile app",
+        ProjectType.WEB_SAAS: "Web SaaS",
+        ProjectType.INTERNAL_TOOL: "Internal tool",
+        ProjectType.DATA_PIPELINE: "Data pipeline",
+    }
+    return labels[value]
+
+
+def _detail_level_label(value: DetailLevel) -> str:
+    labels = {
+        DetailLevel.SUMMARY: "Summary",
+        DetailLevel.MEDIUM: "Medium",
+        DetailLevel.DETAILED: "Detailed",
+    }
+    return labels[value]
+
+
+def _output_format_label(value: OutputFormat) -> str:
+    labels = {
+        OutputFormat.PHASES_TABLE: "Phases table",
+        OutputFormat.LINE_ITEMS: "Line items",
+        OutputFormat.NARRATIVE: "Narrative",
+    }
+    return labels[value]
+
+
+def _request_to_message(request: EstimationRequest) -> str:
+    return (
+        "### Solicitud de estimación\n"
+        f"- Tipo de proyecto: {_project_type_label(request.project_type)}\n"
+        f"- Nivel de detalle: {_detail_level_label(request.detail_level)}\n"
+        f"- Formato de salida: {_output_format_label(request.output_format)}\n\n"
+        "#### Descripción\n"
+        f"{request.description.strip()}"
+    )
 
 
 def _apply_styles() -> None:
@@ -129,18 +167,19 @@ def _apply_styles() -> None:
     )
 
 
-async def _collect_stream(transcription: str, friendly_name: str) -> tuple[str, dict]:
+async def _collect_stream(request: EstimationRequest, friendly_name: str) -> tuple[str, dict]:
     content = ""
     metadata = {
         "model": "",
         "provider": "",
+        "prompt_version": "",
         "tokens_used": _empty_usage(),
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     placeholder = st.empty()
     started_at = datetime.now(timezone.utc)
 
-    async for event in stream_estimation(transcription, friendly_name=friendly_name):
+    async for event in stream_estimation(request, friendly_name=friendly_name):
         if event["type"] == "delta":
             content += event["content"]
             placeholder.markdown(content + "▌")
@@ -184,7 +223,12 @@ def _render_control_panel() -> str:
                 index=0,
             )
             if st.button("Cargar sample del repo", use_container_width=True):
-                st.session_state.pending_transcription = read_sample_transcription(selected_sample)
+                st.session_state.pending_request_data = {
+                    "description": read_sample_transcription(selected_sample),
+                    "project_type": ProjectType.INTERNAL_TOOL.value,
+                    "detail_level": DetailLevel.MEDIUM.value,
+                    "output_format": OutputFormat.NARRATIVE.value,
+                }
                 st.rerun()
         else:
             st.caption("No hay transcripciones versionadas disponibles.")
@@ -203,11 +247,16 @@ def _render_control_panel() -> str:
                     unsafe_allow_html=True,
                 )
                 if st.button(
-                    "Pegar en el formulario",
+                    "Cargar en el formulario",
                     key=f"use_example_{index}",
                     use_container_width=True,
                 ):
-                    st.session_state.pending_transcription = example["transcription"]
+                    st.session_state.pending_request_data = {
+                        "description": example["transcription"],
+                        "project_type": ProjectType.WEB_SAAS.value,
+                        "detail_level": DetailLevel.MEDIUM.value,
+                        "output_format": OutputFormat.NARRATIVE.value,
+                    }
                     st.rerun()
 
     return selected_name
@@ -237,17 +286,18 @@ def _render_conversation() -> None:
                 )
 
 
-def _send_transcription(transcription: str, selected_friendly_name: str) -> None:
+def _send_request(request: EstimationRequest, selected_friendly_name: str) -> None:
+    request_summary = _request_to_message(request)
     st.session_state.messages.append(
-        {"role": "user", "content": transcription, "metadata": None}
+        {"role": "user", "content": request_summary, "metadata": None}
     )
     with st.chat_message("user"):
-        st.markdown(transcription)
+        st.markdown(request_summary)
 
     with st.chat_message("assistant"):
         try:
             estimation, metadata = asyncio.run(
-                _collect_stream(transcription, selected_friendly_name)
+                _collect_stream(request, selected_friendly_name)
             )
         except Exception as exc:
             estimation = f"No se pudo generar la estimación: {exc}"
@@ -270,21 +320,63 @@ _apply_styles()
 selected_friendly_name = _render_control_panel()
 
 st.title("Software Estimator CAG")
-st.caption("Chat conversacional con Streamlit usando el mismo system prompt del endpoint CAG.")
+st.caption("Formulario de producto en Streamlit usando el mismo wrapper CAG del backend.")
 _render_conversation()
 
 _render_prompt_panel()
 
-if st.session_state.pending_transcription:
-    pending_transcription = st.session_state.pending_transcription
-    st.session_state.pending_transcription = ""
-    _send_transcription(pending_transcription, selected_friendly_name)
+pending_data = st.session_state.pending_request_data or {}
 
-transcription = st.chat_input("Escribe o pega la transcripción de la reunión.")
+with st.form("estimation-request-form", clear_on_submit=False):
+    description = st.text_area(
+        "Descripción del proyecto",
+        value=pending_data.get("description", ""),
+        height=220,
+        placeholder="Describe el producto, alcance, flujos clave y condicionantes de entrega.",
+    )
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        project_type = st.selectbox(
+            "Tipo de proyecto",
+            list(ProjectType),
+            index=list(ProjectType).index(
+                ProjectType(pending_data.get("project_type", ProjectType.WEB_SAAS.value))
+            ),
+            format_func=_project_type_label,
+        )
+    with col_b:
+        detail_level = st.selectbox(
+            "Nivel de detalle",
+            list(DetailLevel),
+            index=list(DetailLevel).index(
+                DetailLevel(pending_data.get("detail_level", DetailLevel.MEDIUM.value))
+            ),
+            format_func=_detail_level_label,
+        )
+    with col_c:
+        output_format = st.selectbox(
+            "Formato de salida",
+            list(OutputFormat),
+            index=list(OutputFormat).index(
+                OutputFormat(pending_data.get("output_format", OutputFormat.NARRATIVE.value))
+            ),
+            format_func=_output_format_label,
+        )
 
-if transcription:
-    cleaned_transcription = transcription.strip()
-    if cleaned_transcription:
-        _send_transcription(cleaned_transcription, selected_friendly_name)
+    submitted = st.form_submit_button("Generar estimación", use_container_width=True)
+
+if pending_data:
+    st.session_state.pending_request_data = None
+
+if submitted:
+    try:
+        request = EstimationRequest(
+            description=description,
+            project_type=project_type,
+            detail_level=detail_level,
+            output_format=output_format,
+        )
+    except Exception as exc:
+        st.warning(str(exc))
     else:
-        st.warning("La transcripción no puede estar vacía.")
+        _send_request(request, selected_friendly_name)

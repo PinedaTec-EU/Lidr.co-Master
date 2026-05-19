@@ -57,13 +57,21 @@ estimator-cag/
 │   ├── main.py                # Aplicación FastAPI + router + health
 │   ├── context/
 │   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
+│   ├── prompts/
+│   │   ├── loader.py          # Loader Jinja2 con versiones de prompt
+│   │   └── estimation/
+│   │       └── v1/
+│   │           ├── system.j2
+│   │           ├── user.j2
+│   │           └── examples.j2
+│   ├── schemas.py             # Contrato tipado para la interfaz de producto
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
 │       └── llm_service.py     # Lógica de llamada a proveedores LLM
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
-├── streamlit_app.py           # Chat web conversacional para el estimador CAG
+├── streamlit_app.py           # Formulario web de producto para el estimador CAG
 ├── tests/                     # Tests API y validación del contrato HTTP
 ├── pyproject.toml
 ├── .gitignore
@@ -96,15 +104,15 @@ Comprueba que el servicio está activo.
 
 ### `POST /api/v1/estimate`
 
-Genera una estimación de software a partir de la transcripción de una reunión.
+Genera una estimación de software a partir de un request tipado de producto.
 
 **Request body:**
 ```json
 {
-  "transcription": "El cliente necesita una app web para gestión de reservas...",
-  "friendly_name": "openai",
-  "provider": null,
-  "model": null
+  "description": "El cliente necesita una app web para gestión de reservas con panel operativo y recordatorios por email.",
+  "project_type": "web_saas",
+  "detail_level": "medium",
+  "output_format": "narrative"
 }
 ```
 
@@ -112,30 +120,29 @@ Campos:
 
 | Campo | Obligatorio | Descripción |
 |-------|-------------|-------------|
-| `transcription` | Sí | Texto de la reunión o descripción funcional a estimar. |
-| `friendly_name` | No | Alias de configuración de proveedor/modelo. Ejemplo: `openai`, `anthropic`, `ollama`. |
-| `provider` | No | Override directo del proveedor. |
-| `model` | No | Override directo del modelo. |
+| `description` | Sí | Descripción funcional del proyecto a estimar. Entre 20 y 2000 caracteres. |
+| `project_type` | Sí | Uno de `mobile_app`, `web_saas`, `internal_tool`, `data_pipeline`. |
+| `detail_level` | Sí | Uno de `summary`, `medium`, `detailed`. |
+| `output_format` | Sí | Uno de `phases_table`, `line_items`, `narrative`. |
+
+Parámetros de query opcionales:
+- `friendly_name`
+- `provider`
+- `model`
 
 **Respuesta:**
 ```json
 {
-  "estimation": "## Estimación: ...\n\n### Desglose de tareas:\n...",
-  "model": "gpt-4o-mini",
-  "provider": "openai",
-  "tokens_used": {
-    "prompt": 2840,
-    "completion": 512,
-    "total": 3352
-  },
-  "timestamp": "2026-04-30T10:23:45.123456+00:00"
+  "text": "## Estimación: ...\n\n### Desglose de tareas:\n...",
+  "prompt_version": "v1"
 }
 ```
 
 **Errores:**
 | Código | Causa |
 |--------|-------|
-| `400`  | `transcription` vacía o solo espacios |
+| `400`  | `friendly_name` desconocido |
+| `422`  | body inválido o `description` demasiado corta |
 | `500`  | Error en la llamada al LLM |
 
 ---
@@ -276,15 +283,16 @@ Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que apa
 curl -X POST http://localhost:8000/api/v1/estimate \
   -H "Content-Type: application/json" \
   -d '{
-    "transcription": "El cliente necesita una landing page con formulario de contacto, integración con HubSpot y un blog editable. El diseño ya existe en Figma y quiere tenerlo en producción en 4 semanas.",
-    "friendly_name": "openai"
+    "description": "El cliente necesita una landing page con formulario de contacto, integración con HubSpot y un blog editable. El diseño ya existe en Figma y quiere tenerlo en producción en 4 semanas.",
+    "project_type": "web_saas",
+    "detail_level": "medium",
+    "output_format": "narrative"
   }'
 ```
 
 Respuesta esperada:
 - `status 200`
-- JSON con `estimation`, `model`, `provider`, `tokens_used` y `timestamp`
-- `provider="openai"` si usas la ruta de OpenAI
+- JSON con `text` y `prompt_version`
 
 ### 5. Probar con una transcripción versionada
 
@@ -293,7 +301,7 @@ El repo incluye una transcripción de ejemplo para repetir la prueba sin inventa
 ```bash
 curl -X POST http://localhost:8000/api/v1/estimate \
   -H "Content-Type: application/json" \
-  -d "$(jq -Rs '{transcription: .}' sample-transcriptions/meeting-health-clinic.md)"
+  -d "$(jq -Rs '{description: ., project_type: \"internal_tool\", detail_level: \"medium\", output_format: \"narrative\"}' sample-transcriptions/meeting-health-clinic.md)"
 ```
 
 ## Tests automatizados
@@ -313,6 +321,8 @@ Cobertura actual de tests:
 - rechazo de `transcription` vacía
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
+- validación del schema tipado del formulario de producto
+- render de templates Jinja2 por versión y variantes de formato/detalle
 - construcción del `system prompt`
 - resumen del contexto CAG expuesto a la UI
 - resolución de rutas de proveedor/modelo
@@ -338,10 +348,10 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 uv run streamlit run streamlit_app.py
 ```
 
-La interfaz usa `st.chat_message` y `st.chat_input`, mantiene el historial durante la sesión y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+La interfaz usa `st.form` para construir una solicitud tipada con `description`, `project_type`, `detail_level` y `output_format`, mantiene el historial visible de solicitudes y respuestas y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
 Alcance actual de esta capa:
-- chat conversacional sobre el mismo flujo CAG del backend
+- formulario de producto tipado sobre el mismo flujo CAG del backend
 - streaming visual de la respuesta del modelo
 - visibilidad del contexto CAG y métricas básicas en sidebar
 
