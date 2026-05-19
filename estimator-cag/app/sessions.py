@@ -116,6 +116,14 @@ class Session:
     document_sources: list[str] = field(default_factory=list)
     conversation_messages: list[dict[str, str]] = field(default_factory=list)
     last_document_context: list[str] = field(default_factory=list)
+    last_run_info: dict = field(
+        default_factory=lambda: {
+            "provider": "",
+            "model": "",
+            "tokens_used": {"prompt": 0, "completion": 0, "total": 0},
+            "response_time": 0.0,
+        }
+    )
 
     def remember_document_sources(self, source_paths: list[str]) -> None:
         normalized_existing = {item for item in self.document_sources}
@@ -130,6 +138,21 @@ class Session:
     def set_last_document_context(self, sections: list[str]) -> None:
         self.last_document_context = list(sections)
 
+    def set_last_run_info(
+        self,
+        *,
+        provider: str,
+        model: str,
+        tokens_used: dict,
+        response_time: float,
+    ) -> None:
+        self.last_run_info = {
+            "provider": provider,
+            "model": model,
+            "tokens_used": tokens_used,
+            "response_time": response_time,
+        }
+
     def to_dict(self) -> dict:
         return {
             "history": self.history.to_dict(),
@@ -137,6 +160,7 @@ class Session:
             "document_sources": self.document_sources,
             "conversation_messages": self.conversation_messages,
             "last_document_context": self.last_document_context,
+            "last_run_info": self.last_run_info,
         }
 
     @classmethod
@@ -147,6 +171,17 @@ class Session:
             document_sources=list(payload.get("document_sources", [])),
             conversation_messages=list(payload.get("conversation_messages", [])),
             last_document_context=list(payload.get("last_document_context", [])),
+            last_run_info=dict(
+                payload.get(
+                    "last_run_info",
+                    {
+                        "provider": "",
+                        "model": "",
+                        "tokens_used": {"prompt": 0, "completion": 0, "total": 0},
+                        "response_time": 0.0,
+                    },
+                )
+            ),
         )
 
 

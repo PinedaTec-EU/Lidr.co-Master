@@ -38,6 +38,7 @@ async def get_session_detail(session_id: str):
         document_sources=session.document_sources,
         conversation_messages=session.conversation_messages,
         last_document_context=session.last_document_context,
+        last_run_info=session.last_run_info,
     )
 
 

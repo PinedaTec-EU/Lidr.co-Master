@@ -45,3 +45,4 @@ class SessionDetailResponse(BaseModel):
     document_sources: list[str]
     conversation_messages: list[dict[str, str]]
     last_document_context: list[str]
+    last_run_info: dict

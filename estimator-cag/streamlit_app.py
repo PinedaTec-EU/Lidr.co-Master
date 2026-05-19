@@ -4,7 +4,12 @@ from datetime import datetime, timezone
 import streamlit as st
 
 from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
-from app.services.session_service import create_session, estimate_session_turn, get_session
+from app.services.session_service import (
+    create_session,
+    estimate_session_turn,
+    get_session,
+    persist_last_run_info,
+)
 from app.services.llm_service import (
     get_available_friendly_names,
     get_context_summary,
@@ -60,6 +65,27 @@ def _hydrate_messages_from_session(session_id: str) -> list[dict]:
     return messages
 
 
+def _hydrate_last_run_state_from_session(session_id: str) -> dict:
+    session = get_session(session_id)
+    if session is None:
+        return {
+            "last_usage": _empty_usage(),
+            "last_model": "",
+            "last_provider": "",
+            "last_response_time": 0.0,
+            "last_document_context": [],
+        }
+
+    last_run_info = session.last_run_info or {}
+    return {
+        "last_usage": last_run_info.get("tokens_used", _empty_usage()),
+        "last_model": last_run_info.get("model", ""),
+        "last_provider": last_run_info.get("provider", ""),
+        "last_response_time": float(last_run_info.get("response_time", 0.0)),
+        "last_document_context": session.last_document_context,
+    }
+
+
 def _resolve_initial_session_id() -> str:
     requested_session_id = st.query_params.get("chatid")
     if requested_session_id:
@@ -73,18 +99,21 @@ def _resolve_initial_session_id() -> str:
 
 
 def _init_state() -> None:
+    hydrated = _hydrate_last_run_state_from_session(
+        st.session_state.session_id if "session_id" in st.session_state else _resolve_initial_session_id()
+    )
     if "session_id" not in st.session_state:
         st.session_state.session_id = _resolve_initial_session_id()
     if "messages" not in st.session_state:
         st.session_state.messages = _hydrate_messages_from_session(st.session_state.session_id)
     if "last_usage" not in st.session_state:
-        st.session_state.last_usage = _empty_usage()
+        st.session_state.last_usage = hydrated["last_usage"]
     if "last_model" not in st.session_state:
-        st.session_state.last_model = ""
+        st.session_state.last_model = hydrated["last_model"]
     if "last_provider" not in st.session_state:
-        st.session_state.last_provider = ""
+        st.session_state.last_provider = hydrated["last_provider"]
     if "last_response_time" not in st.session_state:
-        st.session_state.last_response_time = 0.0
+        st.session_state.last_response_time = hydrated["last_response_time"]
     if "pending_request_data" not in st.session_state:
         st.session_state.pending_request_data = None
     if "form_description" not in st.session_state:
@@ -98,7 +127,7 @@ def _init_state() -> None:
     if "selected_sample_documents" not in st.session_state:
         st.session_state.selected_sample_documents = []
     if "last_document_context" not in st.session_state:
-        st.session_state.last_document_context = []
+        st.session_state.last_document_context = hydrated["last_document_context"]
 
 
 def _reset_conversation() -> None:
@@ -608,6 +637,13 @@ def _send_request(
         st.session_state.last_model = metadata.get("model", "")
         st.session_state.last_provider = metadata.get("provider", "")
         st.session_state.last_response_time = metadata.get("response_time", 0.0)
+        persist_last_run_info(
+            st.session_state.session_id,
+            provider=st.session_state.last_provider,
+            model=st.session_state.last_model,
+            tokens_used=st.session_state.last_usage,
+            response_time=st.session_state.last_response_time,
+        )
     st.session_state.last_document_context = document_context_sections
     st.rerun()
 

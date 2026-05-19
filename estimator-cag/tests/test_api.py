@@ -50,6 +50,12 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     session.remember_document_sources(["/tmp/spec.md"])
     session.add_conversation_message("user", "Solicitud visible")
     session.set_last_document_context(["--- document_path: /tmp/spec.md ---\n# Spec"])
+    session.set_last_run_info(
+        provider="openai",
+        model="openai/gpt-4o-mini",
+        tokens_used={"prompt": 5, "completion": 7, "total": 12},
+        response_time=0.42,
+    )
     store.save_session(session_id)
 
     response = client.get(f"/api/v1/sessions/{session_id}")
@@ -61,6 +67,12 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     assert body["document_sources"] == ["/tmp/spec.md"]
     assert body["conversation_messages"] == [{"role": "user", "content": "Solicitud visible"}]
     assert body["last_document_context"] == ["--- document_path: /tmp/spec.md ---\n# Spec"]
+    assert body["last_run_info"] == {
+        "provider": "openai",
+        "model": "openai/gpt-4o-mini",
+        "tokens_used": {"prompt": 5, "completion": 7, "total": 12},
+        "response_time": 0.42,
+    }
 
 
 def test_estimate_rejects_short_description() -> None:

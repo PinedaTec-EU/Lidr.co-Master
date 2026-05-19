@@ -196,6 +196,7 @@ Recupera una sesión existente con:
 - historial de turnos
 - `project_metadata`
 - rutas documentales ya asociadas
+- último bloque de telemetría visible en la UI (`provider`, `model`, `tokens`, `latency`)
 
 Esto permite rehidratar una conversación en la UI usando `?chatid=<session_id>`.
 
@@ -343,6 +344,7 @@ http://localhost:8501/?chatid=01JVNQ5DB7W6M8M7W7Q3NZXK2S
 
 Comportamiento:
 - si la sesión existe en el store persistido, la UI rehidrata el historial
+- también rehidrata el bloque `Última llamada` del sidebar con el último `provider`, `model`, `tokens` y `latency` persistidos
 - si no existe, crea una nueva sesión y actualiza la URL
 - el estado se guarda en `SESSION_STORE_PATH`
 

@@ -55,6 +55,12 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     session.remember_document_sources(["/tmp/requirements.pdf"])
     session.add_conversation_message("user", "Solicitud visible")
     session.set_last_document_context(["--- attachment: requirements.pdf ---\nTexto"])
+    session.set_last_run_info(
+        provider="openai",
+        model="openai/gpt-4o-mini",
+        tokens_used={"prompt": 10, "completion": 20, "total": 30},
+        response_time=1.23,
+    )
     store.save_session("01TESTSESSION00000000000000")
 
     reloaded = SessionStore(path=store_path)
@@ -65,3 +71,9 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     assert persisted.document_sources == ["/tmp/requirements.pdf"]
     assert persisted.conversation_messages == [{"role": "user", "content": "Solicitud visible"}]
     assert persisted.last_document_context == ["--- attachment: requirements.pdf ---\nTexto"]
+    assert persisted.last_run_info == {
+        "provider": "openai",
+        "model": "openai/gpt-4o-mini",
+        "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+        "response_time": 1.23,
+    }

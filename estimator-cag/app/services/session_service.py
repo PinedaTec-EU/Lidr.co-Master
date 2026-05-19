@@ -25,6 +25,27 @@ def get_session(session_id: str) -> Session | None:
     return session_store.get(session_id)
 
 
+def persist_last_run_info(
+    session_id: str,
+    *,
+    provider: str,
+    model: str,
+    tokens_used: dict,
+    response_time: float,
+) -> None:
+    session = session_store.get(session_id)
+    if session is None:
+        raise KeyError(session_id)
+
+    session.set_last_run_info(
+        provider=provider,
+        model=model,
+        tokens_used=tokens_used,
+        response_time=response_time,
+    )
+    session_store.save_session(session_id)
+
+
 def compose_description(transcript: str, attachment_sections: list[str], max_chars: int = 2000) -> str:
     combined = transcript.strip()
     if attachment_sections:
