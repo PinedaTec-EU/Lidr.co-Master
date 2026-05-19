@@ -9,6 +9,7 @@ from app.services.session_service import (
     estimate_session_turn,
     get_session,
     persist_last_run_info,
+    update_external_context_config,
 )
 from app.services.llm_service import (
     get_available_friendly_names,
@@ -34,6 +35,11 @@ st.set_page_config(
 
 def _empty_usage() -> dict:
     return {"prompt": 0, "completion": 0, "total": 0}
+
+
+def _split_multiline_values(raw_value: str) -> list[str]:
+    normalized = raw_value.replace(",", "\n")
+    return [item.strip() for item in normalized.splitlines() if item.strip()]
 
 
 def _sync_query_params(session_id: str) -> None:
@@ -74,6 +80,9 @@ def _hydrate_last_run_state_from_session(session_id: str) -> dict:
             "last_provider": "",
             "last_response_time": 0.0,
             "last_document_context": [],
+            "notion_page_ids_text": "",
+            "notion_search_terms_text": "",
+            "last_external_context": [],
         }
 
     last_run_info = session.last_run_info or {}
@@ -83,6 +92,9 @@ def _hydrate_last_run_state_from_session(session_id: str) -> dict:
         "last_provider": last_run_info.get("provider", ""),
         "last_response_time": float(last_run_info.get("response_time", 0.0)),
         "last_document_context": session.last_document_context,
+        "notion_page_ids_text": "\n".join(session.external_context_config.notion_page_ids),
+        "notion_search_terms_text": "\n".join(session.external_context_config.notion_search_terms),
+        "last_external_context": session.last_external_context,
     }
 
 
@@ -119,15 +131,21 @@ def _init_state() -> None:
     if "form_description" not in st.session_state:
         st.session_state.form_description = ""
     if "form_project_type" not in st.session_state:
-        st.session_state.form_project_type = ProjectType.WEB_SAAS.value
+        st.session_state.form_project_type = ProjectType.WEB_SAAS
     if "form_detail_level" not in st.session_state:
-        st.session_state.form_detail_level = DetailLevel.MEDIUM.value
+        st.session_state.form_detail_level = DetailLevel.MEDIUM
     if "form_output_format" not in st.session_state:
-        st.session_state.form_output_format = OutputFormat.NARRATIVE.value
+        st.session_state.form_output_format = OutputFormat.NARRATIVE
     if "selected_sample_documents" not in st.session_state:
         st.session_state.selected_sample_documents = []
     if "last_document_context" not in st.session_state:
         st.session_state.last_document_context = hydrated["last_document_context"]
+    if "notion_page_ids_text" not in st.session_state:
+        st.session_state.notion_page_ids_text = hydrated["notion_page_ids_text"]
+    if "notion_search_terms_text" not in st.session_state:
+        st.session_state.notion_search_terms_text = hydrated["notion_search_terms_text"]
+    if "last_external_context" not in st.session_state:
+        st.session_state.last_external_context = hydrated["last_external_context"]
 
 
 def _reset_conversation() -> None:
@@ -146,11 +164,14 @@ def _reset_conversation() -> None:
     st.session_state.last_response_time = 0.0
     st.session_state.pending_request_data = None
     st.session_state.form_description = ""
-    st.session_state.form_project_type = ProjectType.WEB_SAAS.value
-    st.session_state.form_detail_level = DetailLevel.MEDIUM.value
-    st.session_state.form_output_format = OutputFormat.NARRATIVE.value
+    st.session_state.form_project_type = ProjectType.WEB_SAAS
+    st.session_state.form_detail_level = DetailLevel.MEDIUM
+    st.session_state.form_output_format = OutputFormat.NARRATIVE
     st.session_state.selected_sample_documents = []
     st.session_state.last_document_context = []
+    st.session_state.notion_page_ids_text = ""
+    st.session_state.notion_search_terms_text = ""
+    st.session_state.last_external_context = []
 
 
 def _apply_pending_form_data() -> None:
@@ -163,14 +184,17 @@ def _apply_pending_form_data() -> None:
         "project_type",
         ProjectType.WEB_SAAS.value,
     )
+    st.session_state.form_project_type = ProjectType(st.session_state.form_project_type)
     st.session_state.form_detail_level = pending_data.get(
         "detail_level",
         DetailLevel.MEDIUM.value,
     )
+    st.session_state.form_detail_level = DetailLevel(st.session_state.form_detail_level)
     st.session_state.form_output_format = pending_data.get(
         "output_format",
         OutputFormat.NARRATIVE.value,
     )
+    st.session_state.form_output_format = OutputFormat(st.session_state.form_output_format)
     st.session_state.pending_request_data = None
 
 
@@ -458,6 +482,10 @@ def _render_control_panel() -> str:
             _show_project_metadata_dialog()
         if st.button("Ver document sources", use_container_width=True):
             _show_document_sources_dialog()
+        if st.button("Ver contexto externo", use_container_width=True):
+            _show_external_context_dialog()
+        if st.button("Ver configuración externa", use_container_width=True):
+            _show_external_context_config_dialog()
 
         if st.button("Nueva conversación", use_container_width=True):
             _reset_conversation()
@@ -495,6 +523,30 @@ def _render_control_panel() -> str:
             st.caption("No hay documentos versionados disponibles.")
 
         st.divider()
+        st.subheader("Fuentes externas")
+        st.caption("Configura referencias explícitas o términos para recuperar contexto desde Notion.")
+        notion_page_ids_text = st.text_area(
+            "Notion page IDs",
+            key="notion_page_ids_text",
+            height=90,
+            placeholder="Uno por línea o separados por coma.",
+        )
+        notion_search_terms_text = st.text_area(
+            "Notion search terms",
+            key="notion_search_terms_text",
+            height=90,
+            placeholder="Cliente, proyecto, iniciativa o palabras clave.",
+        )
+        if st.button("Guardar fuentes externas", use_container_width=True):
+            update_external_context_config(
+                st.session_state.session_id,
+                notion_page_ids=_split_multiline_values(notion_page_ids_text),
+                notion_search_terms=_split_multiline_values(notion_search_terms_text),
+            )
+            st.toast("Fuentes externas guardadas para esta sesión.")
+            st.rerun()
+
+        st.divider()
         st.subheader("Reuniones simuladas")
         st.caption(f"{context['examples_count']} ejemplos disponibles")
         for index, example in enumerate(context["examples"], 1):
@@ -526,7 +578,15 @@ def _render_control_panel() -> str:
 @st.dialog("System prompt activo", width="large")
 def _show_prompt_dialog() -> None:
     session = get_session(st.session_state.session_id)
-    st.code(get_system_prompt(project_metadata=session.project_metadata if session else None), language="markdown")
+    st.code(
+        get_system_prompt(
+            project_metadata=session.project_metadata if session else None,
+            external_context=[
+                item for item in (session.last_external_context if session else [])
+            ],
+        ),
+        language="markdown",
+    )
 
 
 @st.dialog("Output documental enriquecido", width="large")
@@ -552,6 +612,38 @@ def _show_project_metadata_dialog() -> None:
     st.json(session.project_metadata.model_dump(), expanded=True)
 
 
+@st.dialog("Configuración de contexto externo", width="large")
+def _show_external_context_config_dialog() -> None:
+    session = get_session(st.session_state.session_id)
+    if session is None:
+        st.info("La sesión actual no existe.")
+        return
+
+    st.json(session.external_context_config.model_dump(), expanded=True)
+
+
+@st.dialog("Contexto externo resuelto", width="large")
+def _show_external_context_dialog() -> None:
+    session = get_session(st.session_state.session_id)
+    if session is None:
+        st.info("La sesión actual no existe.")
+        return
+
+    if not session.last_external_context:
+        st.info("Todavía no hay contexto externo resuelto en esta sesión.")
+        return
+
+    for index, item in enumerate(session.last_external_context, 1):
+        st.markdown(f"### Fuente {index}: {item.get('title', 'Untitled')}")
+        st.caption(
+            f"{item.get('source', 'external')} · {item.get('updated_at', 'sin fecha')} · "
+            f"{item.get('relevance_reason', 'sin motivo registrado')}"
+        )
+        if item.get("url"):
+            st.markdown(f"[Abrir origen]({item['url']})")
+        st.code(item.get("content", ""), language="markdown")
+
+
 @st.dialog("Document sources", width="large")
 def _show_document_sources_dialog() -> None:
     session = get_session(st.session_state.session_id)
@@ -568,13 +660,16 @@ def _show_document_sources_dialog() -> None:
 
 
 def _render_prompt_panel() -> None:
-    col_a, col_b = st.columns(2)
+    col_a, col_b, col_c = st.columns(3)
     with col_a:
         if st.button("Ver system prompt activo", use_container_width=True):
             _show_prompt_dialog()
     with col_b:
         if st.button("Ver output de Docling", use_container_width=True):
             _show_document_context_dialog()
+    with col_c:
+        if st.button("Ver contexto externo efectivo", use_container_width=True):
+            _show_external_context_dialog()
 
 
 def _render_conversation() -> None:
@@ -645,6 +740,8 @@ def _send_request(
             response_time=st.session_state.last_response_time,
         )
     st.session_state.last_document_context = document_context_sections
+    session = get_session(st.session_state.session_id)
+    st.session_state.last_external_context = session.last_external_context if session else []
     st.rerun()
 
 
@@ -671,9 +768,6 @@ with st.form("estimation-request-form", clear_on_submit=False):
         project_type = st.selectbox(
             "Tipo de proyecto",
             list(ProjectType),
-            index=list(ProjectType).index(
-                ProjectType(st.session_state.form_project_type)
-            ),
             format_func=_project_type_label,
             key="form_project_type",
         )
@@ -681,9 +775,6 @@ with st.form("estimation-request-form", clear_on_submit=False):
         detail_level = st.selectbox(
             "Nivel de detalle",
             list(DetailLevel),
-            index=list(DetailLevel).index(
-                DetailLevel(st.session_state.form_detail_level)
-            ),
             format_func=_detail_level_label,
             key="form_detail_level",
         )
@@ -691,9 +782,6 @@ with st.form("estimation-request-form", clear_on_submit=False):
         output_format = st.selectbox(
             "Formato de salida",
             list(OutputFormat),
-            index=list(OutputFormat).index(
-                OutputFormat(st.session_state.form_output_format)
-            ),
             format_func=_output_format_label,
             key="form_output_format",
         )

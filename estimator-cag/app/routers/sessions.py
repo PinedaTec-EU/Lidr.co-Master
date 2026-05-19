@@ -35,9 +35,11 @@ async def get_session_detail(session_id: str):
         session_id=session_id,
         turns=session.history.turns,
         project_metadata=session.project_metadata.model_dump(),
+        external_context_config=session.external_context_config.model_dump(),
         document_sources=session.document_sources,
         conversation_messages=session.conversation_messages,
         last_document_context=session.last_document_context,
+        last_external_context=session.last_external_context,
         last_run_info=session.last_run_info,
     )
 

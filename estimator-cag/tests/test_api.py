@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.routers import estimations
 from app.services import session_service
-from app.sessions import MAX_TURNS, SessionStore
+from app.sessions import ExternalContextItem, MAX_TURNS, SessionStore
 
 
 client = TestClient(app)
@@ -48,8 +48,13 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     assert session is not None
     session.history.add_turn("user one", "assistant one")
     session.remember_document_sources(["/tmp/spec.md"])
+    session.set_external_context_config(
+        notion_page_ids=["page-123"],
+        notion_search_terms=["Atlas"],
+    )
     session.add_conversation_message("user", "Solicitud visible")
     session.set_last_document_context(["--- document_path: /tmp/spec.md ---\n# Spec"])
+    session.set_last_external_context([])
     session.set_last_run_info(
         provider="openai",
         model="openai/gpt-4o-mini",
@@ -64,9 +69,14 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     body = response.json()
     assert body["session_id"] == session_id
     assert body["turns"] == [["user one", "assistant one"]]
+    assert body["external_context_config"] == {
+        "notion_page_ids": ["page-123"],
+        "notion_search_terms": ["Atlas"],
+    }
     assert body["document_sources"] == ["/tmp/spec.md"]
     assert body["conversation_messages"] == [{"role": "user", "content": "Solicitud visible"}]
     assert body["last_document_context"] == ["--- document_path: /tmp/spec.md ---\n# Spec"]
+    assert body["last_external_context"] == []
     assert body["last_run_info"] == {
         "provider": "openai",
         "model": "openai/gpt-4o-mini",
@@ -201,6 +211,58 @@ def test_session_estimate_updates_project_metadata(monkeypatch) -> None:
     assert "react" in metadata.mentioned_technologies
     assert "postgresql" in metadata.mentioned_technologies
     assert metadata.assumed_team_size == 4
+
+
+def test_session_estimate_passes_external_context_to_service(monkeypatch) -> None:
+    captured: dict[str, object] = {}
+
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        captured["external_context"] = kwargs.get("external_context")
+        return {
+            "text": "Estimación enriquecida con contexto externo.",
+            "prompt_version": "v1",
+            "model": "openai/gpt-4o-mini",
+            "provider": "openai",
+            "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+        }
+
+    async def fake_resolve_external_context(*, session, transcript: str):
+        return [
+            ExternalContextItem(
+                source="notion",
+                title="Atlas kickoff",
+                content="Roadmap y restricciones aprobadas.",
+                url="https://notion.so/atlas",
+                updated_at="2026-05-19T10:00:00Z",
+                relevance_reason="Explicit notion_page_id configured in the session.",
+            )
+        ]
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+    monkeypatch.setattr(session_service, "resolve_external_context", fake_resolve_external_context)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos el proyecto Atlas con contexto desde Notion.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+    )
+
+    assert response.status_code == 200
+    assert [item.model_dump() for item in captured["external_context"]] == [
+        {
+            "source": "notion",
+            "title": "Atlas kickoff",
+            "content": "Roadmap y restricciones aprobadas.",
+            "url": "https://notion.so/atlas",
+            "updated_at": "2026-05-19T10:00:00Z",
+            "relevance_reason": "Explicit notion_page_id configured in the session.",
+        }
+    ]
 
 
 def test_session_estimate_attachment_text_reaches_request(monkeypatch) -> None:

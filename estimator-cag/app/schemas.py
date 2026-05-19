@@ -42,7 +42,9 @@ class SessionDetailResponse(BaseModel):
     session_id: str
     turns: list[tuple[str, str]]
     project_metadata: dict
+    external_context_config: dict
     document_sources: list[str]
     conversation_messages: list[dict[str, str]]
     last_document_context: list[str]
+    last_external_context: list[dict]
     last_run_info: dict

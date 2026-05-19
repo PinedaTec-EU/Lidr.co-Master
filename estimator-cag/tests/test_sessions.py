@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from app.sessions import ConversationHistory, ProjectMetadata, SessionStore
+from app.sessions import ConversationHistory, ExternalContextItem, ProjectMetadata, SessionStore
 
 
 def test_conversation_history_keeps_only_latest_turns() -> None:
@@ -31,6 +31,7 @@ def test_project_metadata_defaults_to_empty_shape() -> None:
 
     assert metadata.model_dump() == {
         "project_name": None,
+        "client_name": None,
         "assumed_team_size": None,
         "mentioned_technologies": [],
         "agreed_scope": None,
@@ -53,8 +54,24 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     session = store.create("01TESTSESSION00000000000000")
     session.history.add_turn("u1", "a1")
     session.remember_document_sources(["/tmp/requirements.pdf"])
+    session.set_external_context_config(
+        notion_page_ids=["page-123"],
+        notion_search_terms=["Atlas"],
+    )
     session.add_conversation_message("user", "Solicitud visible")
     session.set_last_document_context(["--- attachment: requirements.pdf ---\nTexto"])
+    session.set_last_external_context(
+        [
+            ExternalContextItem(
+                source="notion",
+                title="Atlas kickoff",
+                content="Roadmap, alcance y stakeholders.",
+                url="https://notion.so/atlas",
+                updated_at="2026-05-19T10:00:00Z",
+                relevance_reason="Explicit notion_page_id configured in the session.",
+            )
+        ]
+    )
     session.set_last_run_info(
         provider="openai",
         model="openai/gpt-4o-mini",
@@ -69,8 +86,20 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     assert persisted is not None
     assert persisted.history.turns == [("u1", "a1")]
     assert persisted.document_sources == ["/tmp/requirements.pdf"]
+    assert persisted.external_context_config.notion_page_ids == ["page-123"]
+    assert persisted.external_context_config.notion_search_terms == ["Atlas"]
     assert persisted.conversation_messages == [{"role": "user", "content": "Solicitud visible"}]
     assert persisted.last_document_context == ["--- attachment: requirements.pdf ---\nTexto"]
+    assert persisted.last_external_context == [
+        {
+            "source": "notion",
+            "title": "Atlas kickoff",
+            "content": "Roadmap, alcance y stakeholders.",
+            "url": "https://notion.so/atlas",
+            "updated_at": "2026-05-19T10:00:00Z",
+            "relevance_reason": "Explicit notion_page_id configured in the session.",
+        }
+    ]
     assert persisted.last_run_info == {
         "provider": "openai",
         "model": "openai/gpt-4o-mini",

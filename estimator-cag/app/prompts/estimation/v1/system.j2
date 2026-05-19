@@ -8,11 +8,23 @@ Formato de salida solicitado: {{ output_format }}
 
 <project_metadata>
 {% if project_metadata.project_name %}project_name: {{ project_metadata.project_name }}
+{% endif %}{% if project_metadata.client_name %}client_name: {{ project_metadata.client_name }}
 {% endif %}{% if project_metadata.assumed_team_size %}assumed_team_size: {{ project_metadata.assumed_team_size }}
 {% endif %}{% if project_metadata.mentioned_technologies %}mentioned_technologies: {{ project_metadata.mentioned_technologies | join(", ") }}
 {% endif %}{% if project_metadata.agreed_scope %}agreed_scope: {{ project_metadata.agreed_scope }}
 {% endif %}
 </project_metadata>
+
+{% if external_context %}
+<external_context>
+{% for item in external_context %}
+[source={{ item.source }} title="{{ item.title }}"{% if item.updated_at %} updated_at="{{ item.updated_at }}"{% endif %}{% if item.url %} url="{{ item.url }}"{% endif %}]
+{% if item.relevance_reason %}reason: {{ item.relevance_reason }}
+{% endif %}{{ item.content }}
+[/source]
+{% endfor %}
+</external_context>
+{% endif %}
 
 {% if output_format == "phases_table" %}
 Devuelve la respuesta como una tabla por fases con columnas de fase, alcance, horas estimadas y confidence_pct.

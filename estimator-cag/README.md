@@ -1,6 +1,6 @@
 # estimator-cag
 
-Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales persistidas y puede enriquecer cada turno con adjuntos usando **Docling Serve** o referencias a documentos por ruta antes de llamar al modelo.
+Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales persistidas y puede enriquecer cada turno con adjuntos usando **Docling Serve**, referencias a documentos por ruta y contexto externo recuperado desde **Notion** antes de llamar al modelo.
 
 No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada al LLM.
 
@@ -44,7 +44,7 @@ Este proyecto es deliberadamente CAG:
 - No hace retrieval.
 - El conocimiento de referencia principal está en `app/context/examples.py`.
 
-Los adjuntos de cada turno se convierten on-demand con Docling y se inyectan en la petición actual, pero no se almacenan ni se indexan fuera de la sesión en memoria.
+Los adjuntos de cada turno se convierten on-demand con Docling y se inyectan en la petición actual. La sesión persiste a disco el historial, las referencias documentales, la última telemetría y el último contexto enriquecido visible, pero no mantiene un índice documental ni hace retrieval vectorial.
 
 La transición a RAG no se implementa aquí. La evolución natural está en `sih-smart-analysis`, que consume los reports generados por SIH al ejecutar esta API.
 
@@ -72,7 +72,9 @@ estimator-cag/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
 │       ├── attachment_extraction.py
+│       ├── external_context_service.py
 │       ├── llm_service.py     # Lógica de llamada a proveedores LLM
+│       ├── notion_context_provider.py
 │       └── session_service.py # Orquestación multi-turno, persistencia y adjuntos
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
@@ -81,7 +83,7 @@ estimator-cag/
 │   ├── session-02-ops-automation.md
 │   └── session-03-clinic-modernization.pdf
 ├── docs-assets/
-│   └── session-05-generated-md-sample.png
+│   └── session-05-chat-persisted-external-context.png
 ├── streamlit_app.py           # Formulario web de producto para el estimador CAG
 ├── tests/                     # Tests API y validación del contrato HTTP
 ├── pyproject.toml
@@ -195,7 +197,9 @@ El identificador usa formato **ULID**, pensado para poder compartirlo en URLs de
 Recupera una sesión existente con:
 - historial de turnos
 - `project_metadata`
+- configuración de contexto externo para la sesión
 - rutas documentales ya asociadas
+- último contexto externo resuelto
 - último bloque de telemetría visible en la UI (`provider`, `model`, `tokens`, `latency`)
 
 Esto permite rehidratar una conversación en la UI usando `?chatid=<session_id>`.
@@ -239,6 +243,7 @@ Notas:
 - `.txt` y `.md` se leen localmente porque ya son texto plano
 - el resto se convierte a Markdown llamando a `POST /v1/convert/file` de Docling
 - `document_paths` guarda solo la ruta de origen en la sesión; no persiste el binario del fichero
+- si la sesión tiene `notion_page_ids` o `notion_search_terms`, antes de llamar al LLM se resuelve un bloque adicional de `<external_context>` desde Notion
 
 ---
 
@@ -345,8 +350,21 @@ http://localhost:8501/?chatid=01JVNQ5DB7W6M8M7W7Q3NZXK2S
 Comportamiento:
 - si la sesión existe en el store persistido, la UI rehidrata el historial
 - también rehidrata el bloque `Última llamada` del sidebar con el último `provider`, `model`, `tokens` y `latency` persistidos
+- también recupera la configuración de fuentes externas de la sesión y el último contexto externo resuelto
 - si no existe, crea una nueva sesión y actualiza la URL
 - el estado se guarda en `SESSION_STORE_PATH`
+
+### Por qué existe el flujo multi-turno
+
+El caso de uso no es abrir chats inconexos para estimaciones arbitrarias, sino permitir que una misma estimación evolucione a medida que el usuario aporta más contexto.
+
+Workflow esperado:
+1. primer turno con una descripción base del proyecto
+2. segundo turno aclarando alcance, restricciones o feedback sobre la primera propuesta
+3. turnos posteriores con adjuntos, documentos versionados o fuentes externas como Notion
+4. nueva estimación sobre la misma sesión, conservando memoria, metadatos e hipótesis previas
+
+Eso convierte la UI en una herramienta de refinamiento progresivo, no en un chat genérico.
 
 ### Documentos de prueba incluidos
 
@@ -446,6 +464,9 @@ Cobertura actual de tests:
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
 - actualización de `project_metadata` en sesiones multi-turno
+- persistencia de configuración y contexto externo en sesiones
+- inferencia base de términos para búsqueda en Notion
+- paso de `external_context` al servicio LLM
 - influencia de adjuntos `.docx` convertidos por Docling en el request efectivo al LLM
 - influencia de `document_paths` en el request efectivo al LLM
 - recorte del historial a `MAX_TURNS`
@@ -480,32 +501,35 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 ./launch.sh portal
 ```
 
-La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, seleccionar documentos versionados del repo desde sidebar, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` y `document_sources` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, seleccionar documentos versionados del repo desde sidebar, configurar contexto externo por sesión y mantener el historial visible de solicitudes y respuestas. El panel lateral también muestra el prompt activo, las métricas de la última llamada, la configuración de fuentes externas y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
 La zona principal añade dos acciones de inspección:
 - `Ver system prompt activo`
 - `Ver output de Docling`
+- `Ver contexto externo efectivo`
 
 La segunda abre un diálogo con el texto documental exacto que entró al contexto en el último turno enriquecido.
 
 El sidebar también ofrece:
 - `Sample file` para cargar una transcripción versionada
 - `Sample documents` para añadir documentos locales versionados del repo sin escribir rutas manualmente
+- `Notion page IDs` y `Notion search terms` para asociar contexto externo explícito o inferido a la sesión
+- modales para inspeccionar `project metadata`, `document sources`, `external context` y su configuración
 
 Captura real de la UI con uno de los documentos generados para pruebas:
 
-![Portal con sample markdown](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/docs-assets/session-05-generated-md-sample.png)
+![Portal multi-turno con contexto persistido](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/docs-assets/session-05-chat-persisted-external-context.png)
 
 Alcance actual de esta capa:
 - formulario multi-turno tipado sobre el mismo flujo CAG del backend
 - memoria conversacional persistida por `session_id`
 - recuperación por URL vía `?chatid=...`
 - referencias documentales persistidas por ruta, resolviendo documentos versionados del repo desde un selector
-- visibilidad de `project_metadata` y métricas básicas en sidebar
+- contexto externo recuperado desde Notion por sesión
+- visibilidad de `project_metadata`, contexto externo y métricas en sidebar
 
 Quedan fuera de esta fase:
 - fallback automático entre proveedores
-- persistencia de memoria entre reinicios
 - compresión avanzada de memoria y estrategia de anclas
 - actor-critic-boss
 
@@ -612,6 +636,11 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | `OLLAMA_PORT` | puerto entero | `11434` |
 | `DOCLING_SERVE_URL` | URL base del contenedor Docling | `http://localhost:5001` |
 | `DOCLING_TIMEOUT_SECONDS` | timeout HTTP de conversión | `60` |
+| `NOTION_API_KEY` | token de integración de Notion | — |
+| `NOTION_API_BASE_URL` | URL base de la API de Notion | `https://api.notion.com/v1` |
+| `NOTION_API_VERSION` | versión de API de Notion | `2022-06-28` |
+| `NOTION_TIMEOUT_SECONDS` | timeout HTTP de Notion | `30` |
+| `NOTION_MAX_ITEMS` | máximo de páginas externas por turno | `3` |
 | `SESSION_STORE_PATH` | fichero JSON de sesiones persistidas | `.data/estimator-sessions.json` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |

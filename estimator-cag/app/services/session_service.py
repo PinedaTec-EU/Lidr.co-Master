@@ -8,6 +8,7 @@ from app.services.attachment_extraction import (
     extract_attachments_text,
     extract_document_paths_text,
 )
+from app.services.external_context_service import resolve_external_context
 from app.services.llm_service import get_estimation
 from app.sessions import ProjectMetadata, Session, SessionStore
 
@@ -23,6 +24,23 @@ def create_session() -> str:
 
 def get_session(session_id: str) -> Session | None:
     return session_store.get(session_id)
+
+
+def update_external_context_config(
+    session_id: str,
+    *,
+    notion_page_ids: list[str],
+    notion_search_terms: list[str],
+) -> None:
+    session = session_store.get(session_id)
+    if session is None:
+        raise KeyError(session_id)
+
+    session.set_external_context_config(
+        notion_page_ids=notion_page_ids,
+        notion_search_terms=notion_search_terms,
+    )
+    session_store.save_session(session_id)
 
 
 def persist_last_run_info(
@@ -80,6 +98,7 @@ async def estimate_session_turn(
         detail_level=detail_level,
         output_format=output_format,
     )
+    external_context = await resolve_external_context(session=session, transcript=transcript)
 
     result = await get_estimation(
         request,
@@ -88,12 +107,14 @@ async def estimate_session_turn(
         model=model,
         history_messages=session.history.to_turn_messages(),
         project_metadata=session.project_metadata,
+        external_context=external_context,
     )
 
     _system_prompt, user_prompt = render_estimation_prompt(
         request,
         version=result["prompt_version"],
         project_metadata=session.project_metadata,
+        external_context=external_context,
     )
     session.history.add_turn(user_prompt, result["text"])
     session.add_conversation_message("user", display_user_message or transcript.strip())
@@ -104,5 +125,6 @@ async def estimate_session_turn(
     )
     session.remember_document_sources(document_paths or [])
     session.set_last_document_context(document_context_sections)
+    session.set_last_external_context(external_context)
     session_store.save_session(session_id)
     return result, session.project_metadata, document_context_sections

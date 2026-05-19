@@ -32,6 +32,7 @@ KNOWN_TECHNOLOGIES = (
 
 class ProjectMetadata(BaseModel):
     project_name: str | None = None
+    client_name: str | None = None
     assumed_team_size: int | None = Field(default=None, ge=1)
     mentioned_technologies: list[str] = Field(default_factory=list)
     agreed_scope: str | None = None
@@ -48,6 +49,16 @@ class ProjectMetadata(BaseModel):
                     candidate = merged_text[index + len(marker) :].splitlines()[0].strip(" :.-")
                     if candidate:
                         project_name = candidate[:80]
+                        break
+
+        client_name = self.client_name
+        if client_name is None:
+            for marker in ("cliente ", "client "):
+                index = lower_text.find(marker)
+                if index >= 0:
+                    candidate = merged_text[index + len(marker) :].splitlines()[0].strip(" :.-")
+                    if candidate:
+                        client_name = candidate[:80]
                         break
 
         assumed_team_size = self.assumed_team_size
@@ -67,10 +78,25 @@ class ProjectMetadata(BaseModel):
 
         return ProjectMetadata(
             project_name=project_name,
+            client_name=client_name,
             assumed_team_size=assumed_team_size,
             mentioned_technologies=technologies,
             agreed_scope=transcript.strip()[:500] or self.agreed_scope,
         )
+
+
+class ExternalContextItem(BaseModel):
+    source: str
+    title: str
+    content: str
+    url: str | None = None
+    updated_at: str | None = None
+    relevance_reason: str | None = None
+
+
+class ExternalContextConfig(BaseModel):
+    notion_page_ids: list[str] = Field(default_factory=list)
+    notion_search_terms: list[str] = Field(default_factory=list)
 
 
 @dataclass
@@ -113,9 +139,11 @@ class ConversationHistory:
 class Session:
     history: ConversationHistory = field(default_factory=ConversationHistory)
     project_metadata: ProjectMetadata = field(default_factory=ProjectMetadata)
+    external_context_config: ExternalContextConfig = field(default_factory=ExternalContextConfig)
     document_sources: list[str] = field(default_factory=list)
     conversation_messages: list[dict[str, str]] = field(default_factory=list)
     last_document_context: list[str] = field(default_factory=list)
+    last_external_context: list[dict] = field(default_factory=list)
     last_run_info: dict = field(
         default_factory=lambda: {
             "provider": "",
@@ -135,8 +163,22 @@ class Session:
     def add_conversation_message(self, role: str, content: str) -> None:
         self.conversation_messages.append({"role": role, "content": content})
 
+    def set_external_context_config(
+        self,
+        *,
+        notion_page_ids: list[str],
+        notion_search_terms: list[str],
+    ) -> None:
+        self.external_context_config = ExternalContextConfig(
+            notion_page_ids=notion_page_ids,
+            notion_search_terms=notion_search_terms,
+        )
+
     def set_last_document_context(self, sections: list[str]) -> None:
         self.last_document_context = list(sections)
+
+    def set_last_external_context(self, items: list[ExternalContextItem]) -> None:
+        self.last_external_context = [item.model_dump() for item in items]
 
     def set_last_run_info(
         self,
@@ -157,9 +199,11 @@ class Session:
         return {
             "history": self.history.to_dict(),
             "project_metadata": self.project_metadata.model_dump(),
+            "external_context_config": self.external_context_config.model_dump(),
             "document_sources": self.document_sources,
             "conversation_messages": self.conversation_messages,
             "last_document_context": self.last_document_context,
+            "last_external_context": self.last_external_context,
             "last_run_info": self.last_run_info,
         }
 
@@ -168,9 +212,13 @@ class Session:
         return cls(
             history=ConversationHistory.from_dict(payload.get("history", {})),
             project_metadata=ProjectMetadata.model_validate(payload.get("project_metadata", {})),
+            external_context_config=ExternalContextConfig.model_validate(
+                payload.get("external_context_config", {})
+            ),
             document_sources=list(payload.get("document_sources", [])),
             conversation_messages=list(payload.get("conversation_messages", [])),
             last_document_context=list(payload.get("last_document_context", [])),
+            last_external_context=list(payload.get("last_external_context", [])),
             last_run_info=dict(
                 payload.get(
                     "last_run_info",

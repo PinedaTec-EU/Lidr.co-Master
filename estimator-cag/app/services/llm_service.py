@@ -11,7 +11,7 @@ from app.schemas import (
     OutputFormat,
     ProjectType,
 )
-from app.sessions import ProjectMetadata
+from app.sessions import ExternalContextItem, ProjectMetadata
 
 MAX_COMPLETION_TOKENS = 1200
 DEFAULT_PROMPT_VERSION = "v1"
@@ -72,11 +72,13 @@ def get_system_prompt(
     request: EstimationRequest | None = None,
     version: str = DEFAULT_PROMPT_VERSION,
     project_metadata: ProjectMetadata | None = None,
+    external_context: list[ExternalContextItem] | None = None,
 ) -> str:
     system, _user = render_estimation_prompt(
         request or _default_prompt_request(),
         version=version,
         project_metadata=project_metadata,
+        external_context=external_context,
     )
     return system
 
@@ -209,11 +211,13 @@ async def get_estimation(
     prompt_version: str = DEFAULT_PROMPT_VERSION,
     history_messages: list[dict[str, str]] | None = None,
     project_metadata: ProjectMetadata | None = None,
+    external_context: list[ExternalContextItem] | None = None,
 ) -> dict:
     system_prompt, user_prompt = render_estimation_prompt(
         request,
         version=prompt_version,
         project_metadata=project_metadata,
+        external_context=external_context,
     )
     route = _resolve_route(friendly_name, provider, model)
     return await _call_litellm(
@@ -233,11 +237,13 @@ async def stream_estimation(
     prompt_version: str = DEFAULT_PROMPT_VERSION,
     history_messages: list[dict[str, str]] | None = None,
     project_metadata: ProjectMetadata | None = None,
+    external_context: list[ExternalContextItem] | None = None,
 ) -> AsyncIterator[dict]:
     system_prompt, user_prompt = render_estimation_prompt(
         request,
         version=prompt_version,
         project_metadata=project_metadata,
+        external_context=external_context,
     )
     route = _resolve_route(friendly_name, provider, model)
     async for event in _stream_litellm(
