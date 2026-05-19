@@ -64,6 +64,7 @@ estimator-cag/
 │   │           ├── system.j2
 │   │           ├── user.j2
 │   │           └── examples.j2
+│   ├── sessions.py            # Estado conversacional en memoria y metadatos de proyecto
 │   ├── schemas.py             # Contrato tipado para la interfaz de producto
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
@@ -323,6 +324,7 @@ Cobertura actual de tests:
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
 - validación del schema tipado del formulario de producto
 - render de templates Jinja2 por versión y variantes de formato/detalle
+- ventana deslizante de historial y store de sesión en memoria
 - construcción del `system prompt`
 - resumen del contexto CAG expuesto a la UI
 - resolución de rutas de proveedor/modelo
