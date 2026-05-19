@@ -32,3 +32,21 @@ class EstimationRequest(BaseModel):
 class EstimationResponse(BaseModel):
     text: str
     prompt_version: str
+
+
+class EstimationJobStatus(str, Enum):
+    PENDING = "pending"
+    RUNNING = "running"
+    SUCCEEDED = "succeeded"
+    FAILED = "failed"
+
+
+class EstimationJob(BaseModel):
+    id: str
+    status: EstimationJobStatus
+    created_at: str
+    updated_at: str
+    request: EstimationRequest
+    prompt_version: str
+    response: EstimationResponse | None = None
+    error_message: str | None = None

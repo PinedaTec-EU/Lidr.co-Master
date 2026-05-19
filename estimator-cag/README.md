@@ -1,68 +1,57 @@
 # estimator-cag
 
-Servicio FastAPI para estimar proyectos software con un contrato tipado y prompts versionados en Jinja2.
+Servicio FastAPI para estimar proyectos software con prompts versionados en Jinja2, ejecución asíncrona de peticiones e histórico visible desde el portal.
 
-Este proyecto implementa el ejercicio de pasar de un chat libre a una interfaz de producto:
-- el cliente ya no envía una transcripción arbitraria como chat
-- el servicio recibe un `EstimationRequest` tipado
-- el prompt ya no vive como `f-string` en código
-- los prompts están versionados en `app/prompts/estimation/v1/*.j2`
+## Qué hace ahora
+
+- mantiene el endpoint síncrono `POST /api/v1/estimate`
+- expone una cola ligera en memoria para crear jobs asíncronos
+- permite listar histórico, peticiones pendientes, en ejecución, completadas y fallidas
+- deja la UI libre: crear una petición devuelve `202 Accepted` y el frontend consulta estados aparte
 
 ## Arquitectura
 
 ```mermaid
 flowchart LR
-    UI["Streamlit form"]
-    API["FastAPI POST /api/v1/estimate"]
+    UI["Streamlit portal de peticiones"]
+    API["FastAPI"]
+    JOBS["EstimationJobService"]
+    STORE["InMemoryEstimationJobStore"]
     USECASE["EstimationService"]
-    PROMPTS["Jinja renderer<br/>system.j2 + user.j2 + examples.j2"]
+    PROMPTS["Jinja prompts v1"]
     LLM["LiteLLM gateway"]
 
-    UI --> API
-    API --> USECASE
+    UI -->|POST /estimate-jobs| API
+    UI -->|GET /estimate-jobs| API
+    UI -->|GET /estimate-jobs/{id}| API
+    API --> JOBS
+    JOBS --> STORE
+    JOBS --> USECASE
     USECASE --> PROMPTS
     USECASE --> LLM
 ```
 
-### Responsabilidades
-
-- [app/schemas.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/schemas.py): contrato de entrada y salida.
-- [app/application/estimation.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/application/estimation.py): caso de uso y puertos.
-- [app/prompts/loader.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/loader.py): renderer Jinja2 con `StrictUndefined`.
-- [app/prompts/estimation/v1/system.j2](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/estimation/v1/system.j2): reglas del modelo.
-- [app/prompts/estimation/v1/user.j2](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/estimation/v1/user.j2): bloque de descripción del proyecto.
-- [app/prompts/estimation/v1/examples.j2](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/prompts/estimation/v1/examples.j2): few-shot examples.
-- [app/services/llm_service.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/app/services/llm_service.py): gateway LiteLLM y resolución de rutas de modelo.
-- [streamlit_app.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/streamlit_app.py): formulario tipado que hace `POST` a la API.
-
-## Estructura
+## Estructura relevante
 
 ```text
-estimator-cag/
-├── app/
-│   ├── application/
-│   │   └── estimation.py
-│   ├── prompts/
-│   │   ├── loader.py
-│   │   └── estimation/
-│   │       └── v1/
-│   │           ├── examples.j2
-│   │           ├── system.j2
-│   │           └── user.j2
-│   ├── routers/
-│   │   └── estimations.py
-│   ├── services/
-│   │   └── llm_service.py
-│   ├── config.py
-│   ├── dependencies.py
-│   ├── main.py
-│   └── schemas.py
-├── tests/
-│   ├── prompts/
-│   │   └── test_estimation_v1.py
-│   └── test_api.py
-├── streamlit_app.py
-└── pyproject.toml
+app/
+├── application/
+│   ├── estimation.py
+│   └── estimation_jobs.py
+├── prompts/
+│   ├── loader.py
+│   └── estimation/
+│       └── v1/
+│           ├── examples.j2
+│           ├── system.j2
+│           └── user.j2
+├── routers/
+│   └── estimations.py
+├── services/
+│   ├── job_store.py
+│   └── llm_service.py
+├── dependencies.py
+└── schemas.py
 ```
 
 ## API
@@ -78,6 +67,8 @@ estimator-cag/
 ```
 
 ### `POST /api/v1/estimate`
+
+Sigue disponible para ejecución síncrona.
 
 Request:
 
@@ -99,25 +90,65 @@ Response:
 }
 ```
 
+### `POST /api/v1/estimate-jobs`
+
+Crea una petición asíncrona.
+
+Response `202`:
+
+```json
+{
+  "id": "c927f6d0d6df4f4ea99d7ab9f3a7ec68",
+  "status": "pending",
+  "created_at": "2026-05-14T18:00:00+00:00",
+  "updated_at": "2026-05-14T18:00:00+00:00",
+  "request": {
+    "description": "Necesitamos una plataforma SaaS para reservas con pagos, roles y panel operativo.",
+    "project_type": "web_saas",
+    "detail_level": "medium",
+    "output_format": "phases_table"
+  },
+  "prompt_version": "v1",
+  "response": null,
+  "error_message": null
+}
+```
+
+### `GET /api/v1/estimate-jobs`
+
+Devuelve el histórico completo de jobs, ordenado del más reciente al más antiguo.
+
+### `GET /api/v1/estimate-jobs/{job_id}`
+
+Devuelve el detalle de una petición concreta.
+
 ### `GET /api/v1/estimate/friendly-names`
 
-Devuelve aliases de proveedor disponibles para la infraestructura LiteLLM actual.
+Lista aliases de proveedor disponibles.
 
 ## Contrato tipado
 
-`EstimationRequest`:
-- `description`: `str`, min 20, max 2000
+### Request
+
+`EstimationRequest`
+- `description`
 - `project_type`: `mobile_app | web_saas | internal_tool | data_pipeline`
 - `detail_level`: `summary | medium | detailed`
 - `output_format`: `phases_table | line_items | narrative`
 
-`EstimationResponse`:
-- `text`
+### Job
+
+`EstimationJob`
+- `id`
+- `status`: `pending | running | succeeded | failed`
+- `created_at`
+- `updated_at`
+- `request`
 - `prompt_version`
+- `response`
+- `error_message`
 
 ## Prompts versionados
-
-La carpeta requerida por el ejercicio ya existe:
 
 ```text
 app/prompts/
@@ -129,23 +160,23 @@ app/prompts/
         └── examples.j2
 ```
 
-El loader expone:
-
-```python
-render_estimation_prompt(request, version="v1") -> tuple[str, str]
-```
-
-Detalles de implementación:
+El loader usa:
 - `Environment`
 - `StrictUndefined`
 - `trim_blocks=True`
 - `lstrip_blocks=True`
 
-## Cliente Streamlit
+## Portal Streamlit
 
-El cliente ya no es un chat. Ahora usa `st.form` y hace `POST` al servicio.
+El portal muestra:
+- formulario para crear peticiones
+- contadores de total, pending, running y completed
+- listas separadas de pendientes y en ejecución
+- histórico expandible con resultado o error
 
-Variable opcional para el cliente:
+La UI no queda bloqueada esperando al LLM: envía el job y luego consulta estado.
+
+Variable opcional:
 
 ```bash
 export ESTIMATOR_API_BASE_URL=http://localhost:8000/api/v1
@@ -168,16 +199,18 @@ API:
 uvicorn app.main:app --reload
 ```
 
-Cliente:
+Portal:
 
 ```bash
 streamlit run streamlit_app.py
 ```
 
-## Validación manual
+## Prueba manual
+
+Crear job:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/estimate \
+curl -X POST http://localhost:8000/api/v1/estimate-jobs \
   -H "Content-Type: application/json" \
   -d '{
     "description": "Necesitamos una herramienta interna para gestionar solicitudes de compra, aprobaciones y auditoría operativa para tres departamentos.",
@@ -187,15 +220,29 @@ curl -X POST http://localhost:8000/api/v1/estimate \
   }'
 ```
 
+Listar histórico:
+
+```bash
+curl http://localhost:8000/api/v1/estimate-jobs
+```
+
+## Persistencia actual
+
+El histórico vive en memoria de proceso.
+
+Eso implica:
+- sirve para desarrollo y demos
+- se pierde al reiniciar la API
+- no coordina múltiples réplicas
+
+Si después quieres llevarlo a producción, el siguiente paso natural es extraer `InMemoryEstimationJobStore` a una persistencia real.
+
 ## Tests
 
-Tests esperados:
-- contrato HTTP de la API
-- render de templates sin llamadas externas
-
-Ficheros principales:
-- [tests/test_api.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/tests/test_api.py)
-- [tests/prompts/test_estimation_v1.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/tests/prompts/test_estimation_v1.py)
+Incluye:
+- tests del contrato HTTP
+- tests del render de templates
+- tests de endpoints de jobs
 
 Ejecución:
 
@@ -204,5 +251,3 @@ cd estimator-cag
 source .venv/bin/activate
 pytest
 ```
-
-Los tests de prompt deben correr en milisegundos y no consumen LLM real.
