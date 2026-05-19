@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.routers.estimations import router as estimations_router
+from app.routers.sessions import router as sessions_router
 
 app = FastAPI(
     title="Software Estimator CAG",
@@ -15,6 +16,7 @@ app = FastAPI(
 )
 
 app.include_router(estimations_router, prefix="/api/v1")
+app.include_router(sessions_router, prefix="/api/v1")
 
 
 @app.get("/health", tags=["health"])

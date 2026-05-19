@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.routers import estimations
+from app.routers.sessions import session_store
 
 
 client = TestClient(app)
@@ -23,6 +24,16 @@ def test_friendly_names_endpoint() -> None:
 
     assert response.status_code == 200
     assert set(response.json()["friendly_names"]) == {"openai", "anthropic", "ollama"}
+
+
+def test_create_session_returns_uuid_and_stores_session() -> None:
+    response = client.post("/api/v1/sessions")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert isinstance(body["session_id"], str)
+    assert len(body["session_id"]) == 36
+    assert session_store.get(body["session_id"]) is not None
 
 
 def test_estimate_rejects_short_description() -> None:

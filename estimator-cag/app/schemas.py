@@ -32,3 +32,7 @@ class EstimationRequest(BaseModel):
 class EstimationResponse(BaseModel):
     text: str
     prompt_version: str
+
+
+class SessionCreateResponse(BaseModel):
+    session_id: str

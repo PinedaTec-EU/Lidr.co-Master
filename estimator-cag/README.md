@@ -85,6 +85,7 @@ estimator-cag/
 ## Endpoints
 
 Número de endpoints funcionales: **2** bajo `/api/v1`.
+Número de endpoints funcionales: **3** bajo `/api/v1`.
 
 Número de endpoints operativos: **1** fuera de `/api/v1`.
 
@@ -161,6 +162,20 @@ Devuelve los alias de proveedores/modelos configurados.
 ```
 
 Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede invocar sin hardcodear configuraciones.
+
+---
+
+### `POST /api/v1/sessions`
+
+Crea una sesión conversacional vacía y devuelve un identificador reutilizable.
+
+**Respuesta:**
+
+```json
+{
+  "session_id": "6c8d94a0-f5c2-4f24-9078-df4c8d81c1da"
+}
+```
 
 ---
 
