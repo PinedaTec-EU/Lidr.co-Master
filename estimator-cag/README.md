@@ -366,6 +366,8 @@ Workflow esperado:
 
 Eso convierte la UI en una herramienta de refinamiento progresivo, no en un chat genérico.
 
+Este patrón de trabajo encaja especialmente bien cuando la salida no se resuelve en una única respuesta, sino mediante iteraciones guiadas entre modelo y usuario hasta estabilizar alcance, supuestos y entregables. En esa línea, merece una referencia explícita **SpecForge.AI**, que opera sobre un esquema comparable de refinamiento progresivo y, en escenarios de especificación estructurada, puede apoyarse en un sistema igual o más potente para conducir ese ciclo de ida y vuelta.
+
 ### Documentos de prueba incluidos
 
 El repo deja varios adjuntos listos para demos manuales y pruebas exploratorias:
