@@ -9,6 +9,10 @@ from app.services.llm_service import (
     get_system_prompt,
     stream_estimation,
 )
+from app.context.sample_transcriptions import (
+    list_sample_transcriptions,
+    read_sample_transcription,
+)
 
 
 st.set_page_config(
@@ -41,6 +45,8 @@ def _init_state() -> None:
         st.session_state.last_response_time = 0.0
     if "transcription_text" not in st.session_state:
         st.session_state.transcription_text = ""
+    if "pending_transcription" not in st.session_state:
+        st.session_state.pending_transcription = ""
 
 
 def _apply_styles() -> None:
@@ -67,6 +73,25 @@ def _apply_styles() -> None:
 
         [data-testid="stAppViewContainer"] > .main {
             margin-left: 360px;
+        }
+
+        @media (max-width: 960px) {
+            section[data-testid="stSidebar"] {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            section[data-testid="stSidebar"] > div,
+            [data-testid="stSidebarContent"] {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            [data-testid="stAppViewContainer"] > .main {
+                margin-left: 0;
+            }
         }
 
         div[data-testid="stVerticalBlockBorderWrapper"] {
@@ -131,6 +156,7 @@ async def _collect_stream(transcription: str, friendly_name: str) -> tuple[str, 
 def _render_control_panel() -> str:
     friendly_names = get_available_friendly_names()
     context = get_context_summary()
+    sample_transcriptions = list_sample_transcriptions()
 
     with st.sidebar:
         st.subheader("Configuración")
@@ -150,6 +176,20 @@ def _render_control_panel() -> str:
             st.rerun()
 
         st.divider()
+        st.subheader("Transcripciones versionadas")
+        if sample_transcriptions:
+            selected_sample = st.selectbox(
+                "Sample file",
+                sample_transcriptions,
+                index=0,
+            )
+            if st.button("Cargar sample del repo", use_container_width=True):
+                st.session_state.pending_transcription = read_sample_transcription(selected_sample)
+                st.rerun()
+        else:
+            st.caption("No hay transcripciones versionadas disponibles.")
+
+        st.divider()
         st.subheader("Reuniones simuladas")
         st.caption(f"{context['examples_count']} ejemplos disponibles")
         for index, example in enumerate(context["examples"], 1):
@@ -167,7 +207,7 @@ def _render_control_panel() -> str:
                     key=f"use_example_{index}",
                     use_container_width=True,
                 ):
-                    st.session_state.transcription_text = example["transcription"]
+                    st.session_state.pending_transcription = example["transcription"]
                     st.rerun()
 
     return selected_name
@@ -231,20 +271,18 @@ selected_friendly_name = _render_control_panel()
 
 st.title("Software Estimator CAG")
 st.caption("Chat conversacional con Streamlit usando el mismo system prompt del endpoint CAG.")
-
-st.subheader("Estimador")
-transcription = st.text_area(
-    "Transcripción de reunión",
-    key="transcription_text",
-    height=220,
-    placeholder="Pega aquí la transcripción de la reunión o usa una conversación de ejemplo.",
-)
-submitted = st.button("Enviar estimación", use_container_width=True)
 _render_conversation()
 
 _render_prompt_panel()
 
-if submitted:
+if st.session_state.pending_transcription:
+    pending_transcription = st.session_state.pending_transcription
+    st.session_state.pending_transcription = ""
+    _send_transcription(pending_transcription, selected_friendly_name)
+
+transcription = st.chat_input("Escribe o pega la transcripción de la reunión.")
+
+if transcription:
     cleaned_transcription = transcription.strip()
     if cleaned_transcription:
         _send_transcription(cleaned_transcription, selected_friendly_name)

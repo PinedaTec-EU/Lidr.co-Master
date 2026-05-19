@@ -14,8 +14,9 @@ El modelo devuelve una estimación calibrada en el mismo estilo y formato que lo
 
 **Proveedores soportados:**
 - OpenAI (`gpt-4o-mini` por defecto)
-- Anthropic (`claude-haiku-4-5-20251001` por defecto, con prompt caching activado)
-- Configuraciones por `friendly_name`, usadas por el workflow SIH piloto para comparar `openai` y `ollama`.
+- Anthropic (`claude-haiku-4-5-20251001` por defecto)
+- Ollama (`gemma4:e2b` en la configuración de ejemplo)
+- Configuraciones por `friendly_name`, usadas por el workflow SIH piloto para comparar `openai`, `anthropic` y `ollama`.
 
 Las llamadas a modelos se enrutan mediante **LiteLLM**, manteniendo un formato común para completions y streaming entre proveedores.
 
@@ -60,9 +61,12 @@ estimator-cag/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
 │       └── llm_service.py     # Lógica de llamada a proveedores LLM
+├── sample-transcriptions/
+│   └── meeting-health-clinic.md
 ├── streamlit_app.py           # Chat web conversacional para el estimador CAG
 ├── tests/                     # Tests API y validación del contrato HTTP
 ├── pyproject.toml
+├── .gitignore
 ├── .env.example               # Plantilla de variables de entorno
 └── .env                       # Variables de entorno reales (no comitear)
 ```
@@ -109,7 +113,7 @@ Campos:
 | Campo | Obligatorio | Descripción |
 |-------|-------------|-------------|
 | `transcription` | Sí | Texto de la reunión o descripción funcional a estimar. |
-| `friendly_name` | No | Alias de configuración de proveedor/modelo. Ejemplo: `openai`, `ollama`. |
+| `friendly_name` | No | Alias de configuración de proveedor/modelo. Ejemplo: `openai`, `anthropic`, `ollama`. |
 | `provider` | No | Override directo del proveedor. |
 | `model` | No | Override directo del modelo. |
 
@@ -144,7 +148,7 @@ Devuelve los alias de proveedores/modelos configurados.
 
 ```json
 {
-  "friendly_names": ["openai", "ollama"]
+  "friendly_names": ["openai", "anthropic", "ollama"]
 }
 ```
 
@@ -217,15 +221,24 @@ LOG_LEVEL=info
 
 ### Instalar dependencias y arrancar
 
+Flujo recomendado para la sesión 1 con `uv`:
+
 ```bash
 cd estimator-cag
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-uvicorn app.main:app --reload
+uv sync --extra dev
+uv run uvicorn app.main:app --reload
 ```
 
 El servicio queda disponible en `http://localhost:8000`.
+
+Si no tienes `uv` disponible, también puedes usar el entorno virtual ya creado en local:
+
+```bash
+cd estimator-cag
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+uvicorn app.main:app --reload
+```
 
 ## Validación rápida para una persona externa
 
@@ -235,8 +248,7 @@ Estos pasos validan el entregable sin necesidad de conocer el repo:
 
 ```bash
 cd estimator-cag
-source .venv/bin/activate
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 ### 2. Comprobar healthcheck
@@ -274,35 +286,69 @@ Respuesta esperada:
 - JSON con `estimation`, `model`, `provider`, `tokens_used` y `timestamp`
 - `provider="openai"` si usas la ruta de OpenAI
 
+### 5. Probar con una transcripción versionada
+
+El repo incluye una transcripción de ejemplo para repetir la prueba sin inventar un caso nuevo:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/estimate \
+  -H "Content-Type: application/json" \
+  -d "$(jq -Rs '{transcription: .}' sample-transcriptions/meeting-health-clinic.md)"
+```
+
 ## Tests automatizados
 
-El proyecto incluye tests de contrato HTTP para que cualquier persona pueda verificar lo básico sin consumir LLM real.
+El proyecto incluye tests de contrato HTTP y tests unitarios de servicio para verificar lo básico sin consumir LLM real.
 
 ### Ejecutar tests
 
 ```bash
 cd estimator-cag
-source .venv/bin/activate
-pytest
+uv run pytest
 ```
 
 Cobertura actual de tests:
 - `GET /health`
 - `GET /api/v1/estimate/friendly-names`
 - rechazo de `transcription` vacía
+- rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
+- construcción del `system prompt`
+- resumen del contexto CAG expuesto a la UI
+- resolución de rutas de proveedor/modelo
+- normalización de uso de tokens
 
 Los tests no llaman a OpenAI, Anthropic ni Ollama. Validan el contrato HTTP y el comportamiento base de la API.
+
+### Pipeline CI
+
+La validación automática también queda cubierta en GitHub Actions:
+
+```text
+.github/workflows/estimator-cag-ci.yml
+```
+
+Ese pipeline instala dependencias con `uv` y ejecuta `uv run pytest` cada vez que cambian archivos de `estimator-cag`.
 
 ### Interfaz conversacional con Streamlit
 
 El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedores que el endpoint `POST /api/v1/estimate`.
 
 ```bash
-streamlit run streamlit_app.py
+uv run streamlit run streamlit_app.py
 ```
 
-La interfaz permite pegar una transcripción en un chat, mantiene el historial durante la sesión y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados y las métricas básicas de la última llamada.
+La interfaz usa `st.chat_message` y `st.chat_input`, mantiene el historial durante la sesión y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+
+Alcance actual de esta capa:
+- chat conversacional sobre el mismo flujo CAG del backend
+- streaming visual de la respuesta del modelo
+- visibilidad del contexto CAG y métricas básicas en sidebar
+
+Quedan fuera de este entregable de sesión 3:
+- fallback automático entre proveedores
+- cacheo inteligente de respuestas
+- trazabilidad/observabilidad avanzada persistida
 
 ---
 
