@@ -1,6 +1,6 @@
 # estimator-cag
 
-Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales con memoria en proceso y puede enriquecer cada turno con adjuntos locales (PDF/Word/TXT) antes de llamar al modelo.
+Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales con memoria en proceso y puede enriquecer cada turno con adjuntos usando **Docling Serve** antes de llamar al modelo.
 
 No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada al LLM.
 
@@ -39,10 +39,12 @@ flowchart TD
 
 Este proyecto es deliberadamente CAG:
 
-- No tiene ingesta documental.
+- No tiene ingesta documental persistida ni indexación.
 - No tiene vector store.
 - No hace retrieval.
-- El conocimiento de referencia está en `app/context/examples.py`.
+- El conocimiento de referencia principal está en `app/context/examples.py`.
+
+Los adjuntos de cada turno se convierten on-demand con Docling y se inyectan en la petición actual, pero no se almacenan ni se indexan fuera de la sesión en memoria.
 
 La transición a RAG no se implementa aquí. La evolución natural está en `sih-smart-analysis`, que consume los reports generados por SIH al ejecutar esta API.
 
@@ -192,17 +194,30 @@ Campos de form-data:
 - `output_format`
 - `attachments` opcional
 
-Camino elegido para adjuntos: **extracción local**.
+Camino elegido para adjuntos: **Docling Serve por HTTP**.
 Razón:
-- desacopla el flujo del proveedor multimodal
-- se puede testear en local sin Files API
+- desacopla el parsing documental del estimador
+- evita mantener librerías de parsing distintas dentro de la API
+- mantiene el flujo agnóstico respecto al proveedor LLM
 - prepara mejor el salto futuro a chunking y RAG
 
 Tipos soportados actualmente:
 - `.pdf`
 - `.docx`
+- `.pptx`
+- `.html`
+- `.htm`
+- `.png`
+- `.jpg`
+- `.jpeg`
+- `.tiff`
+- `.bmp`
 - `.txt`
 - `.md`
+
+Notas:
+- `.txt` y `.md` se leen localmente porque ya son texto plano
+- el resto se convierte a Markdown llamando a `POST /v1/convert/file` de Docling
 
 ---
 
@@ -281,6 +296,23 @@ uv run uvicorn app.main:app --reload
 
 El servicio queda disponible en `http://localhost:8000`.
 
+### Arranque unificado del workspace
+
+Desde la raíz del repo puedes levantar Docling y los procesos locales con un único entrypoint:
+
+```bash
+./launch.sh all
+```
+
+Perfiles disponibles:
+- `./launch.sh api` levanta Docling y la API FastAPI
+- `./launch.sh portal` levanta Docling y la UI Streamlit
+- `./launch.sh all` levanta Docling, API y UI
+
+El script usa el `docker-compose.yml` raíz para arrancar `docling`, y abre `http://localhost:8501` cuando se inicia el portal.
+
+Si necesitas valores locales adicionales, el script carga automáticamente `.env.local` desde la raíz del repo.
+
 Si no tienes `uv` disponible, también puedes usar el entorno virtual ya creado en local:
 
 ```bash
@@ -297,8 +329,7 @@ Estos pasos validan el entregable sin necesidad de conocer el repo:
 ### 1. Arrancar la API
 
 ```bash
-cd estimator-cag
-uv run uvicorn app.main:app --reload
+./launch.sh api
 ```
 
 ### 2. Comprobar healthcheck
@@ -368,9 +399,10 @@ Cobertura actual de tests:
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
 - actualización de `project_metadata` en sesiones multi-turno
-- influencia de adjuntos `.docx` en el request efectivo al LLM
+- influencia de adjuntos `.docx` convertidos por Docling en el request efectivo al LLM
 - recorte del historial a `MAX_TURNS`
 - rechazo de tipos de adjunto no soportados
+- parseo defensivo de la respuesta de Docling
 - validación del schema tipado del formulario de producto
 - render de templates Jinja2 por versión y variantes de formato/detalle
 - ventana deslizante de historial y store de sesión en memoria
@@ -396,7 +428,7 @@ Ese pipeline instala dependencias con `uv` y ejecuta `uv run pytest` cada vez qu
 El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedores que el endpoint `POST /api/v1/estimate`.
 
 ```bash
-uv run streamlit run streamlit_app.py
+./launch.sh portal
 ```
 
 La interfaz usa `st.form` para construir cada turno, crea un `session_id` al cargar la página, permite adjuntar ficheros, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
@@ -513,5 +545,7 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | `OLLAMA_API_KEY` | cualquier string | `ollama` |
 | `OLLAMA_BASE_URL` | URL LiteLLM/Ollama | `http://localhost:11434/v1` |
 | `OLLAMA_PORT` | puerto entero | `11434` |
+| `DOCLING_SERVE_URL` | URL base del contenedor Docling | `http://localhost:5001` |
+| `DOCLING_TIMEOUT_SECONDS` | timeout HTTP de conversión | `60` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |

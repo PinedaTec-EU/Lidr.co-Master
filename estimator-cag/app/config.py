@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     ollama_api_key: str = "ollama"
     ollama_base_url: str = "http://localhost:11434/v1"
     ollama_port: int = 11434
+    docling_serve_url: str = "http://localhost:5001"
+    docling_timeout_seconds: float = 60.0
     llm_provider: str = "openai"  # openai | anthropic
     llm_model: str = ""
     app_env: str = "development"

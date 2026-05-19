@@ -166,10 +166,6 @@ def test_session_estimate_updates_project_metadata(monkeypatch) -> None:
 
 
 def test_session_estimate_attachment_text_reaches_request(monkeypatch) -> None:
-    from io import BytesIO
-
-    from docx import Document
-
     captured: dict[str, object] = {}
 
     async def fake_get_estimation(request, **kwargs: str | None) -> dict:
@@ -183,12 +179,15 @@ def test_session_estimate_attachment_text_reaches_request(monkeypatch) -> None:
         }
 
     monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+    async def fake_convert_with_docling(filename: str, content: bytes, content_type: str | None) -> str:
+        assert filename == "requirements.docx"
+        assert content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        return "Integrar Stripe y SSO corporativo."
 
-    document = Document()
-    document.add_paragraph("Integrar Stripe y SSO corporativo.")
-    buffer = BytesIO()
-    document.save(buffer)
-    buffer.seek(0)
+    monkeypatch.setattr(
+        "app.services.attachment_extraction._convert_with_docling",
+        fake_convert_with_docling,
+    )
 
     session_id = client.post("/api/v1/sessions").json()["session_id"]
     response = client.post(
@@ -199,7 +198,7 @@ def test_session_estimate_attachment_text_reaches_request(monkeypatch) -> None:
             "detail_level": "medium",
             "output_format": "narrative",
         },
-        files={"attachments": ("requirements.docx", buffer.getvalue(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document")},
+        files={"attachments": ("requirements.docx", b"fake-docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")},
     )
 
     assert response.status_code == 200
@@ -254,7 +253,7 @@ def test_session_estimate_rejects_unsupported_attachment_type(monkeypatch) -> No
             "detail_level": "medium",
             "output_format": "narrative",
         },
-        files={"attachments": ("diagram.png", b"fake-image", "image/png")},
+        files={"attachments": ("payload.exe", b"fake-binary", "application/octet-stream")},
     )
 
     assert response.status_code == 400
