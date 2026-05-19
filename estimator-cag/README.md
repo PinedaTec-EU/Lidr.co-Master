@@ -76,6 +76,12 @@ estimator-cag/
 │       └── session_service.py # Orquestación multi-turno, memoria y adjuntos
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
+├── sample-documents/
+│   ├── session-01-marketplace-discovery.txt
+│   ├── session-02-ops-automation.md
+│   └── session-03-clinic-modernization.pdf
+├── docs-assets/
+│   └── session-05-generated-md-sample.png
 ├── streamlit_app.py           # Formulario web de producto para el estimador CAG
 ├── tests/                     # Tests API y validación del contrato HTTP
 ├── pyproject.toml
@@ -313,6 +319,16 @@ El script usa el `docker-compose.yml` raíz para arrancar `docling`, y abre `htt
 
 Si necesitas valores locales adicionales, el script carga automáticamente `.env.local` desde la raíz del repo.
 
+### Documentos de prueba incluidos
+
+El repo deja varios adjuntos listos para demos manuales y pruebas exploratorias:
+
+- [session-01-marketplace-discovery.txt](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/sample-documents/session-01-marketplace-discovery.txt)
+- [session-02-ops-automation.md](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/sample-documents/session-02-ops-automation.md)
+- [session-03-clinic-modernization.pdf](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/sample-documents/session-03-clinic-modernization.pdf)
+
+Los tres representan historias distintas para ver cómo cambia el contexto del estimador según el tipo de entrada.
+
 Si no tienes `uv` disponible, también puedes usar el entorno virtual ya creado en local:
 
 ```bash
@@ -432,6 +448,10 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 ```
 
 La interfaz usa `st.form` para construir cada turno, crea un `session_id` al cargar la página, permite adjuntar ficheros, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+
+Captura real de la UI con uno de los documentos generados para pruebas:
+
+![Portal con sample markdown](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/docs-assets/session-05-generated-md-sample.png)
 
 Alcance actual de esta capa:
 - formulario multi-turno tipado sobre el mismo flujo CAG del backend

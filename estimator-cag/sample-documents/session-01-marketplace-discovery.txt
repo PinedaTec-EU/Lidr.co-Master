@@ -1,0 +1,27 @@
+Cliente: startup B2B de procurement industrial.
+
+Objetivo:
+Construir un marketplace privado para distribuidores y fabricantes, con catálogo negociado, pedidos recurrentes y alertas de stock.
+
+Alcance funcional:
+- login con SSO Microsoft Entra ID
+- panel comercial con métricas por cuenta
+- catálogo con filtros por familia, disponibilidad y lead time
+- carrito con precios por cliente
+- pedidos recurrentes semanales
+- notificaciones por email cuando una referencia caiga por debajo del stock mínimo
+
+Restricciones:
+- el ERP actual es SAP Business One
+- la primera versión debe salir en 10 semanas
+- el equipo del cliente no tiene desarrolladores internos
+- el presupuesto está pensado para un equipo pequeño, 3 a 4 personas
+
+Tecnologías deseadas:
+- frontend React
+- backend Python
+- base de datos PostgreSQL
+
+Riesgos:
+- integración con SAP sin APIs bien documentadas
+- reglas de pricing diferentes por distribuidor
