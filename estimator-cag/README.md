@@ -57,13 +57,14 @@ estimator-cag/
 │   ├── main.py                # Aplicación FastAPI + router + health
 │   ├── context/
 │   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
+│   ├── schemas.py             # Contrato tipado para la interfaz de producto
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
 │       └── llm_service.py     # Lógica de llamada a proveedores LLM
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
-├── streamlit_app.py           # Chat web conversacional para el estimador CAG
+├── streamlit_app.py           # Formulario web de producto para el estimador CAG
 ├── tests/                     # Tests API y validación del contrato HTTP
 ├── pyproject.toml
 ├── .gitignore
@@ -338,10 +339,10 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 uv run streamlit run streamlit_app.py
 ```
 
-La interfaz usa `st.chat_message` y `st.chat_input`, mantiene el historial durante la sesión y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+La interfaz usa `st.form` para construir una solicitud tipada con `description`, `project_type`, `detail_level` y `output_format`, mantiene el historial visible de solicitudes y respuestas y muestra la estimación en streaming. El panel lateral expone el prompt activo, los ejemplos CAG inyectados, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
 Alcance actual de esta capa:
-- chat conversacional sobre el mismo flujo CAG del backend
+- formulario de producto tipado sobre el mismo flujo CAG del backend
 - streaming visual de la respuesta del modelo
 - visibilidad del contexto CAG y métricas básicas en sidebar
 
