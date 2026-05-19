@@ -67,6 +67,41 @@ def test_estimate_returns_llm_result(monkeypatch) -> None:
     assert body == {"text": "## Estimación de prueba", "prompt_version": "v1"}
 
 
+def test_estimate_passes_query_overrides_to_service(monkeypatch) -> None:
+    captured: dict[str, object] = {}
+
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        captured["request"] = request
+        captured["kwargs"] = kwargs
+        return {
+            "text": "## Estimación de prueba",
+            "prompt_version": "v1",
+            "model": "anthropic/claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "tokens_used": {"prompt": 11, "completion": 22, "total": 33},
+        }
+
+    monkeypatch.setattr(estimations, "get_estimation", fake_get_estimation)
+
+    response = client.post(
+        "/api/v1/estimate?friendly_name=anthropic&provider=anthropic&model=claude-haiku-4-5-20251001",
+        json={
+            "description": "Necesitamos una herramienta interna para operaciones con auditoría y reportes semanales.",
+            "project_type": "internal_tool",
+            "detail_level": "detailed",
+            "output_format": "line_items",
+        },
+    )
+
+    assert response.status_code == 200
+    assert captured["request"].project_type.value == "internal_tool"
+    assert captured["kwargs"] == {
+        "friendly_name": "anthropic",
+        "provider": "anthropic",
+        "model": "claude-haiku-4-5-20251001",
+    }
+
+
 def test_estimate_rejects_unknown_friendly_name(monkeypatch) -> None:
     async def fake_get_estimation(request, **kwargs: str | None) -> dict:
         raise ValueError("Unknown friendly_name 'bedrock'. Available: openai, anthropic, ollama")

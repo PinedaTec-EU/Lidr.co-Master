@@ -33,3 +33,24 @@ def test_estimation_request_rejects_short_description() -> None:
             detail_level=DetailLevel.SUMMARY,
             output_format=OutputFormat.PHASES_TABLE,
         )
+
+
+def test_estimation_request_accepts_max_length_description() -> None:
+    request = EstimationRequest(
+        description="x" * 2000,
+        project_type=ProjectType.DATA_PIPELINE,
+        detail_level=DetailLevel.DETAILED,
+        output_format=OutputFormat.LINE_ITEMS,
+    )
+
+    assert len(request.description) == 2000
+
+
+def test_estimation_request_rejects_description_above_max_length() -> None:
+    with pytest.raises(ValidationError):
+        EstimationRequest(
+            description="x" * 2001,
+            project_type=ProjectType.DATA_PIPELINE,
+            detail_level=DetailLevel.DETAILED,
+            output_format=OutputFormat.LINE_ITEMS,
+        )

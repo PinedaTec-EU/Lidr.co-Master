@@ -1,3 +1,5 @@
+import pytest
+
 from app.prompts.loader import render_estimation_prompt
 from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
 
@@ -48,3 +50,10 @@ def test_detailed_instructions_change_with_detail_level() -> None:
 
     assert "asunciones por fase" in detailed_system
     assert "asunciones por fase" not in summary_system
+
+
+def test_render_rejects_unknown_prompt_version() -> None:
+    request = _request()
+
+    with pytest.raises(Exception):
+        render_estimation_prompt(request, version="v999")
