@@ -57,6 +57,13 @@ estimator-cag/
 │   ├── main.py                # Aplicación FastAPI + router + health
 │   ├── context/
 │   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
+│   ├── prompts/
+│   │   ├── loader.py          # Loader Jinja2 con versiones de prompt
+│   │   └── estimation/
+│   │       └── v1/
+│   │           ├── system.j2
+│   │           ├── user.j2
+│   │           └── examples.j2
 │   ├── schemas.py             # Contrato tipado para la interfaz de producto
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
@@ -314,6 +321,7 @@ Cobertura actual de tests:
 - rechazo de `transcription` vacía
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
+- validación del schema tipado del formulario de producto
 - construcción del `system prompt`
 - resumen del contexto CAG expuesto a la UI
 - resolución de rutas de proveedor/modelo
