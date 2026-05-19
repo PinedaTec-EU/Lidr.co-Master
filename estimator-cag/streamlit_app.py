@@ -250,6 +250,70 @@ def _apply_styles() -> None:
             margin-bottom: 0.5rem;
         }
 
+        .run-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.35rem;
+        }
+
+        .run-kpi {
+            background:
+                linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+                radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 55%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 0.85rem 0.9rem;
+            min-height: 88px;
+        }
+
+        .run-kpi-label {
+            color: #9ca3af;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.35rem;
+        }
+
+        .run-kpi-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: #f8fafc;
+        }
+
+        .run-kpi-subvalue {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            margin-top: 0.35rem;
+            word-break: break-word;
+        }
+
+        .run-band {
+            background:
+                linear-gradient(135deg, rgba(251, 191, 36, 0.14), rgba(248, 250, 252, 0.02));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 0.95rem;
+            margin-top: 0.35rem;
+        }
+
+        .run-band-label {
+            color: #9ca3af;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.25rem;
+        }
+
+        .run-band-value {
+            color: #f8fafc;
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
         div[data-testid="stDialog"] div[role="dialog"] {
             width: 90vw;
             max-width: 90vw;
@@ -259,6 +323,45 @@ def _apply_styles() -> None:
             white-space: pre-wrap;
         }
         </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_last_call_dashboard() -> None:
+    provider = st.session_state.last_provider or "-"
+    model = st.session_state.last_model or "-"
+    usage = st.session_state.last_usage
+    response_time = f"{st.session_state.last_response_time:.2f}s"
+
+    st.markdown(
+        f"""
+        <div class="run-band">
+            <div class="run-band-label">Provider</div>
+            <div class="run-band-value">{provider}</div>
+        </div>
+        <div class="run-band">
+            <div class="run-band-label">Model</div>
+            <div class="run-band-value">{model}</div>
+        </div>
+        <div class="run-dashboard">
+            <div class="run-kpi">
+                <div class="run-kpi-label">Prompt tokens</div>
+                <div class="run-kpi-value">{usage["prompt"]}</div>
+            </div>
+            <div class="run-kpi">
+                <div class="run-kpi-label">Completion</div>
+                <div class="run-kpi-value">{usage["completion"]}</div>
+            </div>
+            <div class="run-kpi">
+                <div class="run-kpi-label">Total tokens</div>
+                <div class="run-kpi-value">{usage["total"]}</div>
+            </div>
+            <div class="run-kpi">
+                <div class="run-kpi-label">Latency</div>
+                <div class="run-kpi-value">{response_time}</div>
+            </div>
+        </div>
         """,
         unsafe_allow_html=True,
     )
@@ -317,12 +420,7 @@ def _render_control_panel() -> str:
 
         st.divider()
         st.subheader("Última llamada")
-        st.metric("Proveedor", st.session_state.last_provider or "-")
-        st.metric("Modelo", st.session_state.last_model or "-")
-        st.metric("Tokens entrada", st.session_state.last_usage["prompt"])
-        st.metric("Tokens salida", st.session_state.last_usage["completion"])
-        st.metric("Tokens total", st.session_state.last_usage["total"])
-        st.metric("Tiempo", f"{st.session_state.last_response_time:.2f}s")
+        _render_last_call_dashboard()
 
         session = get_session(st.session_state.session_id)
         st.divider()
