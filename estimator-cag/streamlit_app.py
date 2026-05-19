@@ -326,10 +326,11 @@ def _render_control_panel() -> str:
 
         session = get_session(st.session_state.session_id)
         st.divider()
-        st.subheader("Project metadata")
-        st.json(session.project_metadata.model_dump() if session else {}, expanded=False)
-        st.caption("Document sources")
-        st.json(session.document_sources if session else [], expanded=False)
+        st.subheader("Contexto persistido")
+        if st.button("Ver project metadata", use_container_width=True):
+            _show_project_metadata_dialog()
+        if st.button("Ver document sources", use_container_width=True):
+            _show_document_sources_dialog()
 
         if st.button("Nueva conversación", use_container_width=True):
             _reset_conversation()
@@ -412,6 +413,31 @@ def _show_document_context_dialog() -> None:
     for index, section in enumerate(sections, 1):
         st.markdown(f"### Documento {index}")
         st.code(section, language="markdown")
+
+
+@st.dialog("Project metadata", width="large")
+def _show_project_metadata_dialog() -> None:
+    session = get_session(st.session_state.session_id)
+    if session is None:
+        st.info("La sesión actual no existe.")
+        return
+
+    st.json(session.project_metadata.model_dump(), expanded=True)
+
+
+@st.dialog("Document sources", width="large")
+def _show_document_sources_dialog() -> None:
+    session = get_session(st.session_state.session_id)
+    if session is None:
+        st.info("La sesión actual no existe.")
+        return
+
+    if not session.document_sources:
+        st.info("Todavía no hay rutas documentales asociadas a esta sesión.")
+        return
+
+    for source in session.document_sources:
+        st.code(source, language="text")
 
 
 def _render_prompt_panel() -> None:
