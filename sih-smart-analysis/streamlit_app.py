@@ -11,7 +11,7 @@ import streamlit as st
 from app.application.cag_recent_analysis import RecentRunsAnalyzer
 from app.application.llm_report_analysis import LLMReportAnalyst
 from app.application.rag_semantic_analysis import SemanticRunsAnalyzer
-from app.config import get_settings
+from app.config import DEFAULT_REPORTS_DIR, get_settings
 from app.domain.models import AnalysisResult, RunReport
 from app.infrastructure.file_report_repository import FileRunReportRepository
 from app.infrastructure.report_normalizer import ReportNormalizer
@@ -22,7 +22,7 @@ LLM_MODEL_PRESETS = {
     "Anthropic · Claude Haiku": "anthropic/claude-haiku-4-5-20251001",
     "NVIDIA NIM · Llama 3.1 8B": "nvidia_nim/meta/llama-3.1-8b-instruct",
     "Ollama local · Qwen 3.6 27B": "ollama/qwen3.6:27b",
-    "Ollama local · Gemma 4 2EB": "ollama/gemma4:2eb",
+    "Ollama local · Gemma 4 E2B": "ollama/gemma4:e2b",
     "Ollama local · Qwen 3.6 35B A3B": "ollama/qwen3.6:35b-a3b",
 }
 CUSTOM_LLM_MODEL_LABEL = "Personalizado"
@@ -52,6 +52,8 @@ def _init_state() -> None:
         st.session_state.limit = 5
     if "top_k" not in st.session_state:
         st.session_state.top_k = 5
+    if "llm_context_limit" not in st.session_state:
+        st.session_state.llm_context_limit = 3
     if "reports_dir_override" not in st.session_state:
         st.session_state.reports_dir_override = ""
     if "llm_model_override" not in st.session_state:
@@ -128,6 +130,7 @@ def _active_reports_dir() -> Path:
 
 def _known_report_dirs() -> list[Path]:
     candidates = [
+        DEFAULT_REPORTS_DIR,
         get_settings().reports_dir,
         Path("../.sphere/workflows/output"),
         Path("sample-reports"),
@@ -338,9 +341,34 @@ def _render_metrics(metrics: dict) -> None:
     col_c, col_d = st.columns(2)
     col_c.metric("Tokens total", metrics["total_tokens"])
     col_d.metric("Tokens/s", metrics["tokens_per_second"])
+    st.metric("Tiempo", f"{metrics['elapsed_seconds']:.2f}s")
 
 
-def _stream_llm_insights(result: AnalysisResult, reports: list[RunReport]) -> AnalysisResult:
+def _render_metrics_placeholders(metrics: dict, placeholders: list) -> None:
+    for placeholder in placeholders:
+        with placeholder.container():
+            _render_metrics(metrics)
+
+
+def _stream_status_line(metrics: dict) -> str:
+    return (
+        f"Entrada: {metrics['input_tokens']} tokens | "
+        f"Salida: {metrics['output_tokens']} tokens | "
+        f"Total: {metrics['total_tokens']} tokens | "
+        f"{metrics['tokens_per_second']} tokens/s | "
+        f"{metrics['elapsed_seconds']:.2f}s"
+    )
+
+
+def _render_streaming_insight(content: str, metrics: dict) -> str:
+    return f"{content}\n\n---\n`{_stream_status_line(metrics)}`"
+
+
+def _stream_llm_insights(
+    result: AnalysisResult,
+    reports: list[RunReport],
+    sidebar_metrics_placeholder=None,
+) -> AnalysisResult:
     settings = _llm_settings()
     if not settings.llm_enabled:
         return result
@@ -354,6 +382,9 @@ def _stream_llm_insights(result: AnalysisResult, reports: list[RunReport]) -> An
     st.markdown("### LLM insights")
     insight_placeholder = st.empty()
     metrics_placeholder = st.empty()
+    metric_placeholders = [metrics_placeholder]
+    if sidebar_metrics_placeholder is not None:
+        metric_placeholders.append(sidebar_metrics_placeholder)
 
     try:
         for delta in analyst.stream_insight(result, reports):
@@ -367,25 +398,34 @@ def _stream_llm_insights(result: AnalysisResult, reports: list[RunReport]) -> An
                 elapsed_seconds=elapsed,
             )
             st.session_state.llm_metrics = metrics
-            insight_placeholder.markdown(insight)
-            with metrics_placeholder.container():
-                _render_metrics(metrics)
+            insight_placeholder.markdown(_render_streaming_insight(insight, metrics))
+            _render_metrics_placeholders(metrics, metric_placeholders)
     except Exception as exc:
         insight = f"LLM analysis unavailable: {exc}"
         insight_placeholder.warning(insight)
 
     elapsed = max(perf_counter() - started, 0.001)
     output_tokens = analyst.count_tokens(text=insight) if insight else 0
-    st.session_state.llm_metrics = _metrics(
+    final_metrics = _metrics(
         model=settings.llm_model,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
         elapsed_seconds=elapsed,
     )
+    st.session_state.llm_metrics = final_metrics
+    if insight:
+        insight_placeholder.markdown(_render_streaming_insight(insight, final_metrics))
+    _render_metrics_placeholders(final_metrics, metric_placeholders)
     return replace(result, llm_insights=insight or None)
 
 
-def _run_recent(workflow: str, environment: str, limit: int) -> None:
+def _run_recent(
+    workflow: str,
+    environment: str,
+    limit: int,
+    llm_context_limit: int,
+    sidebar_metrics_placeholder=None,
+) -> None:
     repository = _repository_for(workflow, environment)
     result = RecentRunsAnalyzer(repository).analyze(
         workflow=workflow,
@@ -394,9 +434,10 @@ def _run_recent(workflow: str, environment: str, limit: int) -> None:
         enrich_with_llm=False,
     )
     reports = repository.latest(workflow=workflow, environment=environment, limit=limit)
+    llm_reports = reports[:llm_context_limit]
     user_message = (
         f"Analiza las últimas {limit} ejecuciones de `{workflow}` "
-        f"en `{environment}`."
+        f"en `{environment}`. Usa {len(llm_reports)} reports para el contexto LLM."
     )
     st.session_state.messages.append(
         {
@@ -409,7 +450,7 @@ def _run_recent(workflow: str, environment: str, limit: int) -> None:
         st.markdown(user_message)
     with st.chat_message("assistant"):
         st.markdown(_render_result(result))
-        result = _stream_llm_insights(result, reports)
+        result = _stream_llm_insights(result, llm_reports, sidebar_metrics_placeholder)
     st.session_state.messages.append(
         {
             "role": "assistant",
@@ -420,12 +461,21 @@ def _run_recent(workflow: str, environment: str, limit: int) -> None:
     st.rerun()
 
 
-def _run_semantic(path: Path, top_k: int) -> None:
+def _run_semantic(
+    path: Path,
+    top_k: int,
+    llm_context_limit: int,
+    sidebar_metrics_placeholder=None,
+) -> None:
     current = _load_report(path)
     analyzer = SemanticRunsAnalyzer(_repository())
     result = analyzer.analyze(current=current, top_k=top_k, enrich_with_llm=False)
     reports = analyzer.context_reports(current, top_k=top_k)
-    user_message = f"Analiza semánticamente `{current.run_id}` contra {top_k} fuentes."
+    llm_reports = reports[:llm_context_limit]
+    user_message = (
+        f"Analiza semánticamente `{current.run_id}` contra {top_k} fuentes. "
+        f"Usa {len(llm_reports)} reports para el contexto LLM."
+    )
     st.session_state.messages.append(
         {
             "role": "user",
@@ -437,7 +487,7 @@ def _run_semantic(path: Path, top_k: int) -> None:
         st.markdown(user_message)
     with st.chat_message("assistant"):
         st.markdown(_render_result(result))
-        result = _stream_llm_insights(result, reports)
+        result = _stream_llm_insights(result, llm_reports, sidebar_metrics_placeholder)
     st.session_state.messages.append(
         {
             "role": "assistant",
@@ -448,11 +498,17 @@ def _run_semantic(path: Path, top_k: int) -> None:
     st.rerun()
 
 
-def _render_sidebar() -> None:
+def _render_sidebar():
     with st.sidebar:
         st.subheader("Configuración")
         st.number_input("Ventana reciente", min_value=2, max_value=20, key="limit")
         st.number_input("Fuentes semánticas", min_value=1, max_value=30, key="top_k")
+        st.number_input(
+            "Reports para LLM",
+            min_value=1,
+            max_value=20,
+            key="llm_context_limit",
+        )
 
         st.divider()
         st.subheader("Modelo LLM")
@@ -484,7 +540,9 @@ def _render_sidebar() -> None:
 
         st.divider()
         st.subheader("Consumo LLM")
-        _render_metrics(st.session_state.llm_metrics)
+        metrics_placeholder = st.empty()
+        with metrics_placeholder.container():
+            _render_metrics(st.session_state.llm_metrics)
 
         if st.button("Limpiar conversación", use_container_width=True):
             st.session_state.clear()
@@ -562,6 +620,7 @@ def _render_sidebar() -> None:
                         f'<div class="report-meta">{_report_label(path)}</div>',
                         unsafe_allow_html=True,
                     )
+        return metrics_placeholder
 
 
 @st.dialog("Contexto activo SIH Smart Analysis", width="large")
@@ -576,6 +635,7 @@ def _show_context_dialog() -> None:
         "llm_model": settings.llm_model,
         "llm_model_source": "streamlit session override",
         "llm_max_tokens": settings.llm_max_tokens,
+        "llm_context_limit": st.session_state.llm_context_limit,
         "public_endpoints": [
             "POST /api/v1/analysis/recent",
             "POST /api/v1/analysis/semantic",
@@ -587,7 +647,7 @@ def _show_context_dialog() -> None:
 
 _init_state()
 _apply_styles()
-_render_sidebar()
+sidebar_metrics_placeholder = _render_sidebar()
 
 st.title("SIH Smart Analysis")
 st.caption("Wrapper conversacional para analizar reports de SphereIntegrationHub.")
@@ -606,7 +666,13 @@ if mode == "Recent CAG":
         environment = st.text_input("Environment", key="environment")
     if st.button("Analizar ventana reciente", use_container_width=True):
         try:
-            _run_recent(workflow.strip(), environment.strip(), int(st.session_state.limit))
+            _run_recent(
+                workflow.strip(),
+                environment.strip(),
+                int(st.session_state.limit),
+                int(st.session_state.llm_context_limit),
+                sidebar_metrics_placeholder,
+            )
         except Exception as exc:
             st.error(f"No se pudo analizar la ventana reciente: {exc}")
 
@@ -622,7 +688,12 @@ else:
         try:
             if not selected_path:
                 raise ValueError("selecciona un report del catálogo")
-            _run_semantic(selected_path, int(st.session_state.top_k))
+            _run_semantic(
+                selected_path,
+                int(st.session_state.top_k),
+                int(st.session_state.llm_context_limit),
+                sidebar_metrics_placeholder,
+            )
         except Exception as exc:
             st.error(f"No se pudo analizar el report actual: {exc}")
 

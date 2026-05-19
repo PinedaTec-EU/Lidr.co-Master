@@ -73,11 +73,13 @@ class LLMReportAnalyst:
                 "role": "system",
                 "content": (
                     "Eres un analista senior de calidad e integraciones SIH. "
-                    "Evalua reports de ejecucion, detecta problemas probables, "
-                    "riesgos de regresion y siguientes acciones. No te limites a repetir "
-                    "el score determinista: interpreta outputs, respuestas HTTP, diferencias "
-                    "entre modelos/proveedores y señales latentes. Responde en español, "
-                    "concreto y en Markdown."
+                    "Evalua reports de ejecucion con rigor operativo: calcula medias, "
+                    "compara latencias, detecta problemas probables, riesgos de regresion "
+                    "y siguientes acciones. Antes de responder, razona internamente sobre "
+                    "timings, endpoints, codigos HTTP, outputs y diferencias entre "
+                    "modelos/proveedores; no muestres cadena de pensamiento, solo el "
+                    "resultado estructurado. No te limites a repetir el score determinista. "
+                    "Responde en español, concreto y en Markdown."
                 ),
             },
             {
@@ -123,20 +125,58 @@ class LLMReportAnalyst:
 Señales detectadas:
 {chr(10).join(regression_lines)}
 
+Resumen cuantitativo de tiempos:
+{self._timing_summary(reports)}
+
 Reports usados como contexto:
 {chr(10).join(report_lines)}
 
 Genera:
-1. Diagnóstico probable.
-2. Problemas concretos o señales sospechosas vistas en outputs/stages.
-3. Riesgos o problemas latentes no obvios.
-4. Siguientes acciones recomendadas.
-5. Qué dato falta para confirmar la hipótesis."""
+1. Diagnóstico probable con confianza alta/media/baja.
+2. Tabla Markdown de stages/endpoints con media, mínimo, máximo, última duración y desviación de la última ejecución frente a la media.
+3. Problemas concretos o señales sospechosas vistas en outputs/stages.
+4. Riesgos o problemas latentes no obvios, separando rendimiento, contrato, autenticación y dependencias.
+5. Siguientes acciones recomendadas, priorizadas.
+6. Qué dato falta para confirmar la hipótesis.
+
+Haz un análisis más profundo de lo habitual, pero no inventes datos que no estén en el contexto."""
 
     def _stage_line(self, stage) -> str:
         context = f", contexto={stage.context}" if stage.context else ""
+        endpoint = ""
+        if stage.http_method or stage.request_uri:
+            endpoint = f", endpoint={stage.http_method or '-'} {stage.request_uri or '-'}"
         return (
             f"  - {stage.name}: {stage.status}, {stage.duration_ms}ms, "
             f"http={stage.http_status}, error={stage.error_type}, "
-            f"message={stage.message}{context}"
+            f"message={stage.message}{endpoint}{context}"
         )
+
+    def _timing_summary(self, reports: list[RunReport]) -> str:
+        by_target: dict[str, list[int]] = {}
+        for report in reports:
+            for stage in report.stages:
+                target = self._timing_target(stage)
+                by_target.setdefault(target, []).append(stage.duration_ms)
+
+        if not by_target:
+            return "- sin datos de tiempos por stage"
+
+        lines = []
+        for target, durations in sorted(by_target.items()):
+            average = sum(durations) / len(durations)
+            latest = durations[0]
+            delta = latest - average
+            delta_percent = (delta / average * 100) if average else 0
+            lines.append(
+                f"- {target}: n={len(durations)}, media={average:.0f}ms, "
+                f"min={min(durations)}ms, max={max(durations)}ms, "
+                f"ultima={latest}ms, desviacion_ultima={delta:+.0f}ms ({delta_percent:+.1f}%)"
+            )
+        return "\n".join(lines)
+
+    def _timing_target(self, stage) -> str:
+        if stage.request_uri:
+            method = stage.http_method or "-"
+            return f"{stage.name} | {method} {stage.request_uri}"
+        return stage.name
