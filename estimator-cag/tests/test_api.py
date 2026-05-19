@@ -2,7 +2,8 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.routers import estimations
-from app.routers.sessions import session_store
+from app.services import session_service
+from app.sessions import MAX_TURNS
 
 
 client = TestClient(app)
@@ -33,7 +34,7 @@ def test_create_session_returns_uuid_and_stores_session() -> None:
     body = response.json()
     assert isinstance(body["session_id"], str)
     assert len(body["session_id"]) == 36
-    assert session_store.get(body["session_id"]) is not None
+    assert session_service.session_store.get(body["session_id"]) is not None
 
 
 def test_estimate_rejects_short_description() -> None:
@@ -131,3 +132,130 @@ def test_estimate_rejects_unknown_friendly_name(monkeypatch) -> None:
 
     assert response.status_code == 400
     assert "Unknown friendly_name 'bedrock'" in response.json()["detail"]
+
+
+def test_session_estimate_updates_project_metadata(monkeypatch) -> None:
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        return {
+            "text": "Proyecto Atlas estimado para un equipo de 4 con React y PostgreSQL.",
+            "prompt_version": "v1",
+            "model": "openai/gpt-4o-mini",
+            "provider": "openai",
+            "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+        }
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos el proyecto Atlas con React, PostgreSQL y un equipo de 4 personas.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+    )
+
+    assert response.status_code == 200
+    metadata = session_service.session_store.get(session_id).project_metadata
+    assert metadata.project_name is not None
+    assert "react" in metadata.mentioned_technologies
+    assert "postgresql" in metadata.mentioned_technologies
+    assert metadata.assumed_team_size == 4
+
+
+def test_session_estimate_attachment_text_reaches_request(monkeypatch) -> None:
+    from io import BytesIO
+
+    from docx import Document
+
+    captured: dict[str, object] = {}
+
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        captured["description"] = request.description
+        return {
+            "text": "Estimación con adjunto procesado.",
+            "prompt_version": "v1",
+            "model": "openai/gpt-4o-mini",
+            "provider": "openai",
+            "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+        }
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+
+    document = Document()
+    document.add_paragraph("Integrar Stripe y SSO corporativo.")
+    buffer = BytesIO()
+    document.save(buffer)
+    buffer.seek(0)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos una plataforma B2B.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+        files={"attachments": ("requirements.docx", buffer.getvalue(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document")},
+    )
+
+    assert response.status_code == 200
+    assert "Stripe" in captured["description"]
+    assert "requirements.docx" in captured["description"]
+
+
+def test_session_estimate_history_respects_max_turns(monkeypatch) -> None:
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        return {
+            "text": "Respuesta de estimación.",
+            "prompt_version": "v1",
+            "model": "openai/gpt-4o-mini",
+            "provider": "openai",
+            "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+        }
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    for index in range(8):
+        response = client.post(
+            f"/api/v1/sessions/{session_id}/estimate",
+            data={
+                "transcript": (
+                    f"Turno {index}: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+                ),
+                "project_type": "web_saas",
+                "detail_level": "medium",
+                "output_format": "narrative",
+            },
+        )
+        assert response.status_code == 200
+
+    history = session_service.session_store.get(session_id).history
+    assert len(history.turns) == MAX_TURNS
+    assert "Turno 0" not in history.turns[0][0]
+
+
+def test_session_estimate_rejects_unsupported_attachment_type(monkeypatch) -> None:
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        raise AssertionError("No debería llegar al LLM con un adjunto inválido")
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos una plataforma B2B.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+        files={"attachments": ("diagram.png", b"fake-image", "image/png")},
+    )
+
+    assert response.status_code == 400
+    assert "Unsupported attachment type" in response.json()["detail"]

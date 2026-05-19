@@ -1,0 +1,75 @@
+from __future__ import annotations
+
+from uuid import uuid4
+
+from app.prompts.loader import render_estimation_prompt
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
+from app.services.attachment_extraction import extract_attachments_text
+from app.services.llm_service import get_estimation
+from app.sessions import ProjectMetadata, Session, SessionStore
+
+
+session_store = SessionStore()
+
+
+def create_session() -> str:
+    session_id = str(uuid4())
+    session_store.create(session_id)
+    return session_id
+
+
+def get_session(session_id: str) -> Session | None:
+    return session_store.get(session_id)
+
+
+def compose_description(transcript: str, attachment_sections: list[str], max_chars: int = 2000) -> str:
+    combined = transcript.strip()
+    if attachment_sections:
+        combined = f"{combined}\n\n" + "\n\n".join(attachment_sections)
+    return combined[:max_chars].strip()
+
+
+async def estimate_session_turn(
+    *,
+    session_id: str,
+    transcript: str,
+    project_type: ProjectType,
+    detail_level: DetailLevel,
+    output_format: OutputFormat,
+    attachments,
+    friendly_name: str | None = None,
+    provider: str | None = None,
+    model: str | None = None,
+) -> tuple[dict, ProjectMetadata]:
+    session = session_store.get(session_id)
+    if session is None:
+        raise KeyError(session_id)
+
+    attachment_sections = await extract_attachments_text(attachments)
+    request = EstimationRequest(
+        description=compose_description(transcript, attachment_sections),
+        project_type=project_type,
+        detail_level=detail_level,
+        output_format=output_format,
+    )
+
+    result = await get_estimation(
+        request,
+        friendly_name=friendly_name,
+        provider=provider,
+        model=model,
+        history_messages=session.history.to_turn_messages(),
+        project_metadata=session.project_metadata,
+    )
+
+    _system_prompt, user_prompt = render_estimation_prompt(
+        request,
+        version=result["prompt_version"],
+        project_metadata=session.project_metadata,
+    )
+    session.history.add_turn(user_prompt, result["text"])
+    session.project_metadata = session.project_metadata.merge_from_interaction(
+        request.description,
+        result["text"],
+    )
+    return result, session.project_metadata

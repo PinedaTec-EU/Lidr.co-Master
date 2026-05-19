@@ -2,6 +2,7 @@ import pytest
 
 from app.prompts.loader import render_estimation_prompt
 from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
+from app.sessions import ProjectMetadata
 
 
 def _request(
@@ -57,3 +58,19 @@ def test_render_rejects_unknown_prompt_version() -> None:
 
     with pytest.raises(Exception):
         render_estimation_prompt(request, version="v999")
+
+
+def test_render_injects_project_metadata_block() -> None:
+    request = _request()
+    metadata = ProjectMetadata(
+        project_name="Atlas",
+        assumed_team_size=4,
+        mentioned_technologies=["react", "postgresql"],
+        agreed_scope="Portal B2B con reporting y automatizaciones.",
+    )
+
+    system, _user = render_estimation_prompt(request, project_metadata=metadata)
+
+    assert "<project_metadata>" in system
+    assert "project_name: Atlas" in system
+    assert "mentioned_technologies: react, postgresql" in system

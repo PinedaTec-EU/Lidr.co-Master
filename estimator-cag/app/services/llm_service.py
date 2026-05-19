@@ -11,6 +11,7 @@ from app.schemas import (
     OutputFormat,
     ProjectType,
 )
+from app.sessions import ProjectMetadata
 
 MAX_COMPLETION_TOKENS = 1200
 DEFAULT_PROMPT_VERSION = "v1"
@@ -70,8 +71,13 @@ def _default_prompt_request() -> EstimationRequest:
 def get_system_prompt(
     request: EstimationRequest | None = None,
     version: str = DEFAULT_PROMPT_VERSION,
+    project_metadata: ProjectMetadata | None = None,
 ) -> str:
-    system, _user = render_estimation_prompt(request or _default_prompt_request(), version=version)
+    system, _user = render_estimation_prompt(
+        request or _default_prompt_request(),
+        version=version,
+        project_metadata=project_metadata,
+    )
     return system
 
 
@@ -201,10 +207,22 @@ async def get_estimation(
     provider: str | None = None,
     model: str | None = None,
     prompt_version: str = DEFAULT_PROMPT_VERSION,
+    history_messages: list[dict[str, str]] | None = None,
+    project_metadata: ProjectMetadata | None = None,
 ) -> dict:
-    system_prompt, user_prompt = render_estimation_prompt(request, version=prompt_version)
+    system_prompt, user_prompt = render_estimation_prompt(
+        request,
+        version=prompt_version,
+        project_metadata=project_metadata,
+    )
     route = _resolve_route(friendly_name, provider, model)
-    return await _call_litellm(system_prompt, user_prompt, route, prompt_version)
+    return await _call_litellm(
+        system_prompt,
+        user_prompt,
+        route,
+        prompt_version,
+        history_messages=history_messages,
+    )
 
 
 async def stream_estimation(
@@ -213,10 +231,22 @@ async def stream_estimation(
     provider: str | None = None,
     model: str | None = None,
     prompt_version: str = DEFAULT_PROMPT_VERSION,
+    history_messages: list[dict[str, str]] | None = None,
+    project_metadata: ProjectMetadata | None = None,
 ) -> AsyncIterator[dict]:
-    system_prompt, user_prompt = render_estimation_prompt(request, version=prompt_version)
+    system_prompt, user_prompt = render_estimation_prompt(
+        request,
+        version=prompt_version,
+        project_metadata=project_metadata,
+    )
     route = _resolve_route(friendly_name, provider, model)
-    async for event in _stream_litellm(system_prompt, user_prompt, route, prompt_version):
+    async for event in _stream_litellm(
+        system_prompt,
+        user_prompt,
+        route,
+        prompt_version,
+        history_messages=history_messages,
+    ):
         yield event
 
 
@@ -225,13 +255,14 @@ async def _call_litellm(
     user_prompt: str,
     route: ModelRoute,
     prompt_version: str,
+    history_messages: list[dict[str, str]] | None = None,
 ) -> dict:
     from litellm import acompletion
 
     response = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, user_prompt),
+        messages=[{"role": "system", "content": system_prompt}, *(history_messages or []), {"role": "user", "content": user_prompt}],
     )
     return {
         "text": response.choices[0].message.content,
@@ -247,13 +278,14 @@ async def _stream_litellm(
     user_prompt: str,
     route: ModelRoute,
     prompt_version: str,
+    history_messages: list[dict[str, str]] | None = None,
 ) -> AsyncIterator[dict]:
     from litellm import acompletion
 
     stream = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, user_prompt),
+        messages=[{"role": "system", "content": system_prompt}, *(history_messages or []), {"role": "user", "content": user_prompt}],
         stream=True,
     )
 
