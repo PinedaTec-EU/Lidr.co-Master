@@ -48,6 +48,14 @@ def _init_state() -> None:
         st.session_state.last_response_time = 0.0
     if "pending_request_data" not in st.session_state:
         st.session_state.pending_request_data = None
+    if "form_description" not in st.session_state:
+        st.session_state.form_description = ""
+    if "form_project_type" not in st.session_state:
+        st.session_state.form_project_type = ProjectType.WEB_SAAS.value
+    if "form_detail_level" not in st.session_state:
+        st.session_state.form_detail_level = DetailLevel.MEDIUM.value
+    if "form_output_format" not in st.session_state:
+        st.session_state.form_output_format = OutputFormat.NARRATIVE.value
 
 
 def _reset_conversation() -> None:
@@ -63,6 +71,31 @@ def _reset_conversation() -> None:
     st.session_state.last_model = ""
     st.session_state.last_provider = ""
     st.session_state.last_response_time = 0.0
+    st.session_state.pending_request_data = None
+    st.session_state.form_description = ""
+    st.session_state.form_project_type = ProjectType.WEB_SAAS.value
+    st.session_state.form_detail_level = DetailLevel.MEDIUM.value
+    st.session_state.form_output_format = OutputFormat.NARRATIVE.value
+
+
+def _apply_pending_form_data() -> None:
+    pending_data = st.session_state.pending_request_data or {}
+    if not pending_data:
+        return
+
+    st.session_state.form_description = pending_data.get("description", "")
+    st.session_state.form_project_type = pending_data.get(
+        "project_type",
+        ProjectType.WEB_SAAS.value,
+    )
+    st.session_state.form_detail_level = pending_data.get(
+        "detail_level",
+        DetailLevel.MEDIUM.value,
+    )
+    st.session_state.form_output_format = pending_data.get(
+        "output_format",
+        OutputFormat.NARRATIVE.value,
+    )
     st.session_state.pending_request_data = None
 
 
@@ -356,6 +389,7 @@ def _send_request(request: EstimationRequest, attachments, selected_friendly_nam
 
 
 _init_state()
+_apply_pending_form_data()
 _apply_styles()
 selected_friendly_name = _render_control_panel()
 
@@ -365,12 +399,10 @@ _render_conversation()
 
 _render_prompt_panel()
 
-pending_data = st.session_state.pending_request_data or {}
-
 with st.form("estimation-request-form", clear_on_submit=False):
     transcript = st.text_area(
         "Transcripción o nuevo contexto del turno",
-        value=pending_data.get("description", ""),
+        key="form_description",
         height=220,
         placeholder="Añade nueva información sobre el proyecto actual, decisiones, alcance o restricciones.",
     )
@@ -380,27 +412,30 @@ with st.form("estimation-request-form", clear_on_submit=False):
             "Tipo de proyecto",
             list(ProjectType),
             index=list(ProjectType).index(
-                ProjectType(pending_data.get("project_type", ProjectType.WEB_SAAS.value))
+                ProjectType(st.session_state.form_project_type)
             ),
             format_func=_project_type_label,
+            key="form_project_type",
         )
     with col_b:
         detail_level = st.selectbox(
             "Nivel de detalle",
             list(DetailLevel),
             index=list(DetailLevel).index(
-                DetailLevel(pending_data.get("detail_level", DetailLevel.MEDIUM.value))
+                DetailLevel(st.session_state.form_detail_level)
             ),
             format_func=_detail_level_label,
+            key="form_detail_level",
         )
     with col_c:
         output_format = st.selectbox(
             "Formato de salida",
             list(OutputFormat),
             index=list(OutputFormat).index(
-                OutputFormat(pending_data.get("output_format", OutputFormat.NARRATIVE.value))
+                OutputFormat(st.session_state.form_output_format)
             ),
             format_func=_output_format_label,
+            key="form_output_format",
         )
     attachments = st.file_uploader(
         "Adjuntos complementarios",
@@ -409,10 +444,6 @@ with st.form("estimation-request-form", clear_on_submit=False):
     )
 
     submitted = st.form_submit_button("Generar estimación", use_container_width=True)
-
-if pending_data:
-    st.session_state.pending_request_data = None
-
 if submitted:
     try:
         request = EstimationRequest(
