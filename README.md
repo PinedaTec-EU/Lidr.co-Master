@@ -58,3 +58,12 @@ Este repo incluye skills locales para mantener disciplina de trabajo:
 |-------|-----------|
 | [keep-project-docs-updated](./.codex/skills/keep-project-docs-updated/SKILL.md) | Mantener actualizado el README del proyecto afectado cuando cambien APIs, arquitectura, fases, configuración, SIH, CAG/RAG o tests. |
 | [make-functional-commits](./.codex/skills/make-functional-commits/SKILL.md) | Preparar commits pequeños, funcionales, validados y con documentación incluida cuando corresponda. |
+
+## Convención de ramas por sesión
+
+- Cada nueva sesión de trabajo o ejercicio debe comenzar en una rama nueva creada desde `main`.
+- El formato de nombre es `{nn}-session`, por ejemplo `05-session`.
+- Antes de crear la nueva rama, hay que comprobar si la sesión previa sigue en su propia rama y todavía no ha sido integrada.
+- Si existe una rama de sesión previa pendiente, primero se integra en `main` para que la nueva sesión arranque con todos los cambios acumulados.
+- Ese merge previo debe confirmarse contigo antes de ejecutarlo.
+- Ejemplo: para empezar la sesión 5, si existe `04-session`, primero se confirma y se integra `04-session` en `main`; después se crea `05-session` desde ese `main` ya actualizado.
