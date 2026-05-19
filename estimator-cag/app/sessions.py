@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from pydantic import BaseModel, Field
+
+from app.config import settings
 
 
 MAX_TURNS = 6
@@ -94,28 +98,83 @@ class ConversationHistory:
             messages.append({"role": "assistant", "content": assistant_message})
         return messages
 
+    def to_dict(self) -> dict:
+        return {"max_turns": self.max_turns, "turns": self.turns}
+
+    @classmethod
+    def from_dict(cls, payload: dict) -> "ConversationHistory":
+        return cls(
+            max_turns=int(payload.get("max_turns", MAX_TURNS)),
+            turns=[(user, assistant) for user, assistant in payload.get("turns", [])],
+        )
+
 
 @dataclass
 class Session:
-    """
-    Session state is intentionally process-local in this phase.
-
-    The course only requires conversational continuity during a single app run,
-    so accepting volatility keeps the implementation simple before adding
-    persistence infrastructure in later phases.
-    """
-
     history: ConversationHistory = field(default_factory=ConversationHistory)
     project_metadata: ProjectMetadata = field(default_factory=ProjectMetadata)
+    document_sources: list[str] = field(default_factory=list)
+    conversation_messages: list[dict[str, str]] = field(default_factory=list)
+
+    def remember_document_sources(self, source_paths: list[str]) -> None:
+        normalized_existing = {item for item in self.document_sources}
+        for source_path in source_paths:
+            if source_path not in normalized_existing:
+                self.document_sources.append(source_path)
+                normalized_existing.add(source_path)
+
+    def add_conversation_message(self, role: str, content: str) -> None:
+        self.conversation_messages.append({"role": role, "content": content})
+
+    def to_dict(self) -> dict:
+        return {
+            "history": self.history.to_dict(),
+            "project_metadata": self.project_metadata.model_dump(),
+            "document_sources": self.document_sources,
+            "conversation_messages": self.conversation_messages,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: dict) -> "Session":
+        return cls(
+            history=ConversationHistory.from_dict(payload.get("history", {})),
+            project_metadata=ProjectMetadata.model_validate(payload.get("project_metadata", {})),
+            document_sources=list(payload.get("document_sources", [])),
+            conversation_messages=list(payload.get("conversation_messages", [])),
+        )
 
 
 class SessionStore:
-    def __init__(self) -> None:
+    def __init__(self, path: str | Path | None = None) -> None:
+        self._path = Path(path or settings.session_store_path)
         self._sessions: dict[str, Session] = {}
+        self._load()
+
+    def _load(self) -> None:
+        if not self._path.exists():
+            return
+
+        payload = json.loads(self._path.read_text(encoding="utf-8"))
+        self._sessions = {
+            session_id: Session.from_dict(session_payload)
+            for session_id, session_payload in payload.items()
+        }
+
+    def _save(self) -> None:
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            session_id: session.to_dict()
+            for session_id, session in self._sessions.items()
+        }
+        self._path.write_text(
+            json.dumps(payload, ensure_ascii=True, indent=2),
+            encoding="utf-8",
+        )
 
     def create(self, session_id: str) -> Session:
         session = Session()
         self._sessions[session_id] = session
+        self._save()
         return session
 
     def get(self, session_id: str) -> Session | None:
@@ -126,3 +185,8 @@ class SessionStore:
         if session is not None:
             return session
         return self.create(session_id)
+
+    def save_session(self, session_id: str) -> None:
+        if session_id not in self._sessions:
+            raise KeyError(session_id)
+        self._save()

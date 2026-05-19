@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from uuid import uuid4
+import ulid
 
 from app.prompts.loader import render_estimation_prompt
 from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
-from app.services.attachment_extraction import extract_attachments_text
+from app.services.attachment_extraction import (
+    extract_attachments_text,
+    extract_document_paths_text,
+)
 from app.services.llm_service import get_estimation
 from app.sessions import ProjectMetadata, Session, SessionStore
 
@@ -13,7 +16,7 @@ session_store = SessionStore()
 
 
 def create_session() -> str:
-    session_id = str(uuid4())
+    session_id = str(ulid.new())
     session_store.create(session_id)
     return session_id
 
@@ -37,6 +40,8 @@ async def estimate_session_turn(
     detail_level: DetailLevel,
     output_format: OutputFormat,
     attachments,
+    document_paths: list[str] | None = None,
+    display_user_message: str | None = None,
     friendly_name: str | None = None,
     provider: str | None = None,
     model: str | None = None,
@@ -46,8 +51,9 @@ async def estimate_session_turn(
         raise KeyError(session_id)
 
     attachment_sections = await extract_attachments_text(attachments)
+    path_sections = await extract_document_paths_text(document_paths)
     request = EstimationRequest(
-        description=compose_description(transcript, attachment_sections),
+        description=compose_description(transcript, attachment_sections + path_sections),
         project_type=project_type,
         detail_level=detail_level,
         output_format=output_format,
@@ -68,8 +74,12 @@ async def estimate_session_turn(
         project_metadata=session.project_metadata,
     )
     session.history.add_turn(user_prompt, result["text"])
+    session.add_conversation_message("user", display_user_message or transcript.strip())
+    session.add_conversation_message("assistant", result["text"])
     session.project_metadata = session.project_metadata.merge_from_interaction(
         request.description,
         result["text"],
     )
+    session.remember_document_sources(document_paths or [])
+    session_store.save_session(session_id)
     return result, session.project_metadata

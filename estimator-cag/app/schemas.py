@@ -36,3 +36,11 @@ class EstimationResponse(BaseModel):
 
 class SessionCreateResponse(BaseModel):
     session_id: str
+
+
+class SessionDetailResponse(BaseModel):
+    session_id: str
+    turns: list[tuple[str, str]]
+    project_metadata: dict
+    document_sources: list[str]
+    conversation_messages: list[dict[str, str]]

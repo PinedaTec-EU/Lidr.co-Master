@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from app.sessions import ConversationHistory, ProjectMetadata, SessionStore
 
 
@@ -42,3 +44,22 @@ def test_session_store_get_or_create_reuses_existing_session() -> None:
     second = store.get_or_create("abc")
 
     assert first is second
+
+
+def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
+    store_path = tmp_path / "sessions.json"
+    store = SessionStore(path=store_path)
+
+    session = store.create("01TESTSESSION00000000000000")
+    session.history.add_turn("u1", "a1")
+    session.remember_document_sources(["/tmp/requirements.pdf"])
+    session.add_conversation_message("user", "Solicitud visible")
+    store.save_session("01TESTSESSION00000000000000")
+
+    reloaded = SessionStore(path=store_path)
+    persisted = reloaded.get("01TESTSESSION00000000000000")
+
+    assert persisted is not None
+    assert persisted.history.turns == [("u1", "a1")]
+    assert persisted.document_sources == ["/tmp/requirements.pdf"]
+    assert persisted.conversation_messages == [{"role": "user", "content": "Solicitud visible"}]

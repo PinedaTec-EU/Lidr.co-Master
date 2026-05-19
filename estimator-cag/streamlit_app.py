@@ -27,17 +27,52 @@ def _empty_usage() -> dict:
     return {"prompt": 0, "completion": 0, "total": 0}
 
 
+def _sync_query_params(session_id: str) -> None:
+    st.query_params["chatid"] = session_id
+
+
+def _hydrate_messages_from_session(session_id: str) -> list[dict]:
+    session = get_session(session_id)
+    messages = [
+        {
+            "role": "assistant",
+            "content": "La sesión está lista. Añade contexto del proyecto y continuaré sobre la misma conversación.",
+            "metadata": None,
+        }
+    ]
+    if session is None:
+        return messages
+
+    if session.conversation_messages:
+        messages.extend(
+            {"role": message["role"], "content": message["content"], "metadata": None}
+            for message in session.conversation_messages
+        )
+        return messages
+
+    for user_message, assistant_message in session.history.turns:
+        messages.append({"role": "user", "content": user_message, "metadata": None})
+        messages.append({"role": "assistant", "content": assistant_message, "metadata": None})
+    return messages
+
+
+def _resolve_initial_session_id() -> str:
+    requested_session_id = st.query_params.get("chatid")
+    if requested_session_id:
+        session = get_session(requested_session_id)
+        if session is not None:
+            return requested_session_id
+
+    session_id = create_session()
+    _sync_query_params(session_id)
+    return session_id
+
+
 def _init_state() -> None:
     if "session_id" not in st.session_state:
-        st.session_state.session_id = create_session()
+        st.session_state.session_id = _resolve_initial_session_id()
     if "messages" not in st.session_state:
-        st.session_state.messages = [
-            {
-                "role": "assistant",
-                "content": "La sesión está lista. Añade contexto del proyecto y continuaré sobre la misma conversación.",
-                "metadata": None,
-            }
-        ]
+        st.session_state.messages = _hydrate_messages_from_session(st.session_state.session_id)
     if "last_usage" not in st.session_state:
         st.session_state.last_usage = _empty_usage()
     if "last_model" not in st.session_state:
@@ -56,10 +91,13 @@ def _init_state() -> None:
         st.session_state.form_detail_level = DetailLevel.MEDIUM.value
     if "form_output_format" not in st.session_state:
         st.session_state.form_output_format = OutputFormat.NARRATIVE.value
+    if "form_document_paths" not in st.session_state:
+        st.session_state.form_document_paths = ""
 
 
 def _reset_conversation() -> None:
     st.session_state.session_id = create_session()
+    _sync_query_params(st.session_state.session_id)
     st.session_state.messages = [
         {
             "role": "assistant",
@@ -76,6 +114,7 @@ def _reset_conversation() -> None:
     st.session_state.form_project_type = ProjectType.WEB_SAAS.value
     st.session_state.form_detail_level = DetailLevel.MEDIUM.value
     st.session_state.form_output_format = OutputFormat.NARRATIVE.value
+    st.session_state.form_document_paths = ""
 
 
 def _apply_pending_form_data() -> None:
@@ -222,6 +261,8 @@ async def _collect_turn(
     request: EstimationRequest,
     friendly_name: str,
     attachments,
+    document_paths: list[str],
+    display_user_message: str,
 ) -> tuple[str, dict]:
     metadata = {
         "model": "",
@@ -238,6 +279,8 @@ async def _collect_turn(
         detail_level=request.detail_level,
         output_format=request.output_format,
         attachments=attachments,
+        document_paths=document_paths,
+        display_user_message=display_user_message,
         friendly_name=friendly_name,
     )
     elapsed = (datetime.now(timezone.utc) - started_at).total_seconds()
@@ -277,6 +320,8 @@ def _render_control_panel() -> str:
         st.divider()
         st.subheader("Project metadata")
         st.json(session.project_metadata.model_dump() if session else {}, expanded=False)
+        st.caption("Document sources")
+        st.json(session.document_sources if session else [], expanded=False)
 
         if st.button("Nueva conversación", use_container_width=True):
             _reset_conversation()
@@ -355,11 +400,24 @@ def _render_conversation() -> None:
                 )
 
 
-def _send_request(request: EstimationRequest, attachments, selected_friendly_name: str) -> None:
+def _parse_document_paths(raw_value: str) -> list[str]:
+    return [line.strip() for line in raw_value.splitlines() if line.strip()]
+
+
+def _send_request(
+    request: EstimationRequest,
+    attachments,
+    document_paths: list[str],
+    selected_friendly_name: str,
+) -> None:
     request_summary = _request_to_message(request)
     if attachments:
         filenames = ", ".join(getattr(file, "name", "attachment") for file in attachments)
         request_summary += f"\n\n#### Adjuntos\n{filenames}"
+    if document_paths:
+        request_summary += "\n\n#### Documentos por ruta\n" + "\n".join(
+            f"- `{path}`" for path in document_paths
+        )
     st.session_state.messages.append(
         {"role": "user", "content": request_summary, "metadata": None}
     )
@@ -369,7 +427,13 @@ def _send_request(request: EstimationRequest, attachments, selected_friendly_nam
     with st.chat_message("assistant"):
         try:
             estimation, metadata = asyncio.run(
-                _collect_turn(request, selected_friendly_name, attachments)
+                _collect_turn(
+                    request,
+                    selected_friendly_name,
+                    attachments,
+                    document_paths,
+                    request_summary,
+                )
             )
             st.markdown(estimation)
         except Exception as exc:
@@ -442,6 +506,12 @@ with st.form("estimation-request-form", clear_on_submit=False):
         accept_multiple_files=True,
         type=["pdf", "docx", "txt", "md"],
     )
+    document_paths = st.text_area(
+        "Rutas locales de documentos",
+        key="form_document_paths",
+        height=100,
+        placeholder="Una ruta por línea. Ejemplo:\n/abs/path/requirements.pdf\n/abs/path/notes.md",
+    )
 
     submitted = st.form_submit_button("Generar estimación", use_container_width=True)
 if submitted:
@@ -455,4 +525,9 @@ if submitted:
     except Exception as exc:
         st.warning(str(exc))
     else:
-        _send_request(request, attachments or [], selected_friendly_name)
+        _send_request(
+            request,
+            attachments or [],
+            _parse_document_paths(document_paths),
+            selected_friendly_name,
+        )

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     ollama_port: int = 11434
     docling_serve_url: str = "http://localhost:5001"
     docling_timeout_seconds: float = 60.0
+    session_store_path: str = ".data/estimator-sessions.json"
     llm_provider: str = "openai"  # openai | anthropic
     llm_model: str = ""
     app_env: str = "development"

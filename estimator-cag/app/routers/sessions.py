@@ -2,7 +2,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 
-from app.schemas import DetailLevel, EstimationResponse, OutputFormat, ProjectType, SessionCreateResponse
+from app.schemas import (
+    DetailLevel,
+    EstimationResponse,
+    OutputFormat,
+    ProjectType,
+    SessionCreateResponse,
+    SessionDetailResponse,
+)
 from app.services.session_service import (
     create_session as create_session_record,
     estimate_session_turn,
@@ -18,6 +25,21 @@ async def create_session():
     return SessionCreateResponse(session_id=session_id)
 
 
+@router.get("/sessions/{session_id}", response_model=SessionDetailResponse)
+async def get_session_detail(session_id: str):
+    session = get_session(session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    return SessionDetailResponse(
+        session_id=session_id,
+        turns=session.history.turns,
+        project_metadata=session.project_metadata.model_dump(),
+        document_sources=session.document_sources,
+        conversation_messages=session.conversation_messages,
+    )
+
+
 @router.post("/sessions/{session_id}/estimate", response_model=EstimationResponse)
 async def estimate_session(
     session_id: str,
@@ -26,6 +48,7 @@ async def estimate_session(
     detail_level: Annotated[DetailLevel, Form(...)],
     output_format: Annotated[OutputFormat, Form(...)],
     attachments: Annotated[list[UploadFile] | None, File()] = None,
+    document_paths: Annotated[list[str] | None, Form()] = None,
     friendly_name: str | None = Query(default=None),
     provider: str | None = Query(default=None),
     model: str | None = Query(default=None),
@@ -41,6 +64,7 @@ async def estimate_session(
             detail_level=detail_level,
             output_format=output_format,
             attachments=attachments or [],
+            document_paths=document_paths or [],
             friendly_name=friendly_name,
             provider=provider,
             model=model,

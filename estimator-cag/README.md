@@ -1,6 +1,6 @@
 # estimator-cag
 
-Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales con memoria en proceso y puede enriquecer cada turno con adjuntos usando **Docling Serve** antes de llamar al modelo.
+Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales persistidas y puede enriquecer cada turno con adjuntos usando **Docling Serve** o referencias a documentos por ruta antes de llamar al modelo.
 
 No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada al LLM.
 
@@ -66,14 +66,14 @@ estimator-cag/
 │   │           ├── system.j2
 │   │           ├── user.j2
 │   │           └── examples.j2
-│   ├── sessions.py            # Estado conversacional en memoria y metadatos de proyecto
+│   ├── sessions.py            # Estado conversacional persistido, ULIDs y metadatos de proyecto
 │   ├── schemas.py             # Contrato tipado para la interfaz de producto
 │   ├── routers/
 │   │   └── estimations.py     # Endpoint POST /api/v1/estimate
 │   └── services/
 │       ├── attachment_extraction.py
 │       ├── llm_service.py     # Lógica de llamada a proveedores LLM
-│       └── session_service.py # Orquestación multi-turno, memoria y adjuntos
+│       └── session_service.py # Orquestación multi-turno, persistencia y adjuntos
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
 ├── sample-documents/
@@ -94,7 +94,6 @@ estimator-cag/
 
 ## Endpoints
 
-Número de endpoints funcionales: **3** bajo `/api/v1`.
 Número de endpoints funcionales: **4** bajo `/api/v1`.
 
 Número de endpoints operativos: **1** fuera de `/api/v1`.
@@ -177,15 +176,28 @@ Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede 
 
 ### `POST /api/v1/sessions`
 
-Crea una sesión conversacional vacía y devuelve un identificador reutilizable.
+Crea una sesión conversacional persistida y devuelve un identificador reutilizable.
+
+El identificador usa formato **ULID**, pensado para poder compartirlo en URLs del tipo `?chatid=<ulid>`.
 
 **Respuesta:**
 
 ```json
 {
-  "session_id": "6c8d94a0-f5c2-4f24-9078-df4c8d81c1da"
+  "session_id": "01JVNQ5DB7W6M8M7W7Q3NZXK2S"
 }
 ```
+
+---
+
+### `GET /api/v1/sessions/{session_id}`
+
+Recupera una sesión existente con:
+- historial de turnos
+- `project_metadata`
+- rutas documentales ya asociadas
+
+Esto permite rehidratar una conversación en la UI usando `?chatid=<session_id>`.
 
 ---
 
@@ -199,6 +211,7 @@ Campos de form-data:
 - `detail_level`
 - `output_format`
 - `attachments` opcional
+- `document_paths` opcional, repetible
 
 Camino elegido para adjuntos: **Docling Serve por HTTP**.
 Razón:
@@ -224,6 +237,7 @@ Tipos soportados actualmente:
 Notas:
 - `.txt` y `.md` se leen localmente porque ya son texto plano
 - el resto se convierte a Markdown llamando a `POST /v1/convert/file` de Docling
+- `document_paths` guarda solo la ruta de origen en la sesión; no persiste el binario del fichero
 
 ---
 
@@ -319,6 +333,19 @@ El script usa el `docker-compose.yml` raíz para arrancar `docling`, y abre `htt
 
 Si necesitas valores locales adicionales, el script carga automáticamente `.env.local` desde la raíz del repo.
 
+### Continuar una conversación por URL
+
+La UI Streamlit acepta un parámetro `chatid`:
+
+```text
+http://localhost:8501/?chatid=01JVNQ5DB7W6M8M7W7Q3NZXK2S
+```
+
+Comportamiento:
+- si la sesión existe en el store persistido, la UI rehidrata el historial
+- si no existe, crea una nueva sesión y actualiza la URL
+- el estado se guarda en `SESSION_STORE_PATH`
+
 ### Documentos de prueba incluidos
 
 El repo deja varios adjuntos listos para demos manuales y pruebas exploratorias:
@@ -364,6 +391,7 @@ Respuesta esperada:
 
 Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que aparecen:
 - `POST /api/v1/sessions`
+- `GET /api/v1/sessions/{session_id}`
 - `POST /api/v1/sessions/{session_id}/estimate`
 - `POST /api/v1/estimate`
 - `GET /api/v1/estimate/friendly-names`
@@ -410,15 +438,18 @@ uv run pytest
 Cobertura actual de tests:
 - `GET /health`
 - `POST /api/v1/sessions`
+- `GET /api/v1/sessions/{session_id}`
 - `GET /api/v1/estimate/friendly-names`
 - rechazo de `description` inválida
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
 - actualización de `project_metadata` en sesiones multi-turno
 - influencia de adjuntos `.docx` convertidos por Docling en el request efectivo al LLM
+- influencia de `document_paths` en el request efectivo al LLM
 - recorte del historial a `MAX_TURNS`
 - rechazo de tipos de adjunto no soportados
 - parseo defensivo de la respuesta de Docling
+- persistencia de sesiones a disco
 - validación del schema tipado del formulario de producto
 - render de templates Jinja2 por versión y variantes de formato/detalle
 - ventana deslizante de historial y store de sesión en memoria
@@ -447,7 +478,7 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 ./launch.sh portal
 ```
 
-La interfaz usa `st.form` para construir cada turno, crea un `session_id` al cargar la página, permite adjuntar ficheros, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
+La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, aceptar rutas documentales locales, mantiene el historial visible de solicitudes y respuestas y expone `project_metadata` y `document_sources` en sidebar para debugging. El panel lateral también muestra el prompt activo, las métricas básicas de la última llamada y las transcripciones versionadas del directorio `sample-transcriptions/`.
 
 Captura real de la UI con uno de los documentos generados para pruebas:
 
@@ -455,7 +486,9 @@ Captura real de la UI con uno de los documentos generados para pruebas:
 
 Alcance actual de esta capa:
 - formulario multi-turno tipado sobre el mismo flujo CAG del backend
-- memoria conversacional de proceso por `session_id`
+- memoria conversacional persistida por `session_id`
+- recuperación por URL vía `?chatid=...`
+- referencias documentales persistidas por ruta
 - visibilidad de `project_metadata` y métricas básicas en sidebar
 
 Quedan fuera de esta fase:
@@ -567,5 +600,6 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | `OLLAMA_PORT` | puerto entero | `11434` |
 | `DOCLING_SERVE_URL` | URL base del contenedor Docling | `http://localhost:5001` |
 | `DOCLING_TIMEOUT_SECONDS` | timeout HTTP de conversión | `60` |
+| `SESSION_STORE_PATH` | fichero JSON de sesiones persistidas | `.data/estimator-sessions.json` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |

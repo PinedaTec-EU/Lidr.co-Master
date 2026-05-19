@@ -1,9 +1,11 @@
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.main import app
 from app.routers import estimations
 from app.services import session_service
-from app.sessions import MAX_TURNS
+from app.sessions import MAX_TURNS, SessionStore
 
 
 client = TestClient(app)
@@ -33,8 +35,30 @@ def test_create_session_returns_uuid_and_stores_session() -> None:
     assert response.status_code == 200
     body = response.json()
     assert isinstance(body["session_id"], str)
-    assert len(body["session_id"]) == 36
+    assert len(body["session_id"]) == 26
     assert session_service.session_store.get(body["session_id"]) is not None
+
+
+def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch) -> None:
+    store = SessionStore(path=tmp_path / "sessions.json")
+    monkeypatch.setattr(session_service, "session_store", store)
+
+    session_id = session_service.create_session()
+    session = store.get(session_id)
+    assert session is not None
+    session.history.add_turn("user one", "assistant one")
+    session.remember_document_sources(["/tmp/spec.md"])
+    session.add_conversation_message("user", "Solicitud visible")
+    store.save_session(session_id)
+
+    response = client.get(f"/api/v1/sessions/{session_id}")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["session_id"] == session_id
+    assert body["turns"] == [["user one", "assistant one"]]
+    assert body["document_sources"] == ["/tmp/spec.md"]
+    assert body["conversation_messages"] == [{"role": "user", "content": "Solicitud visible"}]
 
 
 def test_estimate_rejects_short_description() -> None:
@@ -204,6 +228,41 @@ def test_session_estimate_attachment_text_reaches_request(monkeypatch) -> None:
     assert response.status_code == 200
     assert "Stripe" in captured["description"]
     assert "requirements.docx" in captured["description"]
+
+
+def test_session_estimate_document_paths_reach_request(tmp_path: Path, monkeypatch) -> None:
+    captured: dict[str, object] = {}
+
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        captured["description"] = request.description
+        return {
+            "text": "Estimación con documento por ruta.",
+            "prompt_version": "v1",
+            "model": "openai/gpt-4o-mini",
+            "provider": "openai",
+            "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+        }
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+
+    doc_path = tmp_path / "requirements.md"
+    doc_path.write_text("# Requisitos\n\nIntegrar SSO y reporting.", encoding="utf-8")
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos una plataforma B2B.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+            "document_paths": str(doc_path),
+        },
+    )
+
+    assert response.status_code == 200
+    assert "Integrar SSO y reporting." in captured["description"]
+    assert str(doc_path) in session_service.session_store.get(session_id).document_sources
 
 
 def test_session_estimate_history_respects_max_turns(monkeypatch) -> None:

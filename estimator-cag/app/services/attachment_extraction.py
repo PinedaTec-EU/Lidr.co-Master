@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 import json
 from typing import Any
+from pathlib import Path
 
 import httpx
 from fastapi import UploadFile
@@ -39,6 +40,22 @@ async def extract_attachments_text(attachments: list[UploadFile] | None) -> list
         text = await _extract_text_from_bytes(filename, content, getattr(attachment, "content_type", None))
         if text.strip():
             extracted_sections.append(f"--- attachment: {filename} ---\n{text.strip()}")
+    return extracted_sections
+
+
+async def extract_document_paths_text(document_paths: list[str] | None) -> list[str]:
+    if not document_paths:
+        return []
+
+    extracted_sections: list[str] = []
+    for raw_path in document_paths:
+        path = Path(raw_path).expanduser().resolve()
+        if not path.exists() or not path.is_file():
+            raise ValueError(f"Document path does not exist or is not a file: {raw_path}")
+        content = path.read_bytes()
+        text = await _extract_text_from_bytes(path.name, content, None)
+        if text.strip():
+            extracted_sections.append(f"--- document_path: {path} ---\n{text.strip()}")
     return extracted_sections
 
 
