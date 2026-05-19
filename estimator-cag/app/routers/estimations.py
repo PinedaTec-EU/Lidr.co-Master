@@ -1,53 +1,29 @@
-from datetime import datetime, timezone
+from fastapi import APIRouter, HTTPException, Query
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-
+from app.schemas import EstimationRequest, EstimationResponse
 from app.services.llm_service import get_available_friendly_names, get_estimation
 
 router = APIRouter()
 
 
-class EstimationRequest(BaseModel):
-    transcription: str
-    friendly_name: str | None = None
-    provider: str | None = None
-    model: str | None = None
-
-
-class TokensUsed(BaseModel):
-    prompt: int
-    completion: int
-    total: int
-
-
-class EstimationResponse(BaseModel):
-    estimation: str
-    model: str
-    provider: str
-    tokens_used: TokensUsed
-    timestamp: str
-
-
 @router.post("/estimate", response_model=EstimationResponse)
-async def estimate(request: EstimationRequest):
-    if not request.transcription.strip():
-        raise HTTPException(status_code=400, detail="La transcripción no puede estar vacía")
-
+async def estimate(
+    request: EstimationRequest,
+    friendly_name: str | None = Query(default=None),
+    provider: str | None = Query(default=None),
+    model: str | None = Query(default=None),
+):
     try:
         result = await get_estimation(
-            request.transcription,
-            friendly_name=request.friendly_name,
-            provider=request.provider,
-            model=request.model,
+            request,
+            friendly_name=friendly_name,
+            provider=provider,
+            model=model,
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    return EstimationResponse(
-        **result,
-        timestamp=datetime.now(timezone.utc).isoformat(),
-    )
+    return EstimationResponse(text=result["text"], prompt_version=result["prompt_version"])
 
 
 @router.get("/estimate/friendly-names")

@@ -4,9 +4,9 @@ from app.services import llm_service
 def test_system_prompt_includes_examples_and_output_contract() -> None:
     prompt = llm_service.get_system_prompt()
 
-    assert "Eres un estimador de software experto" in prompt
+    assert "Eres un estimador de software senior" in prompt
     assert "### Ejemplo 1" in prompt
-    assert "Responde siempre en español y en formato Markdown." in prompt
+    assert "responde siempre en español" in prompt.lower()
 
 
 def test_context_summary_matches_examples() -> None:

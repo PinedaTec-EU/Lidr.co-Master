@@ -76,17 +76,6 @@ def _output_format_label(value: OutputFormat) -> str:
     return labels[value]
 
 
-def _request_to_transcription(request: EstimationRequest) -> str:
-    return (
-        "Necesito una estimación de software con este contexto:\n"
-        f"- Tipo de proyecto: {request.project_type.value}\n"
-        f"- Nivel de detalle deseado: {request.detail_level.value}\n"
-        f"- Formato de salida deseado: {request.output_format.value}\n\n"
-        "Descripción del proyecto:\n"
-        f"{request.description.strip()}"
-    )
-
-
 def _request_to_message(request: EstimationRequest) -> str:
     return (
         "### Solicitud de estimación\n"
@@ -178,18 +167,19 @@ def _apply_styles() -> None:
     )
 
 
-async def _collect_stream(transcription: str, friendly_name: str) -> tuple[str, dict]:
+async def _collect_stream(request: EstimationRequest, friendly_name: str) -> tuple[str, dict]:
     content = ""
     metadata = {
         "model": "",
         "provider": "",
+        "prompt_version": "",
         "tokens_used": _empty_usage(),
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     placeholder = st.empty()
     started_at = datetime.now(timezone.utc)
 
-    async for event in stream_estimation(transcription, friendly_name=friendly_name):
+    async for event in stream_estimation(request, friendly_name=friendly_name):
         if event["type"] == "delta":
             content += event["content"]
             placeholder.markdown(content + "▌")
@@ -307,7 +297,7 @@ def _send_request(request: EstimationRequest, selected_friendly_name: str) -> No
     with st.chat_message("assistant"):
         try:
             estimation, metadata = asyncio.run(
-                _collect_stream(_request_to_transcription(request), selected_friendly_name)
+                _collect_stream(request, selected_friendly_name)
             )
         except Exception as exc:
             estimation = f"No se pudo generar la estimación: {exc}"
