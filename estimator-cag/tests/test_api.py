@@ -22,7 +22,7 @@ def test_friendly_names_endpoint() -> None:
     response = client.get("/api/v1/estimate/friendly-names")
 
     assert response.status_code == 200
-    assert "openai" in response.json()["friendly_names"]
+    assert set(response.json()["friendly_names"]) == {"openai", "anthropic", "ollama"}
 
 
 def test_estimate_rejects_blank_transcription() -> None:
@@ -56,3 +56,21 @@ def test_estimate_returns_llm_result(monkeypatch) -> None:
     assert body["provider"] == "openai"
     assert body["tokens_used"] == {"prompt": 10, "completion": 20, "total": 30}
     assert body["timestamp"]
+
+
+def test_estimate_rejects_unknown_friendly_name(monkeypatch) -> None:
+    async def fake_get_estimation(transcription: str, **kwargs: str | None) -> dict:
+        raise ValueError("Unknown friendly_name 'bedrock'. Available: openai, anthropic, ollama")
+
+    monkeypatch.setattr(estimations, "get_estimation", fake_get_estimation)
+
+    response = client.post(
+        "/api/v1/estimate",
+        json={
+            "transcription": "Necesitamos un portal de soporte interno.",
+            "friendly_name": "bedrock",
+        },
+    )
+
+    assert response.status_code == 400
+    assert "Unknown friendly_name 'bedrock'" in response.json()["detail"]

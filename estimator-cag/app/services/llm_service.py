@@ -28,6 +28,14 @@ def _model_routes() -> dict[str, ModelRoute]:
             base_url=settings.openai_base_url or None,
             port=None,
         ),
+        "anthropic": ModelRoute(
+            friendly_name="anthropic",
+            provider="anthropic",
+            model="anthropic/claude-haiku-4-5-20251001",
+            api_key=settings.anthropic_api_key,
+            base_url=settings.anthropic_base_url or None,
+            port=None,
+        ),
         "ollama": ModelRoute(
             friendly_name="ollama",
             provider="ollama",
@@ -201,7 +209,6 @@ async def get_estimation(
 ) -> dict:
     system_prompt = _build_system_prompt()
     route = _resolve_route(friendly_name, provider, model)
-
     return await _call_litellm(system_prompt, transcription, route)
 
 
@@ -213,7 +220,6 @@ async def stream_estimation(
 ) -> AsyncIterator[dict]:
     system_prompt = _build_system_prompt()
     route = _resolve_route(friendly_name, provider, model)
-
     async for event in _stream_litellm(system_prompt, transcription, route):
         yield event
 
