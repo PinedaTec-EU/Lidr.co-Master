@@ -322,6 +322,7 @@ Cobertura actual de tests:
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
 - validación del schema tipado del formulario de producto
+- render de templates Jinja2 por versión y variantes de formato/detalle
 - construcción del `system prompt`
 - resumen del contexto CAG expuesto a la UI
 - resolución de rutas de proveedor/modelo
