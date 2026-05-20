@@ -7,6 +7,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from app.config import settings
+from app.schemas import UserTier
 
 
 MAX_TURNS = 6
@@ -137,6 +138,8 @@ class ConversationHistory:
 
 @dataclass
 class Session:
+    user_tier: UserTier | None = None
+    user_display_name: str | None = None
     history: ConversationHistory = field(default_factory=ConversationHistory)
     project_metadata: ProjectMetadata = field(default_factory=ProjectMetadata)
     external_context_config: ExternalContextConfig = field(default_factory=ExternalContextConfig)
@@ -162,6 +165,10 @@ class Session:
 
     def add_conversation_message(self, role: str, content: str) -> None:
         self.conversation_messages.append({"role": role, "content": content})
+
+    def set_user_profile(self, user_tier: UserTier, user_display_name: str) -> None:
+        self.user_tier = user_tier
+        self.user_display_name = user_display_name.strip()
 
     def set_external_context_config(
         self,
@@ -197,6 +204,8 @@ class Session:
 
     def to_dict(self) -> dict:
         return {
+            "user_tier": self.user_tier.value if self.user_tier else None,
+            "user_display_name": self.user_display_name,
             "history": self.history.to_dict(),
             "project_metadata": self.project_metadata.model_dump(),
             "external_context_config": self.external_context_config.model_dump(),
@@ -210,6 +219,12 @@ class Session:
     @classmethod
     def from_dict(cls, payload: dict) -> "Session":
         return cls(
+            user_tier=(
+                UserTier(payload["user_tier"])
+                if payload.get("user_tier")
+                else None
+            ),
+            user_display_name=payload.get("user_display_name"),
             history=ConversationHistory.from_dict(payload.get("history", {})),
             project_metadata=ProjectMetadata.model_validate(payload.get("project_metadata", {})),
             external_context_config=ExternalContextConfig.model_validate(
@@ -260,8 +275,13 @@ class SessionStore:
             encoding="utf-8",
         )
 
-    def create(self, session_id: str) -> Session:
-        session = Session()
+    def create(
+        self,
+        session_id: str,
+        user_tier: UserTier | None = None,
+        user_display_name: str | None = None,
+    ) -> Session:
+        session = Session(user_tier=user_tier, user_display_name=user_display_name)
         self._sessions[session_id] = session
         self._save()
         return session

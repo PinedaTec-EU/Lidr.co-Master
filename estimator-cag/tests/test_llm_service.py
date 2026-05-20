@@ -1,10 +1,13 @@
+from app.config import settings
 from app.services import llm_service
 
 
 def test_system_prompt_includes_examples_and_output_contract() -> None:
-    prompt = llm_service.get_system_prompt()
+    prompt = llm_service.get_system_prompt(user_display_name="pineda")
 
     assert "Eres un estimador de software senior" in prompt
+    assert "Tier activo para esta sesión: developer" in prompt
+    assert "Usuario visible para esta sesión: pineda" in prompt
     assert "### Ejemplo 1" in prompt
     assert "responde siempre en español" in prompt.lower()
 
@@ -31,7 +34,8 @@ def test_resolve_route_for_provider_override_ollama() -> None:
     assert route.model == "ollama/llama3.2"
 
 
-def test_resolve_route_for_provider_uses_centralized_default_model() -> None:
+def test_resolve_route_for_provider_uses_centralized_default_model(monkeypatch) -> None:
+    monkeypatch.setattr(settings, "llm_model", "")
     route = llm_service._resolve_route(provider="anthropic")
 
     assert route.provider == "anthropic"

@@ -3,12 +3,13 @@ from datetime import datetime, timezone
 
 import streamlit as st
 
-from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType, UserTier
 from app.services.session_service import (
     create_session,
     estimate_session_turn,
     get_session,
     persist_last_run_info,
+    set_session_user_profile,
     update_external_context_config,
 )
 from app.services.llm_service import (
@@ -40,6 +41,13 @@ def _empty_usage() -> dict:
 def _split_multiline_values(raw_value: str) -> list[str]:
     normalized = raw_value.replace(",", "\n")
     return [item.strip() for item in normalized.splitlines() if item.strip()]
+
+
+def _clear_query_params() -> None:
+    try:
+        del st.query_params["chatid"]
+    except KeyError:
+        pass
 
 
 def _sync_query_params(session_id: str) -> None:
@@ -98,26 +106,71 @@ def _hydrate_last_run_state_from_session(session_id: str) -> dict:
     }
 
 
-def _resolve_initial_session_id() -> str:
+def _resolve_initial_session_id() -> str | None:
     requested_session_id = st.query_params.get("chatid")
     if requested_session_id:
         session = get_session(requested_session_id)
         if session is not None:
             return requested_session_id
 
-    session_id = create_session()
-    _sync_query_params(session_id)
-    return session_id
+    return None
+
+
+def _default_messages() -> list[dict]:
+    return [
+        {
+            "role": "assistant",
+            "content": (
+                "Selecciona un role y un nombre visible para esta sesión. "
+                "Quedará fijado hasta que abras una conversación nueva."
+            ),
+            "metadata": None,
+        }
+    ]
+
+
+def _sync_state_from_session(session_id: str) -> None:
+    hydrated = _hydrate_last_run_state_from_session(session_id)
+    session = get_session(session_id)
+
+    st.session_state.session_id = session_id
+    st.session_state.messages = _hydrate_messages_from_session(session_id)
+    st.session_state.last_usage = hydrated["last_usage"]
+    st.session_state.last_model = hydrated["last_model"]
+    st.session_state.last_provider = hydrated["last_provider"]
+    st.session_state.last_response_time = hydrated["last_response_time"]
+    st.session_state.last_document_context = hydrated["last_document_context"]
+    st.session_state.notion_page_ids_text = hydrated["notion_page_ids_text"]
+    st.session_state.notion_search_terms_text = hydrated["notion_search_terms_text"]
+    st.session_state.last_external_context = hydrated["last_external_context"]
+    st.session_state.selected_user_tier = session.user_tier if session else None
+    st.session_state.user_display_name = session.user_display_name if session else ""
 
 
 def _init_state() -> None:
-    hydrated = _hydrate_last_run_state_from_session(
-        st.session_state.session_id if "session_id" in st.session_state else _resolve_initial_session_id()
-    )
     if "session_id" not in st.session_state:
         st.session_state.session_id = _resolve_initial_session_id()
+    session = get_session(st.session_state.session_id) if st.session_state.session_id else None
+    hydrated = (
+        _hydrate_last_run_state_from_session(st.session_state.session_id)
+        if st.session_state.session_id
+        else {
+            "last_usage": _empty_usage(),
+            "last_model": "",
+            "last_provider": "",
+            "last_response_time": 0.0,
+            "last_document_context": [],
+            "notion_page_ids_text": "",
+            "notion_search_terms_text": "",
+            "last_external_context": [],
+        }
+    )
     if "messages" not in st.session_state:
-        st.session_state.messages = _hydrate_messages_from_session(st.session_state.session_id)
+        st.session_state.messages = (
+            _hydrate_messages_from_session(st.session_state.session_id)
+            if st.session_state.session_id
+            else _default_messages()
+        )
     if "last_usage" not in st.session_state:
         st.session_state.last_usage = hydrated["last_usage"]
     if "last_model" not in st.session_state:
@@ -146,18 +199,30 @@ def _init_state() -> None:
         st.session_state.notion_search_terms_text = hydrated["notion_search_terms_text"]
     if "last_external_context" not in st.session_state:
         st.session_state.last_external_context = hydrated["last_external_context"]
+    if "selected_user_tier" not in st.session_state:
+        st.session_state.selected_user_tier = session.user_tier if session else None
+    elif session and session.user_tier is not None:
+        st.session_state.selected_user_tier = session.user_tier
+    if "user_display_name" not in st.session_state:
+        st.session_state.user_display_name = session.user_display_name if session else ""
+    elif session and session.user_display_name:
+        st.session_state.user_display_name = session.user_display_name
+    if "pending_user_tier_selection" not in st.session_state:
+        st.session_state.pending_user_tier_selection = (
+            st.session_state.selected_user_tier.value
+            if st.session_state.selected_user_tier
+            else UserTier.DEVELOPER.value
+        )
+    if "pending_user_display_name" not in st.session_state:
+        st.session_state.pending_user_display_name = (
+            session.user_display_name if session and session.user_display_name else ""
+        )
 
 
 def _reset_conversation() -> None:
-    st.session_state.session_id = create_session()
-    _sync_query_params(st.session_state.session_id)
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": "Nueva conversación creada. Puedes empezar un proyecto distinto.",
-            "metadata": None,
-        }
-    ]
+    st.session_state.session_id = None
+    _clear_query_params()
+    st.session_state.messages = _default_messages()
     st.session_state.last_usage = _empty_usage()
     st.session_state.last_model = ""
     st.session_state.last_provider = ""
@@ -172,6 +237,10 @@ def _reset_conversation() -> None:
     st.session_state.notion_page_ids_text = ""
     st.session_state.notion_search_terms_text = ""
     st.session_state.last_external_context = []
+    st.session_state.selected_user_tier = None
+    st.session_state.user_display_name = ""
+    st.session_state.pending_user_tier_selection = UserTier.DEVELOPER.value
+    st.session_state.pending_user_display_name = ""
 
 
 def _apply_pending_form_data() -> None:
@@ -222,6 +291,15 @@ def _output_format_label(value: OutputFormat) -> str:
         OutputFormat.PHASES_TABLE: "Phases table",
         OutputFormat.LINE_ITEMS: "Line items",
         OutputFormat.NARRATIVE: "Narrative",
+    }
+    return labels[value]
+
+
+def _user_tier_label(value: UserTier) -> str:
+    labels = {
+        UserTier.DEVELOPER: "Developer",
+        UserTier.PM: "PM",
+        UserTier.EXECUTIVE: "Executive",
     }
     return labels[value]
 
@@ -469,13 +547,23 @@ def _render_control_panel() -> str:
     with st.sidebar:
         st.subheader("Configuración")
         selected_name = st.selectbox("Modelo", friendly_names, index=0)
-        st.caption(f"session_id: `{st.session_state.session_id}`")
+        if st.session_state.selected_user_tier:
+            st.caption(
+                f"`{_user_tier_label(st.session_state.selected_user_tier)}: "
+                f"{st.session_state.user_display_name or '-'}`"
+            )
+        else:
+            st.caption("Role fijo en la sesión: `pendiente`")
+        if st.session_state.session_id:
+            st.caption(f"session_id: `{st.session_state.session_id}`")
+        else:
+            st.caption("session_id: `pendiente de crear`")
 
         st.divider()
         st.subheader("Última llamada")
         _render_last_call_dashboard()
 
-        session = get_session(st.session_state.session_id)
+        session = get_session(st.session_state.session_id) if st.session_state.session_id else None
         st.divider()
         st.subheader("Contexto persistido")
         if st.button("Ver project metadata", use_container_width=True):
@@ -584,6 +672,8 @@ def _show_prompt_dialog() -> None:
             external_context=[
                 item for item in (session.last_external_context if session else [])
             ],
+            user_tier=session.user_tier if session and session.user_tier else UserTier.DEVELOPER,
+            user_display_name=session.user_display_name if session else None,
         ),
         language="markdown",
     )
@@ -610,6 +700,46 @@ def _show_project_metadata_dialog() -> None:
         return
 
     st.json(session.project_metadata.model_dump(), expanded=True)
+
+
+@st.dialog("Selecciona el role de la sesión", width="large")
+def _show_user_tier_dialog() -> None:
+    st.markdown(
+        "Este role y el nombre visible condicionan el estilo de estimación durante toda la sesión. "
+        "En esta POC no se puede cambiar una vez fijado."
+    )
+    st.text_input(
+        "Nombre visible del usuario",
+        key="pending_user_display_name",
+        placeholder="pineda",
+    )
+    selected_value = st.radio(
+        "Role",
+        options=[tier.value for tier in UserTier],
+        format_func=lambda value: _user_tier_label(UserTier(value)),
+        key="pending_user_tier_selection",
+    )
+    if st.button("Confirmar role", use_container_width=True):
+        selected_tier = UserTier(selected_value)
+        display_name = st.session_state.pending_user_display_name.strip()
+        if not display_name:
+            st.warning("Indica un nombre visible para esta sesión.")
+            return
+        if st.session_state.session_id:
+            set_session_user_profile(
+                st.session_state.session_id,
+                user_tier=selected_tier,
+                user_display_name=display_name,
+            )
+            _sync_state_from_session(st.session_state.session_id)
+        else:
+            session_id = create_session(
+                user_tier=selected_tier,
+                user_display_name=display_name,
+            )
+            _sync_query_params(session_id)
+            _sync_state_from_session(session_id)
+        st.rerun()
 
 
 @st.dialog("Configuración de contexto externo", width="large")
@@ -748,6 +878,16 @@ def _send_request(
 _init_state()
 _apply_pending_form_data()
 _apply_styles()
+if st.session_state.selected_user_tier is None:
+    _show_user_tier_dialog()
+    st.title("Software Estimator CAG")
+    st.info("Selecciona un role y un nombre visible para crear o recuperar una conversación.")
+    st.stop()
+if not st.session_state.user_display_name:
+    _show_user_tier_dialog()
+    st.title("Software Estimator CAG")
+    st.info("Completa el nombre visible de la sesión para continuar.")
+    st.stop()
 selected_friendly_name = _render_control_panel()
 
 st.title("Software Estimator CAG")

@@ -33,6 +33,8 @@ async def get_session_detail(session_id: str):
 
     return SessionDetailResponse(
         session_id=session_id,
+        user_tier=session.user_tier,
+        user_display_name=session.user_display_name,
         turns=session.history.turns,
         project_metadata=session.project_metadata.model_dump(),
         external_context_config=session.external_context_config.model_dump(),

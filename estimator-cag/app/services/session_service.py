@@ -3,7 +3,7 @@ from __future__ import annotations
 import ulid
 
 from app.prompts.loader import render_estimation_prompt
-from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType, UserTier
 from app.services.attachment_extraction import (
     extract_attachments_text,
     extract_document_paths_text,
@@ -16,14 +16,35 @@ from app.sessions import ProjectMetadata, Session, SessionStore
 session_store = SessionStore()
 
 
-def create_session() -> str:
+def create_session(
+    user_tier: UserTier | None = UserTier.DEVELOPER,
+    user_display_name: str | None = None,
+) -> str:
     session_id = str(ulid.new())
-    session_store.create(session_id)
+    session_store.create(
+        session_id,
+        user_tier=user_tier,
+        user_display_name=user_display_name,
+    )
     return session_id
 
 
 def get_session(session_id: str) -> Session | None:
     return session_store.get(session_id)
+
+
+def set_session_user_profile(
+    session_id: str,
+    *,
+    user_tier: UserTier,
+    user_display_name: str,
+) -> None:
+    session = session_store.get(session_id)
+    if session is None:
+        raise KeyError(session_id)
+
+    session.set_user_profile(user_tier, user_display_name)
+    session_store.save_session(session_id)
 
 
 def update_external_context_config(
@@ -88,6 +109,8 @@ async def estimate_session_turn(
     session = session_store.get(session_id)
     if session is None:
         raise KeyError(session_id)
+    if session.user_tier is None:
+        raise ValueError("Session tier not configured.")
 
     attachment_sections = await extract_attachments_text(attachments)
     path_sections = await extract_document_paths_text(document_paths)
@@ -108,6 +131,8 @@ async def estimate_session_turn(
         history_messages=session.history.to_turn_messages(),
         project_metadata=session.project_metadata,
         external_context=external_context,
+        user_tier=session.user_tier,
+        user_display_name=session.user_display_name,
     )
 
     _system_prompt, user_prompt = render_estimation_prompt(
@@ -115,6 +140,8 @@ async def estimate_session_turn(
         version=result["prompt_version"],
         project_metadata=session.project_metadata,
         external_context=external_context,
+        user_tier=session.user_tier,
+        user_display_name=session.user_display_name,
     )
     session.history.add_turn(user_prompt, result["text"])
     session.add_conversation_message("user", display_user_message or transcript.strip())

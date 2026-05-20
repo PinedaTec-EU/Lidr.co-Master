@@ -12,6 +12,8 @@ El servicio actúa como un estimador experto entrenado por contexto estático. A
 
 El modelo devuelve una estimación calibrada en el mismo estilo y formato que los ejemplos, garantizando consistencia sin fine-tuning.
 
+Cada sesión fija además un `user_tier` de una lista cerrada (`developer`, `pm`, `executive`) y un `user_display_name` visible. Ambos se persisten con la sesión y ajustan el `system prompt` de forma consistente durante toda la conversación sin permitir cambios a mitad de hilo.
+
 **Proveedores soportados:**
 - OpenAI (`gpt-4o-mini` por defecto)
 - Anthropic (`claude-haiku-4-5-20251001` por defecto)
@@ -60,10 +62,11 @@ estimator-cag/
 │   ├── context/
 │   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
 │   ├── prompts/
-│   │   ├── loader.py          # Loader Jinja2 con versiones de prompt
+│   │   ├── loader.py          # Loader Jinja2 con versiones de prompt y tier por sesión
 │   │   └── estimation/
 │   │       └── v1/
 │   │           ├── system.j2
+│   │           ├── tiers/     # Instrucciones específicas por developer/pm/executive
 │   │           ├── user.j2
 │   │           └── examples.j2
 │   ├── sessions.py            # Estado conversacional persistido, ULIDs y metadatos de proyecto
@@ -196,6 +199,8 @@ El identificador usa formato **ULID**, pensado para poder compartirlo en URLs de
 
 Recupera una sesión existente con:
 - historial de turnos
+- `user_tier` persistido para la conversación
+- `user_display_name` persistido para personalizar el trato al usuario
 - `project_metadata`
 - configuración de contexto externo para la sesión
 - rutas documentales ya asociadas
@@ -504,6 +509,8 @@ El wrapper web reutiliza el mismo `system prompt` y la misma lógica de proveedo
 ```
 
 La interfaz usa `st.form` para construir cada turno, crea o recupera un `session_id` al cargar la página, permite adjuntar ficheros, seleccionar documentos versionados del repo desde sidebar, configurar contexto externo por sesión y mantener el historial visible de solicitudes y respuestas. El panel lateral también muestra el prompt activo, las métricas de la última llamada, la configuración de fuentes externas y las transcripciones versionadas del directorio `sample-transcriptions/`.
+
+Cuando no existe sesión activa, la UI abre un modal obligatorio para fijar el `user_tier` y el `user_display_name`. Ambos quedan bloqueados durante toda la conversación y solo se vuelven a pedir al crear una nueva charla.
 
 La zona principal añade dos acciones de inspección:
 - `Ver system prompt activo`

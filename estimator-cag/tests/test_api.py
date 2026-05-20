@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.routers import estimations
+from app.schemas import UserTier
 from app.services import session_service
 from app.sessions import ExternalContextItem, MAX_TURNS, SessionStore
 
@@ -36,7 +37,10 @@ def test_create_session_returns_uuid_and_stores_session() -> None:
     body = response.json()
     assert isinstance(body["session_id"], str)
     assert len(body["session_id"]) == 26
-    assert session_service.session_store.get(body["session_id"]) is not None
+    session = session_service.session_store.get(body["session_id"])
+    assert session is not None
+    assert session.user_tier == UserTier.DEVELOPER
+    assert session.user_display_name is None
 
 
 def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch) -> None:
@@ -68,6 +72,8 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     assert response.status_code == 200
     body = response.json()
     assert body["session_id"] == session_id
+    assert body["user_tier"] == "developer"
+    assert body["user_display_name"] is None
     assert body["turns"] == [["user one", "assistant one"]]
     assert body["external_context_config"] == {
         "notion_page_ids": ["page-123"],

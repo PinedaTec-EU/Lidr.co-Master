@@ -22,6 +22,12 @@ class OutputFormat(str, Enum):
     NARRATIVE = "narrative"
 
 
+class UserTier(str, Enum):
+    DEVELOPER = "developer"
+    PM = "pm"
+    EXECUTIVE = "executive"
+
+
 class EstimationRequest(BaseModel):
     description: str = Field(min_length=20, max_length=2000)
     project_type: ProjectType
@@ -40,6 +46,8 @@ class SessionCreateResponse(BaseModel):
 
 class SessionDetailResponse(BaseModel):
     session_id: str
+    user_tier: UserTier | None = None
+    user_display_name: str | None = None
     turns: list[tuple[str, str]]
     project_metadata: dict
     external_context_config: dict

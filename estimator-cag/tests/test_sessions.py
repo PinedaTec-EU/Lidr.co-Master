@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from app.schemas import UserTier
 from app.sessions import ConversationHistory, ExternalContextItem, ProjectMetadata, SessionStore
 
 
@@ -51,7 +52,11 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     store_path = tmp_path / "sessions.json"
     store = SessionStore(path=store_path)
 
-    session = store.create("01TESTSESSION00000000000000")
+    session = store.create(
+        "01TESTSESSION00000000000000",
+        user_tier=UserTier.EXECUTIVE,
+        user_display_name="pineda",
+    )
     session.history.add_turn("u1", "a1")
     session.remember_document_sources(["/tmp/requirements.pdf"])
     session.set_external_context_config(
@@ -84,6 +89,8 @@ def test_session_store_persists_sessions_to_disk(tmp_path: Path) -> None:
     persisted = reloaded.get("01TESTSESSION00000000000000")
 
     assert persisted is not None
+    assert persisted.user_tier == UserTier.EXECUTIVE
+    assert persisted.user_display_name == "pineda"
     assert persisted.history.turns == [("u1", "a1")]
     assert persisted.document_sources == ["/tmp/requirements.pdf"]
     assert persisted.external_context_config.notion_page_ids == ["page-123"]
