@@ -1,5 +1,7 @@
 # LIdrMaster
 
+[![Powered with SIH](https://img.shields.io/badge/Powered%20with-SIH-0A66C2?style=flat-square)](https://github.com/PinedaTec-EU/SphereIntegrationHub)
+
 Workspace del máster centrado principalmente en **`estimator-cag`**, el proyecto de estimación de software basado en **CAG (Context Augmented Generation)**.
 
 Aunque el repo incluye `sih-smart-analysis`, ese proyecto aquí actúa como complemento y banco de pruebas alrededor de workflows y reports. El núcleo real del trabajo, de la evolución reciente y de la propuesta funcional está en `estimator-cag`.
