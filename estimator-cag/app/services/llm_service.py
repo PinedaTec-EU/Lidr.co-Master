@@ -56,6 +56,10 @@ def _model_routes() -> dict[str, ModelRoute]:
     }
 
 
+def _normalize_model_name(provider: str, model: str) -> str:
+    return model if model.startswith(f"{provider}/") else f"{provider}/{model}"
+
+
 def _default_prompt_request() -> EstimationRequest:
     return EstimationRequest(
         description=(
@@ -107,50 +111,29 @@ def _resolve_route(
     provider: str | None = None,
     model: str | None = None,
 ) -> ModelRoute:
+    routes = _model_routes()
+
     if friendly_name:
-        route = _model_routes().get(friendly_name)
+        route = routes.get(friendly_name)
         if route is None:
             available = ", ".join(get_available_friendly_names())
             raise ValueError(f"Unknown friendly_name '{friendly_name}'. Available: {available}")
 
         if model:
-            return replace(route, model=model)
+            return replace(route, model=_normalize_model_name(route.provider, model))
         return route
 
     resolved_provider = provider or settings.llm_provider
-    resolved_model = model or settings.llm_model
-    if resolved_provider == "ollama":
-        resolved_model = resolved_model or "llama3.2"
-        return ModelRoute(
-            friendly_name="custom",
-            provider="ollama",
-            model=resolved_model if resolved_model.startswith("ollama/") else f"ollama/{resolved_model}",
-            api_key=settings.ollama_api_key,
-            base_url=settings.ollama_base_url,
-            port=settings.ollama_port,
-        )
-    if resolved_provider == "anthropic":
-        resolved_model = resolved_model or "claude-haiku-4-5-20251001"
-        return ModelRoute(
-            friendly_name="custom",
-            provider="anthropic",
-            model=(
-                resolved_model
-                if resolved_model.startswith("anthropic/")
-                else f"anthropic/{resolved_model}"
-            ),
-            api_key=settings.anthropic_api_key,
-            base_url=settings.anthropic_base_url or None,
-            port=None,
-        )
-    resolved_model = resolved_model or "gpt-4o-mini"
-    return ModelRoute(
+    route = routes.get(resolved_provider)
+    if route is None:
+        available = ", ".join(routes.keys())
+        raise ValueError(f"Unknown provider '{resolved_provider}'. Available: {available}")
+
+    resolved_model = model or settings.llm_model or route.model
+    return replace(
+        route,
         friendly_name="custom",
-        provider="openai",
-        model=resolved_model if resolved_model.startswith("openai/") else f"openai/{resolved_model}",
-        api_key=settings.openai_api_key,
-        base_url=settings.openai_base_url or None,
-        port=None,
+        model=_normalize_model_name(route.provider, resolved_model),
     )
 
 

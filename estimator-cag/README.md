@@ -140,7 +140,7 @@ Campos:
 
 Parámetros de query opcionales:
 - `friendly_name`
-- `provider`
+- `provider` (`openai`, `anthropic`, `ollama`)
 - `model`
 
 **Respuesta:**
@@ -154,7 +154,7 @@ Parámetros de query opcionales:
 **Errores:**
 | Código | Causa |
 |--------|-------|
-| `400`  | `friendly_name` desconocido |
+| `400`  | `friendly_name` o `provider` desconocido |
 | `422`  | body inválido o `description` demasiado corta |
 | `500`  | Error en la llamada al LLM |
 
@@ -366,7 +366,7 @@ Workflow esperado:
 
 Eso convierte la UI en una herramienta de refinamiento progresivo, no en un chat genérico.
 
-Este patrón de trabajo encaja especialmente bien cuando la salida no se resuelve en una única respuesta, sino mediante iteraciones guiadas entre modelo y usuario hasta estabilizar alcance, supuestos y entregables. En esa línea, merece una referencia explícita **SpecForge.AI**, que opera sobre un esquema comparable de refinamiento progresivo y, en escenarios de especificación estructurada, puede apoyarse en un sistema igual o más potente para conducir ese ciclo de ida y vuelta.
+Este patrón de trabajo encaja especialmente bien cuando la salida no se resuelve en una única respuesta, sino mediante iteraciones guiadas entre modelo y usuario hasta estabilizar alcance, supuestos y entregables. En esa línea, merece una referencia explícita [SpecForge.AI](https://github.com/PinedaTec-EU/SpecForge.AI), que opera sobre un esquema comparable de refinamiento progresivo y, en escenarios de especificación estructurada, puede apoyarse en un sistema igual o más potente para conducir ese ciclo de ida y vuelta.
 
 ### Documentos de prueba incluidos
 
@@ -630,7 +630,7 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | Variable | Valores posibles | Default |
 |----------|-----------------|---------|
 | `LLM_PROVIDER` | `openai` \| `anthropic` \| `ollama` | `openai` |
-| `LLM_MODEL` | cualquier model ID | vacío (usa default del proveedor) |
+| `LLM_MODEL` | cualquier model ID | vacío (usa el default centralizado del proveedor activo) |
 | `OPENAI_API_KEY` | `sk-...` | — |
 | `ANTHROPIC_API_KEY` | `sk-ant-...` | — |
 | `OLLAMA_API_KEY` | cualquier string | `ollama` |

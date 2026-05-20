@@ -31,6 +31,32 @@ def test_resolve_route_for_provider_override_ollama() -> None:
     assert route.model == "ollama/llama3.2"
 
 
+def test_resolve_route_for_provider_uses_centralized_default_model() -> None:
+    route = llm_service._resolve_route(provider="anthropic")
+
+    assert route.provider == "anthropic"
+    assert route.model == "anthropic/claude-haiku-4-5-20251001"
+
+
+def test_resolve_route_normalizes_custom_model_for_friendly_name() -> None:
+    route = llm_service._resolve_route(
+        friendly_name="openai",
+        model="gpt-4.1-mini",
+    )
+
+    assert route.provider == "openai"
+    assert route.model == "openai/gpt-4.1-mini"
+
+
+def test_resolve_route_rejects_unknown_provider() -> None:
+    try:
+        llm_service._resolve_route(provider="bedrock")
+    except ValueError as exc:
+        assert str(exc) == "Unknown provider 'bedrock'. Available: openai, anthropic, ollama"
+    else:
+        raise AssertionError("Expected ValueError for unknown provider")
+
+
 def test_tokens_used_defaults_total_when_missing() -> None:
     usage = {"prompt_tokens": 12, "completion_tokens": 7}
 
