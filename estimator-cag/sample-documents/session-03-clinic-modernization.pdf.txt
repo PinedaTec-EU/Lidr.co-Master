@@ -1,0 +1,22 @@
+Proyecto: modernización de clínica ambulatoria.
+
+Resumen:
+- portal para pacientes con reserva y cambio de citas
+- recordatorios por SMS y email
+- panel interno para recepción y coordinación médica
+- historial básico de consultas no clínicas, solo agenda y operaciones
+
+Restricciones:
+- cumplimiento RGPD
+- evitar lock-in con proveedor de SMS
+- despliegue inicial en 12 semanas
+
+Integraciones:
+- pasarela de pagos Stripe
+- correo transaccional
+- calendario corporativo Microsoft 365
+
+Equipo estimado por cliente:
+- product owner parcial
+- 1 diseñador freelance
+- equipo técnico externo completo

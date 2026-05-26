@@ -1,0 +1,418 @@
+{
+  "01KS28SXXJYBE63FB6P7RRNJFJ": {
+    "history": {
+      "max_turns": 6,
+      "turns": []
+    },
+    "project_metadata": {
+      "project_name": null,
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [],
+      "agreed_scope": null
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [],
+    "last_document_context": [],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "01KS28SXY5RXCSZA60PHZCQDHA": {
+    "history": {
+      "max_turns": 6,
+      "turns": [
+        [
+          "## Project description\n<project_description>\nNecesitamos el proyecto Atlas con React, PostgreSQL y un equipo de 4 personas.\n</project_description>",
+          "Proyecto Atlas estimado para un equipo de 4 con React y PostgreSQL."
+        ]
+      ]
+    },
+    "project_metadata": {
+      "project_name": "Atlas con React, PostgreSQL y un equipo de 4 personas",
+      "client_name": null,
+      "assumed_team_size": 4,
+      "mentioned_technologies": [
+        "react",
+        "postgresql"
+      ],
+      "agreed_scope": "Necesitamos el proyecto Atlas con React, PostgreSQL y un equipo de 4 personas."
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [
+      {
+        "role": "user",
+        "content": "Necesitamos el proyecto Atlas con React, PostgreSQL y un equipo de 4 personas."
+      },
+      {
+        "role": "assistant",
+        "content": "Proyecto Atlas estimado para un equipo de 4 con React y PostgreSQL."
+      }
+    ],
+    "last_document_context": [],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "01KS28SXYB5K3FNAD2CD5MY8QZ": {
+    "history": {
+      "max_turns": 6,
+      "turns": [
+        [
+          "## Project description\n<project_description>\nNecesitamos el proyecto Atlas con contexto desde Notion.\n</project_description>",
+          "Estimaci\u00f3n enriquecida con contexto externo."
+        ]
+      ]
+    },
+    "project_metadata": {
+      "project_name": "Atlas con contexto desde Notion",
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [],
+      "agreed_scope": "Necesitamos el proyecto Atlas con contexto desde Notion."
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [
+      {
+        "role": "user",
+        "content": "Necesitamos el proyecto Atlas con contexto desde Notion."
+      },
+      {
+        "role": "assistant",
+        "content": "Estimaci\u00f3n enriquecida con contexto externo."
+      }
+    ],
+    "last_document_context": [],
+    "last_external_context": [
+      {
+        "source": "notion",
+        "title": "Atlas kickoff",
+        "content": "Roadmap y restricciones aprobadas.",
+        "url": "https://notion.so/atlas",
+        "updated_at": "2026-05-19T10:00:00Z",
+        "relevance_reason": "Explicit notion_page_id configured in the session."
+      }
+    ],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "01KS28SXYFSQGTDXGA7D8CEJM7": {
+    "history": {
+      "max_turns": 6,
+      "turns": [
+        [
+          "## Project description\n<project_description>\nNecesitamos una plataforma B2B.\n\n--- attachment: requirements.docx ---\nIntegrar Stripe y SSO corporativo.\n</project_description>",
+          "Estimaci\u00f3n con adjunto procesado."
+        ]
+      ]
+    },
+    "project_metadata": {
+      "project_name": null,
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [
+        "stripe"
+      ],
+      "agreed_scope": "Necesitamos una plataforma B2B.\n\n--- attachment: requirements.docx ---\nIntegrar Stripe y SSO corporativo."
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [
+      {
+        "role": "user",
+        "content": "Necesitamos una plataforma B2B."
+      },
+      {
+        "role": "assistant",
+        "content": "Estimaci\u00f3n con adjunto procesado."
+      }
+    ],
+    "last_document_context": [
+      "--- attachment: requirements.docx ---\nIntegrar Stripe y SSO corporativo."
+    ],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "01KS28SXYMGH09TYFSK9SD1723": {
+    "history": {
+      "max_turns": 6,
+      "turns": [
+        [
+          "## Project description\n<project_description>\nNecesitamos una plataforma B2B.\n\n--- document_path: /private/var/folders/_s/khfztzr97kd4049py5k3zsg80000gn/T/pytest-of-jmr.pineda/pytest-13/test_session_estimate_document0/requirements.md ---\n# Requisitos\n\nIntegrar SSO y reporting.\n</project_description>",
+          "Estimaci\u00f3n con documento por ruta."
+        ]
+      ]
+    },
+    "project_metadata": {
+      "project_name": null,
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [],
+      "agreed_scope": "Necesitamos una plataforma B2B.\n\n--- document_path: /private/var/folders/_s/khfztzr97kd4049py5k3zsg80000gn/T/pytest-of-jmr.pineda/pytest-13/test_session_estimate_document0/requirements.md ---\n# Requisitos\n\nIntegrar SSO y reporting."
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [
+      "/private/var/folders/_s/khfztzr97kd4049py5k3zsg80000gn/T/pytest-of-jmr.pineda/pytest-13/test_session_estimate_document0/requirements.md"
+    ],
+    "conversation_messages": [
+      {
+        "role": "user",
+        "content": "Necesitamos una plataforma B2B."
+      },
+      {
+        "role": "assistant",
+        "content": "Estimaci\u00f3n con documento por ruta."
+      }
+    ],
+    "last_document_context": [
+      "--- document_path: /private/var/folders/_s/khfztzr97kd4049py5k3zsg80000gn/T/pytest-of-jmr.pineda/pytest-13/test_session_estimate_document0/requirements.md ---\n# Requisitos\n\nIntegrar SSO y reporting."
+    ],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "01KS28SXYS7AKQBP5HDZBCEVN3": {
+    "history": {
+      "max_turns": 6,
+      "turns": [
+        [
+          "## Project description\n<project_description>\nTurno 2: necesitamos refinar alcance del proyecto Atlas con React y reporting.\n</project_description>",
+          "Respuesta de estimaci\u00f3n."
+        ],
+        [
+          "## Project description\n<project_description>\nTurno 3: necesitamos refinar alcance del proyecto Atlas con React y reporting.\n</project_description>",
+          "Respuesta de estimaci\u00f3n."
+        ],
+        [
+          "## Project description\n<project_description>\nTurno 4: necesitamos refinar alcance del proyecto Atlas con React y reporting.\n</project_description>",
+          "Respuesta de estimaci\u00f3n."
+        ],
+        [
+          "## Project description\n<project_description>\nTurno 5: necesitamos refinar alcance del proyecto Atlas con React y reporting.\n</project_description>",
+          "Respuesta de estimaci\u00f3n."
+        ],
+        [
+          "## Project description\n<project_description>\nTurno 6: necesitamos refinar alcance del proyecto Atlas con React y reporting.\n</project_description>",
+          "Respuesta de estimaci\u00f3n."
+        ],
+        [
+          "## Project description\n<project_description>\nTurno 7: necesitamos refinar alcance del proyecto Atlas con React y reporting.\n</project_description>",
+          "Respuesta de estimaci\u00f3n."
+        ]
+      ]
+    },
+    "project_metadata": {
+      "project_name": "Atlas con React y reporting",
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [
+        "react"
+      ],
+      "agreed_scope": "Turno 7: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [
+      {
+        "role": "user",
+        "content": "Turno 0: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 1: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 2: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 3: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 4: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 5: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 6: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      },
+      {
+        "role": "user",
+        "content": "Turno 7: necesitamos refinar alcance del proyecto Atlas con React y reporting."
+      },
+      {
+        "role": "assistant",
+        "content": "Respuesta de estimaci\u00f3n."
+      }
+    ],
+    "last_document_context": [],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "01KS28SXZNV0AT2Q1QBQG0APF5": {
+    "history": {
+      "max_turns": 6,
+      "turns": []
+    },
+    "project_metadata": {
+      "project_name": null,
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [],
+      "agreed_scope": null
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [],
+    "last_document_context": [],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  },
+  "abc": {
+    "history": {
+      "max_turns": 6,
+      "turns": []
+    },
+    "project_metadata": {
+      "project_name": null,
+      "client_name": null,
+      "assumed_team_size": null,
+      "mentioned_technologies": [],
+      "agreed_scope": null
+    },
+    "external_context_config": {
+      "notion_page_ids": [],
+      "notion_search_terms": []
+    },
+    "document_sources": [],
+    "conversation_messages": [],
+    "last_document_context": [],
+    "last_external_context": [],
+    "last_run_info": {
+      "provider": "",
+      "model": "",
+      "tokens_used": {
+        "prompt": 0,
+        "completion": 0,
+        "total": 0
+      },
+      "response_time": 0.0
+    }
+  }
+}
