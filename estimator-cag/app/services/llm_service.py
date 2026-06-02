@@ -1,6 +1,9 @@
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, replace
+import time
 from typing import Any
+
+from litellm import acompletion
 
 from app.config import settings
 from app.context.examples import ESTIMATION_EXAMPLES
@@ -14,8 +17,13 @@ from app.schemas import (
 )
 from app.sessions import ExternalContextItem, ProjectMetadata
 
-MAX_COMPLETION_TOKENS = 1200
+MAX_COMPLETION_TOKENS = 400
 DEFAULT_PROMPT_VERSION = "v1"
+MODEL_COSTS: dict[str, tuple[float, float]] = {
+    "openai/gpt-4o-mini": (0.15, 0.60),
+    "anthropic/claude-haiku-4-5-20251001": (0.80, 4.00),
+    "ollama/gemma4:e2b": (0.0, 0.0),
+}
 
 
 @dataclass(frozen=True)
@@ -174,6 +182,13 @@ def _litellm_kwargs(route: ModelRoute) -> dict[str, Any]:
     return kwargs
 
 
+def _estimate_cost_usd(model: str, tokens_used: dict) -> float:
+    prompt_cost_per_million, completion_cost_per_million = MODEL_COSTS.get(model, (0.0, 0.0))
+    prompt_cost = (tokens_used["prompt"] / 1_000_000) * prompt_cost_per_million
+    completion_cost = (tokens_used["completion"] / 1_000_000) * completion_cost_per_million
+    return round(prompt_cost + completion_cost, 8)
+
+
 def _messages(system_prompt: str, user_prompt: str) -> list[dict[str, str]]:
     return [
         {"role": "system", "content": system_prompt},
@@ -259,19 +274,22 @@ async def _call_litellm(
     prompt_version: str,
     history_messages: list[dict[str, str]] | None = None,
 ) -> dict:
-    from litellm import acompletion
-
+    started_at = time.perf_counter()
     response = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
         messages=[{"role": "system", "content": system_prompt}, *(history_messages or []), {"role": "user", "content": user_prompt}],
     )
+    tokens_used = _tokens_used(response.usage)
+    latency_ms = round((time.perf_counter() - started_at) * 1000, 2)
     return {
         "text": response.choices[0].message.content,
         "prompt_version": prompt_version,
         "model": route.model,
         "provider": route.provider,
-        "tokens_used": _tokens_used(response.usage),
+        "tokens_used": tokens_used,
+        "latency_ms": latency_ms,
+        "cost_usd": _estimate_cost_usd(route.model, tokens_used),
     }
 
 
@@ -282,8 +300,6 @@ async def _stream_litellm(
     prompt_version: str,
     history_messages: list[dict[str, str]] | None = None,
 ) -> AsyncIterator[dict]:
-    from litellm import acompletion
-
     stream = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,

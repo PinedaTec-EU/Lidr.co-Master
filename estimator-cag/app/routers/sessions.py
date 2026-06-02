@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 
+from app.errors import AppError
 from app.schemas import (
     DetailLevel,
     EstimationResponse,
@@ -36,6 +37,11 @@ async def get_session_detail(session_id: str):
         user_tier=session.user_tier,
         user_display_name=session.user_display_name,
         turns=session.history.turns,
+        message_count=session.message_count(),
+        anchors_count=0,
+        summary_chars=0,
+        last_resolved_tier=session.user_tier,
+        last_tier_rule=session.last_tier_rule,
         project_metadata=session.project_metadata.model_dump(),
         external_context_config=session.external_context_config.model_dump(),
         document_sources=session.document_sources,
@@ -43,6 +49,8 @@ async def get_session_detail(session_id: str):
         last_document_context=session.last_document_context,
         last_external_context=session.last_external_context,
         last_run_info=session.last_run_info,
+        turn_observations=session.turn_observations,
+        last_turn_observed=session.last_turn_observed(),
     )
 
 
@@ -75,6 +83,8 @@ async def estimate_session(
             provider=provider,
             model=model,
         )
+    except AppError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.message) from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

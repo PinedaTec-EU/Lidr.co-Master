@@ -5,6 +5,7 @@ from typing import Any
 import httpx
 
 from app.config import settings
+from app.errors import UpstreamBadResponseError, UpstreamTimeoutError
 from app.sessions import ExternalContextItem
 
 
@@ -55,23 +56,41 @@ def _block_text(block: dict[str, Any]) -> str:
 
 
 async def _fetch_page_payload(page_id: str) -> dict[str, Any]:
-    async with httpx.AsyncClient(timeout=settings.notion_timeout_seconds) as client:
-        response = await client.get(
-            f"{settings.notion_api_base_url}/pages/{page_id}",
-            headers=_headers(),
-        )
-        response.raise_for_status()
+    try:
+        async with httpx.AsyncClient(timeout=settings.notion_timeout_seconds) as client:
+            response = await client.get(
+                f"{settings.notion_api_base_url}/pages/{page_id}",
+                headers=_headers(),
+            )
+            response.raise_for_status()
+    except httpx.TimeoutException as exc:
+        raise UpstreamTimeoutError(f"Notion page fetch timed out for '{page_id}'") from exc
+    except httpx.HTTPError as exc:
+        raise UpstreamBadResponseError(f"Notion page fetch failed for '{page_id}'") from exc
+
+    try:
         return response.json()
+    except ValueError as exc:
+        raise UpstreamBadResponseError(f"Notion page payload was not valid JSON for '{page_id}'") from exc
 
 
 async def _fetch_block_children(block_id: str) -> list[dict[str, Any]]:
-    async with httpx.AsyncClient(timeout=settings.notion_timeout_seconds) as client:
-        response = await client.get(
-            f"{settings.notion_api_base_url}/blocks/{block_id}/children?page_size=100",
-            headers=_headers(),
-        )
-        response.raise_for_status()
+    try:
+        async with httpx.AsyncClient(timeout=settings.notion_timeout_seconds) as client:
+            response = await client.get(
+                f"{settings.notion_api_base_url}/blocks/{block_id}/children?page_size=100",
+                headers=_headers(),
+            )
+            response.raise_for_status()
+    except httpx.TimeoutException as exc:
+        raise UpstreamTimeoutError(f"Notion block fetch timed out for '{block_id}'") from exc
+    except httpx.HTTPError as exc:
+        raise UpstreamBadResponseError(f"Notion block fetch failed for '{block_id}'") from exc
+
+    try:
         payload = response.json()
+    except ValueError as exc:
+        raise UpstreamBadResponseError(f"Notion block payload was not valid JSON for '{block_id}'") from exc
     return payload.get("results", [])
 
 
@@ -93,18 +112,27 @@ async def fetch_page_context(page_id: str, relevance_reason: str) -> ExternalCon
 
 
 async def search_pages(query: str, limit: int | None = None) -> list[dict[str, str]]:
-    async with httpx.AsyncClient(timeout=settings.notion_timeout_seconds) as client:
-        response = await client.post(
-            f"{settings.notion_api_base_url}/search",
-            headers=_headers(),
-            json={
-                "query": query,
-                "filter": {"property": "object", "value": "page"},
-                "page_size": limit or settings.notion_max_items,
-            },
-        )
-        response.raise_for_status()
+    try:
+        async with httpx.AsyncClient(timeout=settings.notion_timeout_seconds) as client:
+            response = await client.post(
+                f"{settings.notion_api_base_url}/search",
+                headers=_headers(),
+                json={
+                    "query": query,
+                    "filter": {"property": "object", "value": "page"},
+                    "page_size": limit or settings.notion_max_items,
+                },
+            )
+            response.raise_for_status()
+    except httpx.TimeoutException as exc:
+        raise UpstreamTimeoutError(f"Notion search timed out for query '{query}'") from exc
+    except httpx.HTTPError as exc:
+        raise UpstreamBadResponseError(f"Notion search failed for query '{query}'") from exc
+
+    try:
         payload = response.json()
+    except ValueError as exc:
+        raise UpstreamBadResponseError(f"Notion search payload was not valid JSON for query '{query}'") from exc
 
     results: list[dict[str, str]] = []
     for item in payload.get("results", []):

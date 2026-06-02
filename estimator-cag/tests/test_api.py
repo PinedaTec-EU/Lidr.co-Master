@@ -2,6 +2,7 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
+from app.errors import UpstreamBadResponseError, UpstreamTimeoutError
 from app.main import app
 from app.routers import estimations
 from app.schemas import UserTier
@@ -75,6 +76,11 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
     assert body["user_tier"] == "developer"
     assert body["user_display_name"] is None
     assert body["turns"] == [["user one", "assistant one"]]
+    assert body["message_count"] == 1
+    assert body["anchors_count"] == 0
+    assert body["summary_chars"] == 0
+    assert body["last_resolved_tier"] == "developer"
+    assert body["last_tier_rule"] == "session_profile_locked"
     assert body["external_context_config"] == {
         "notion_page_ids": ["page-123"],
         "notion_search_terms": ["Atlas"],
@@ -89,6 +95,8 @@ def test_get_session_detail_returns_persisted_state(tmp_path: Path, monkeypatch)
         "tokens_used": {"prompt": 5, "completion": 7, "total": 12},
         "response_time": 0.42,
     }
+    assert body["turn_observations"] == []
+    assert body["last_turn_observed"] is None
 
 
 def test_estimate_rejects_short_description() -> None:
@@ -196,6 +204,8 @@ def test_session_estimate_updates_project_metadata(monkeypatch) -> None:
             "model": "openai/gpt-4o-mini",
             "provider": "openai",
             "tokens_used": {"prompt": 10, "completion": 20, "total": 30},
+            "latency_ms": 123.0,
+            "cost_usd": 0.0001,
         }
 
     monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
@@ -217,6 +227,12 @@ def test_session_estimate_updates_project_metadata(monkeypatch) -> None:
     assert "react" in metadata.mentioned_technologies
     assert "postgresql" in metadata.mentioned_technologies
     assert metadata.assumed_team_size == 4
+    observed = session_service.session_store.get(session_id).last_turn_observed()
+    assert observed is not None
+    assert observed["turn_index"] == 1
+    assert observed["tokens_in"] == 10
+    assert observed["tokens_out"] == 20
+    assert observed["latency_ms"] == 123.0
 
 
 def test_session_estimate_passes_external_context_to_service(monkeypatch) -> None:
@@ -381,6 +397,21 @@ def test_session_estimate_history_respects_max_turns(monkeypatch) -> None:
     assert "Turno 0" not in history.turns[0][0]
 
 
+def test_session_estimate_returns_404_for_unknown_session() -> None:
+    response = client.post(
+        "/api/v1/sessions/01UNKNOWNSESSION000000000000/estimate",
+        data={
+            "transcript": "Necesitamos una plataforma B2B.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+    )
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Session not found"
+
+
 def test_session_estimate_rejects_unsupported_attachment_type(monkeypatch) -> None:
     async def fake_get_estimation(request, **kwargs: str | None) -> dict:
         raise AssertionError("No debería llegar al LLM con un adjunto inválido")
@@ -401,3 +432,49 @@ def test_session_estimate_rejects_unsupported_attachment_type(monkeypatch) -> No
 
     assert response.status_code == 400
     assert "Unsupported attachment type" in response.json()["detail"]
+
+
+def test_session_estimate_maps_docling_timeout_to_408(monkeypatch) -> None:
+    async def fake_extract_attachments_text(_attachments) -> list[str]:
+        raise UpstreamTimeoutError("Docling conversion timed out for 'requirements.docx'")
+
+    monkeypatch.setattr(session_service, "extract_attachments_text", fake_extract_attachments_text)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos una plataforma B2B.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+    )
+
+    assert response.status_code == 408
+    assert "Docling conversion timed out" in response.json()["detail"]
+
+
+def test_session_estimate_maps_notion_bad_response_to_502(monkeypatch) -> None:
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        raise AssertionError("No debería llegar al LLM si Notion falla antes")
+
+    async def fake_resolve_external_context(*, session, transcript: str):
+        raise UpstreamBadResponseError("Notion search payload was not valid JSON for query 'Atlas'")
+
+    monkeypatch.setattr(session_service, "get_estimation", fake_get_estimation)
+    monkeypatch.setattr(session_service, "resolve_external_context", fake_resolve_external_context)
+
+    session_id = client.post("/api/v1/sessions").json()["session_id"]
+    response = client.post(
+        f"/api/v1/sessions/{session_id}/estimate",
+        data={
+            "transcript": "Necesitamos contexto Atlas desde Notion.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+        },
+    )
+
+    assert response.status_code == 502
+    assert "Notion search payload was not valid JSON" in response.json()["detail"]

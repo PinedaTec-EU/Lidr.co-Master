@@ -49,6 +49,11 @@ class SessionDetailResponse(BaseModel):
     user_tier: UserTier | None = None
     user_display_name: str | None = None
     turns: list[tuple[str, str]]
+    message_count: int
+    anchors_count: int
+    summary_chars: int
+    last_resolved_tier: UserTier | None = None
+    last_tier_rule: str | None = None
     project_metadata: dict
     external_context_config: dict
     document_sources: list[str]
@@ -56,3 +61,5 @@ class SessionDetailResponse(BaseModel):
     last_document_context: list[str]
     last_external_context: list[dict]
     last_run_info: dict
+    turn_observations: list[dict]
+    last_turn_observed: dict | None = None

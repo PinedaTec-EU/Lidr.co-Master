@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -100,6 +101,29 @@ class ExternalContextConfig(BaseModel):
     notion_search_terms: list[str] = Field(default_factory=list)
 
 
+class TurnObservation(BaseModel):
+    turn_index: int = Field(ge=1)
+    session_id: str
+    enriched_transcript_chars: int = Field(ge=0)
+    attachments_total_chars: int = Field(ge=0)
+    messages_in_window: int = Field(ge=0)
+    anchors_count: int = Field(ge=0)
+    summary_chars: int = Field(ge=0)
+    tokens_in: int = Field(ge=0)
+    tokens_out: int = Field(ge=0)
+    cost_usd: float = Field(ge=0.0)
+    latency_ms: float = Field(ge=0.0)
+    cache_hit_kind: Literal["none", "exact", "semantic"] = "none"
+    last_resolved_tier: UserTier
+    model: str = ""
+    provider: str = ""
+    project_metadata: dict = Field(default_factory=dict)
+    assistant_text: str = ""
+    summary_text: str = ""
+    anchors: list[str] = Field(default_factory=list)
+    transcript_excerpt: str = ""
+
+
 @dataclass
 class ConversationHistory:
     max_turns: int = MAX_TURNS
@@ -155,6 +179,8 @@ class Session:
             "response_time": 0.0,
         }
     )
+    turn_observations: list[dict] = field(default_factory=list)
+    last_tier_rule: str = "session_profile_locked"
 
     def remember_document_sources(self, source_paths: list[str]) -> None:
         normalized_existing = {item for item in self.document_sources}
@@ -202,6 +228,17 @@ class Session:
             "response_time": response_time,
         }
 
+    def add_turn_observation(self, observation: TurnObservation) -> None:
+        self.turn_observations.append(observation.model_dump())
+
+    def last_turn_observed(self) -> dict | None:
+        if not self.turn_observations:
+            return None
+        return self.turn_observations[-1]
+
+    def message_count(self) -> int:
+        return len(self.conversation_messages)
+
     def to_dict(self) -> dict:
         return {
             "user_tier": self.user_tier.value if self.user_tier else None,
@@ -214,6 +251,8 @@ class Session:
             "last_document_context": self.last_document_context,
             "last_external_context": self.last_external_context,
             "last_run_info": self.last_run_info,
+            "turn_observations": self.turn_observations,
+            "last_tier_rule": self.last_tier_rule,
         }
 
     @classmethod
@@ -245,6 +284,8 @@ class Session:
                     },
                 )
             ),
+            turn_observations=list(payload.get("turn_observations", [])),
+            last_tier_rule=payload.get("last_tier_rule", "session_profile_locked"),
         )
 
 

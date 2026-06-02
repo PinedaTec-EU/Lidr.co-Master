@@ -11,6 +11,8 @@ dependencies = [
     "litellm>=1.57.0,<2.0.0",
     "python-dotenv>=1.0.0",
     "python-multipart>=0.0.9",
+    "reportlab>=4.2.0",
+    "structlog>=24.2.0",
     "ulid-py>=1.1.0",
     "streamlit>=1.35.0",
 ]

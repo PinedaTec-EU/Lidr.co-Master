@@ -33,6 +33,15 @@ La base del ejercicio del máster era construir un estimador con contexto estát
 - UI Streamlit orientada a chat con estado persistente
 - telemetría visible de proveedor, modelo, latencia y tokens
 
+### Sesión 6 del máster
+
+Sobre esa base, `estimator-cag` incorpora ahora un stress test reproducible del CAG:
+
+- observación agregada por turno (`turn_observed`)
+- runner de escenarios multi-turno y adjuntos sintéticos
+- métricas deterministas de latencia, coste y deriva de memoria
+- artefactos de salida versionados en `evals/stress/results.csv` y `evals/stress/REPORT.md`
+
 ### Añadido por nosotros
 
 Además de lo trabajado en la sesión, el proyecto se amplió con capacidades prácticas que lo hacen más útil como acelerador de discovery y preestimación:

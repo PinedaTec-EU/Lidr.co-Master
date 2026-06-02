@@ -199,6 +199,9 @@ El identificador usa formato **ULID**, pensado para poder compartirlo en URLs de
 
 Recupera una sesión existente con:
 - historial de turnos
+- `message_count` total visible
+- `turn_observations` persistidos por turno
+- `last_turn_observed` para inspección rápida del último snapshot
 - `user_tier` persistido para la conversación
 - `user_display_name` persistido para personalizar el trato al usuario
 - `project_metadata`
@@ -208,6 +211,15 @@ Recupera una sesión existente con:
 - último bloque de telemetría visible en la UI (`provider`, `model`, `tokens`, `latency`)
 
 Esto permite rehidratar una conversación en la UI usando `?chatid=<session_id>`.
+
+Campos operativos relevantes añadidos para stress/evals:
+- `message_count`
+- `anchors_count` actualmente `0` en esta base
+- `summary_chars` actualmente `0` en esta base
+- `last_resolved_tier`
+- `last_tier_rule`
+- `turn_observations`
+- `last_turn_observed`
 
 ---
 
@@ -249,6 +261,16 @@ Notas:
 - el resto se convierte a Markdown llamando a `POST /v1/convert/file` de Docling
 - `document_paths` guarda solo la ruta de origen en la sesión; no persiste el binario del fichero
 - si la sesión tiene `notion_page_ids` o `notion_search_terms`, antes de llamar al LLM se resuelve un bloque adicional de `<external_context>` desde Notion
+
+**Errores:**
+| Código | Causa |
+|--------|-------|
+| `400`  | `document_paths` inválido o tipo de adjunto no soportado |
+| `404`  | `session_id` no encontrado |
+| `408`  | timeout al convertir adjuntos con Docling o al consultar Notion |
+| `422`  | form-data incompleto o enum inválido |
+| `502`  | respuesta HTTP/JSON inválida desde Docling o Notion |
+| `500`  | fallo no controlado del backend o del proveedor LLM |
 
 ---
 
@@ -478,17 +500,52 @@ Cobertura actual de tests:
 - influencia de `document_paths` en el request efectivo al LLM
 - recorte del historial a `MAX_TURNS`
 - rechazo de tipos de adjunto no soportados
+- `404` al continuar una sesión inexistente
+- `408` cuando Docling agota timeout al enriquecer adjuntos
+- `502` cuando Notion devuelve una respuesta corrupta al enriquecer contexto externo
 - parseo defensivo de la respuesta de Docling
+- validación tipada del payload de Docling antes de extraer Markdown
 - persistencia de sesiones a disco
 - validación del schema tipado del formulario de producto
 - render de templates Jinja2 por versión y variantes de formato/detalle
 - ventana deslizante de historial y store de sesión en memoria
 - construcción del `system prompt`
+- métricas de stress (`LatencyBudgetMetric`, `CostBudgetMetric`, `MemoryDriftMetric`)
 - resumen del contexto CAG expuesto a la UI
 - resolución de rutas de proveedor/modelo
 - normalización de uso de tokens
 
 Los tests no llaman a OpenAI, Anthropic ni Ollama. Validan el contrato HTTP y el comportamiento base de la API.
+
+## Stress test del CAG
+
+La sesión 6 añade un baseline cuantitativo sobre el comportamiento del estimador cuando crece el contexto conversacional o el tamaño de adjuntos.
+
+Artefactos:
+- `evals/stress/scenarios.py`
+- `evals/stress/metrics.py`
+- `evals/stress/fixtures/build_pdfs.py`
+- `evals/stress/run.py`
+- `evals/stress/results.csv`
+- `evals/stress/REPORT.md`
+
+Comando de ejecución usado para el baseline mínimo del repo:
+
+```bash
+cd estimator-cag
+./.venv/bin/python -m evals.stress.run \
+  --provider openai \
+  --friendly-name openai \
+  --model gpt-4o-mini \
+  --turn-counts 1,3,6,10,20
+```
+
+Notas:
+- el runner escribe una fila por turno en `evals/stress/results.csv`
+- el reporte agregado queda en `evals/stress/REPORT.md`
+- esta base no implementa `anchors` ni `summary` persistidos; el stress los reporta explícitamente como `0` para que la limitación quede visible
+- para PDFs sintéticos se usa generación determinista local y conversión vía **Docling Serve**
+- los intervalos `1,3,6,10,20` significan conversaciones independientes de longitud total `N`; no son incrementos acumulativos sobre una misma sesión
 
 ### Pipeline CI
 

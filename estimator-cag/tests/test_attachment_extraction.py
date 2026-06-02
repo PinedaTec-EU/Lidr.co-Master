@@ -1,3 +1,4 @@
+from app.errors import UpstreamBadResponseError
 from app.services import attachment_extraction
 
 
@@ -43,7 +44,18 @@ def test_is_supported_attachment_rejects_unknown_extensions() -> None:
 def test_extract_markdown_from_docling_response_requires_document_payload() -> None:
     try:
         attachment_extraction._extract_markdown_from_docling_response({"result": {}})
-    except ValueError as exc:
+    except UpstreamBadResponseError as exc:
         assert "document" in str(exc)
     else:
         raise AssertionError("Expected ValueError when Docling omits document payload")
+
+
+def test_extract_markdown_from_docling_response_rejects_document_without_text() -> None:
+    payload = {"document": {"filename": "requirements.pdf", "outputs": {}}}
+
+    try:
+        attachment_extraction._extract_markdown_from_docling_response(payload)
+    except UpstreamBadResponseError as exc:
+        assert "Markdown/text content" in str(exc)
+    else:
+        raise AssertionError("Expected UpstreamBadResponseError when Docling omits text payload")
