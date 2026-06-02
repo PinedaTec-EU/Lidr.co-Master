@@ -1,10 +1,13 @@
+from app.config import settings
 from app.services import llm_service
 
 
 def test_system_prompt_includes_examples_and_output_contract() -> None:
-    prompt = llm_service.get_system_prompt()
+    prompt = llm_service.get_system_prompt(user_display_name="pineda")
 
     assert "Eres un estimador de software senior" in prompt
+    assert "Tier activo para esta sesión: developer" in prompt
+    assert "Usuario visible para esta sesión: pineda" in prompt
     assert "### Ejemplo 1" in prompt
     assert "responde siempre en español" in prompt.lower()
 
@@ -29,6 +32,33 @@ def test_resolve_route_for_provider_override_ollama() -> None:
 
     assert route.provider == "ollama"
     assert route.model == "ollama/llama3.2"
+
+
+def test_resolve_route_for_provider_uses_centralized_default_model(monkeypatch) -> None:
+    monkeypatch.setattr(settings, "llm_model", "")
+    route = llm_service._resolve_route(provider="anthropic")
+
+    assert route.provider == "anthropic"
+    assert route.model == "anthropic/claude-haiku-4-5-20251001"
+
+
+def test_resolve_route_normalizes_custom_model_for_friendly_name() -> None:
+    route = llm_service._resolve_route(
+        friendly_name="openai",
+        model="gpt-4.1-mini",
+    )
+
+    assert route.provider == "openai"
+    assert route.model == "openai/gpt-4.1-mini"
+
+
+def test_resolve_route_rejects_unknown_provider() -> None:
+    try:
+        llm_service._resolve_route(provider="bedrock")
+    except ValueError as exc:
+        assert str(exc) == "Unknown provider 'bedrock'. Available: openai, anthropic, ollama"
+    else:
+        raise AssertionError("Expected ValueError for unknown provider")
 
 
 def test_tokens_used_defaults_total_when_missing() -> None:

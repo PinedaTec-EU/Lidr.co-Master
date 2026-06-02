@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 
+from app.errors import AppError
 from app.schemas import EstimationRequest, EstimationResponse
 from app.services.llm_service import get_available_friendly_names, get_estimation
 
@@ -20,6 +21,8 @@ async def estimate(
             provider=provider,
             model=model,
         )
+    except AppError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.message) from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

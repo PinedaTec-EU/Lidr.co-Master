@@ -1,6 +1,9 @@
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, replace
+import time
 from typing import Any
+
+from litellm import acompletion
 
 from app.config import settings
 from app.context.examples import ESTIMATION_EXAMPLES
@@ -10,10 +13,17 @@ from app.schemas import (
     EstimationRequest,
     OutputFormat,
     ProjectType,
+    UserTier,
 )
+from app.sessions import ExternalContextItem, ProjectMetadata
 
-MAX_COMPLETION_TOKENS = 1200
+MAX_COMPLETION_TOKENS = 400
 DEFAULT_PROMPT_VERSION = "v1"
+MODEL_COSTS: dict[str, tuple[float, float]] = {
+    "openai/gpt-4o-mini": (0.15, 0.60),
+    "anthropic/claude-haiku-4-5-20251001": (0.80, 4.00),
+    "ollama/gemma4:e2b": (0.0, 0.0),
+}
 
 
 @dataclass(frozen=True)
@@ -55,6 +65,10 @@ def _model_routes() -> dict[str, ModelRoute]:
     }
 
 
+def _normalize_model_name(provider: str, model: str) -> str:
+    return model if model.startswith(f"{provider}/") else f"{provider}/{model}"
+
+
 def _default_prompt_request() -> EstimationRequest:
     return EstimationRequest(
         description=(
@@ -70,8 +84,19 @@ def _default_prompt_request() -> EstimationRequest:
 def get_system_prompt(
     request: EstimationRequest | None = None,
     version: str = DEFAULT_PROMPT_VERSION,
+    project_metadata: ProjectMetadata | None = None,
+    external_context: list[ExternalContextItem] | None = None,
+    user_tier: UserTier = UserTier.DEVELOPER,
+    user_display_name: str | None = None,
 ) -> str:
-    system, _user = render_estimation_prompt(request or _default_prompt_request(), version=version)
+    system, _user = render_estimation_prompt(
+        request or _default_prompt_request(),
+        version=version,
+        project_metadata=project_metadata,
+        external_context=external_context,
+        user_tier=user_tier,
+        user_display_name=user_display_name,
+    )
     return system
 
 
@@ -99,50 +124,29 @@ def _resolve_route(
     provider: str | None = None,
     model: str | None = None,
 ) -> ModelRoute:
+    routes = _model_routes()
+
     if friendly_name:
-        route = _model_routes().get(friendly_name)
+        route = routes.get(friendly_name)
         if route is None:
             available = ", ".join(get_available_friendly_names())
             raise ValueError(f"Unknown friendly_name '{friendly_name}'. Available: {available}")
 
         if model:
-            return replace(route, model=model)
+            return replace(route, model=_normalize_model_name(route.provider, model))
         return route
 
     resolved_provider = provider or settings.llm_provider
-    resolved_model = model or settings.llm_model
-    if resolved_provider == "ollama":
-        resolved_model = resolved_model or "llama3.2"
-        return ModelRoute(
-            friendly_name="custom",
-            provider="ollama",
-            model=resolved_model if resolved_model.startswith("ollama/") else f"ollama/{resolved_model}",
-            api_key=settings.ollama_api_key,
-            base_url=settings.ollama_base_url,
-            port=settings.ollama_port,
-        )
-    if resolved_provider == "anthropic":
-        resolved_model = resolved_model or "claude-haiku-4-5-20251001"
-        return ModelRoute(
-            friendly_name="custom",
-            provider="anthropic",
-            model=(
-                resolved_model
-                if resolved_model.startswith("anthropic/")
-                else f"anthropic/{resolved_model}"
-            ),
-            api_key=settings.anthropic_api_key,
-            base_url=settings.anthropic_base_url or None,
-            port=None,
-        )
-    resolved_model = resolved_model or "gpt-4o-mini"
-    return ModelRoute(
+    route = routes.get(resolved_provider)
+    if route is None:
+        available = ", ".join(routes.keys())
+        raise ValueError(f"Unknown provider '{resolved_provider}'. Available: {available}")
+
+    resolved_model = model or settings.llm_model or route.model
+    return replace(
+        route,
         friendly_name="custom",
-        provider="openai",
-        model=resolved_model if resolved_model.startswith("openai/") else f"openai/{resolved_model}",
-        api_key=settings.openai_api_key,
-        base_url=settings.openai_base_url or None,
-        port=None,
+        model=_normalize_model_name(route.provider, resolved_model),
     )
 
 
@@ -178,6 +182,13 @@ def _litellm_kwargs(route: ModelRoute) -> dict[str, Any]:
     return kwargs
 
 
+def _estimate_cost_usd(model: str, tokens_used: dict) -> float:
+    prompt_cost_per_million, completion_cost_per_million = MODEL_COSTS.get(model, (0.0, 0.0))
+    prompt_cost = (tokens_used["prompt"] / 1_000_000) * prompt_cost_per_million
+    completion_cost = (tokens_used["completion"] / 1_000_000) * completion_cost_per_million
+    return round(prompt_cost + completion_cost, 8)
+
+
 def _messages(system_prompt: str, user_prompt: str) -> list[dict[str, str]]:
     return [
         {"role": "system", "content": system_prompt},
@@ -201,10 +212,28 @@ async def get_estimation(
     provider: str | None = None,
     model: str | None = None,
     prompt_version: str = DEFAULT_PROMPT_VERSION,
+    history_messages: list[dict[str, str]] | None = None,
+    project_metadata: ProjectMetadata | None = None,
+    external_context: list[ExternalContextItem] | None = None,
+    user_tier: UserTier = UserTier.DEVELOPER,
+    user_display_name: str | None = None,
 ) -> dict:
-    system_prompt, user_prompt = render_estimation_prompt(request, version=prompt_version)
+    system_prompt, user_prompt = render_estimation_prompt(
+        request,
+        version=prompt_version,
+        project_metadata=project_metadata,
+        external_context=external_context,
+        user_tier=user_tier,
+        user_display_name=user_display_name,
+    )
     route = _resolve_route(friendly_name, provider, model)
-    return await _call_litellm(system_prompt, user_prompt, route, prompt_version)
+    return await _call_litellm(
+        system_prompt,
+        user_prompt,
+        route,
+        prompt_version,
+        history_messages=history_messages,
+    )
 
 
 async def stream_estimation(
@@ -213,10 +242,28 @@ async def stream_estimation(
     provider: str | None = None,
     model: str | None = None,
     prompt_version: str = DEFAULT_PROMPT_VERSION,
+    history_messages: list[dict[str, str]] | None = None,
+    project_metadata: ProjectMetadata | None = None,
+    external_context: list[ExternalContextItem] | None = None,
+    user_tier: UserTier = UserTier.DEVELOPER,
+    user_display_name: str | None = None,
 ) -> AsyncIterator[dict]:
-    system_prompt, user_prompt = render_estimation_prompt(request, version=prompt_version)
+    system_prompt, user_prompt = render_estimation_prompt(
+        request,
+        version=prompt_version,
+        project_metadata=project_metadata,
+        external_context=external_context,
+        user_tier=user_tier,
+        user_display_name=user_display_name,
+    )
     route = _resolve_route(friendly_name, provider, model)
-    async for event in _stream_litellm(system_prompt, user_prompt, route, prompt_version):
+    async for event in _stream_litellm(
+        system_prompt,
+        user_prompt,
+        route,
+        prompt_version,
+        history_messages=history_messages,
+    ):
         yield event
 
 
@@ -225,20 +272,24 @@ async def _call_litellm(
     user_prompt: str,
     route: ModelRoute,
     prompt_version: str,
+    history_messages: list[dict[str, str]] | None = None,
 ) -> dict:
-    from litellm import acompletion
-
+    started_at = time.perf_counter()
     response = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, user_prompt),
+        messages=[{"role": "system", "content": system_prompt}, *(history_messages or []), {"role": "user", "content": user_prompt}],
     )
+    tokens_used = _tokens_used(response.usage)
+    latency_ms = round((time.perf_counter() - started_at) * 1000, 2)
     return {
         "text": response.choices[0].message.content,
         "prompt_version": prompt_version,
         "model": route.model,
         "provider": route.provider,
-        "tokens_used": _tokens_used(response.usage),
+        "tokens_used": tokens_used,
+        "latency_ms": latency_ms,
+        "cost_usd": _estimate_cost_usd(route.model, tokens_used),
     }
 
 
@@ -247,13 +298,12 @@ async def _stream_litellm(
     user_prompt: str,
     route: ModelRoute,
     prompt_version: str,
+    history_messages: list[dict[str, str]] | None = None,
 ) -> AsyncIterator[dict]:
-    from litellm import acompletion
-
     stream = await acompletion(
         **_litellm_kwargs(route),
         max_tokens=MAX_COMPLETION_TOKENS,
-        messages=_messages(system_prompt, user_prompt),
+        messages=[{"role": "system", "content": system_prompt}, *(history_messages or []), {"role": "user", "content": user_prompt}],
         stream=True,
     )
 
