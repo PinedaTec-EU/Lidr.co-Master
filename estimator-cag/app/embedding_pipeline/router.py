@@ -3,18 +3,22 @@ from __future__ import annotations
 import time
 
 import structlog
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.embedding_pipeline.chunker import build_chunker
-from app.embedding_pipeline.contextualizer import ChunkContextualizer
+from app.embedding_pipeline.db import get_async_session
 from app.embedding_pipeline.embedder import OpenAIEmbedder
 from app.embedding_pipeline.evaluation import summarize_case
+from app.embedding_pipeline.ingest_service import (
+    DocumentAlreadyIngestedError,
+    EmbeddingIngestService,
+)
 from app.embedding_pipeline.schemas import (
     ChunkingStrategy,
+    DocumentIngestRequest,
+    DocumentIngestResponse,
     EmbeddingModelName,
-    IngestRequest,
-    IngestResponse,
-    IngestStats,
     RetrievalEvalRequest,
     RetrievalEvalResponse,
     RetrievalEvalSummary,
@@ -36,43 +40,25 @@ def get_embedding_options() -> dict[str, list[str]]:
     }
 
 
-@router.post("/embeddings/ingest", response_model=IngestResponse)
-def ingest_embeddings(request: IngestRequest) -> IngestResponse:
-    started_at = time.perf_counter()
-    chunker = build_chunker(request.chunking)
-    embedder = OpenAIEmbedder(model_name=request.embedding_model)
-
+@router.post("/embeddings/ingest", response_model=DocumentIngestResponse)
+async def ingest_embeddings(
+    request: DocumentIngestRequest,
+    session: AsyncSession = Depends(get_async_session),
+) -> DocumentIngestResponse:
+    service = EmbeddingIngestService()
     try:
-        chunks = chunker.chunk(request.budgets)
-        if request.chunking.llm_enrich_context:
-            contextualizer = ChunkContextualizer()
-            budgets_by_id = {budget.budget_id: budget for budget in request.budgets}
-            chunks = contextualizer.enrich_chunks(chunks, budgets_by_id)
-        embedded_chunks = embedder.embed_many(chunks)
-
-        persisted_chunks = 0
-        if request.persist:
-            store = PgVectorStore()
-            store.ensure_schema()
-            persisted_chunks = store.upsert_chunks(embedded_chunks)
+        return await service.ingest_document(session=session, request=request)
+    except DocumentAlreadyIngestedError as exc:
+        return JSONResponse(
+            status_code=409,
+            content={"detail": "Document already ingested", "document_id": exc.document_id},
+        )
     except Exception as exc:
         logger.exception("embedding_ingest_failed", error_type=type(exc).__name__)
         raise HTTPException(
             status_code=500,
             detail="Unexpected error while generating embeddings.",
         ) from exc
-
-    total_tokens = sum(chunk.token_count for chunk in chunks)
-    processing_latency_ms = round((time.perf_counter() - started_at) * 1000, 2)
-    stats = IngestStats(
-        total_budgets=len(request.budgets),
-        total_chunks=len(embedded_chunks),
-        total_tokens=total_tokens,
-        estimated_cost_usd=embedder.estimate_cost_usd(total_tokens),
-        processing_latency_ms=processing_latency_ms,
-        persisted_chunks=persisted_chunks,
-    )
-    return IngestResponse(chunks=embedded_chunks, stats=stats)
 
 
 @router.post("/embeddings/search", response_model=SearchResponse)

@@ -6,10 +6,12 @@ from app.embedding_pipeline.models import ChunkRecord, DocumentRecord
 from app.embedding_pipeline.chunker import JSONStructuralChunker
 from app.embedding_pipeline.schemas import (
     ComplexityLevel,
+    DocumentIngestRequest,
+    DocumentIngestResponse,
     EmbeddedChunk,
-    IngestRequest,
     SearchMatch,
 )
+from app.embedding_pipeline.db import get_async_session
 from app.main import app
 from fastapi.testclient import TestClient
 
@@ -48,17 +50,25 @@ SAMPLE_BUDGETS = [
 
 
 def test_ingest_request_accepts_valid_payload() -> None:
-    request = IngestRequest(budgets=SAMPLE_BUDGETS)
+    request = DocumentIngestRequest(
+        source_path="data/budgets/budget_2024_q1_fintech.json",
+        document_type="historical_budget",
+        content=SAMPLE_BUDGETS[0],
+    )
 
-    assert request.budgets[0].components[0].complexity is ComplexityLevel.HIGH
-    assert request.budgets[0].budget_id == "BUD-2024-014"
+    assert request.content.components[0].complexity is ComplexityLevel.HIGH
+    assert request.content.budget_id == "BUD-2024-014"
 
 
 def test_structural_chunker_creates_one_chunk_per_component() -> None:
-    request = IngestRequest(budgets=SAMPLE_BUDGETS)
+    request = DocumentIngestRequest(
+        source_path="data/budgets/budget_2024_q1_fintech.json",
+        document_type="historical_budget",
+        content=SAMPLE_BUDGETS[0],
+    )
     chunker = JSONStructuralChunker()
 
-    chunks = chunker.chunk(request.budgets)
+    chunks = chunker.chunk([request.content])
 
     assert len(chunks) == 2
     assert chunks[0].chunk_id == "BUD-2024-014::AUTH-001"
@@ -69,10 +79,16 @@ def test_structural_chunker_creates_one_chunk_per_component() -> None:
 
 def test_sample_file_matches_ingest_request_schema() -> None:
     payload = json.loads(Path("data/budgets_sample.json").read_text())
-    request = IngestRequest.model_validate(payload)
+    assert "budgets" in payload
+    assert len(payload["budgets"]) == 15
 
-    assert len(request.budgets) == 15
-    assert request.budgets[0].budget_id.startswith("BUD-2024-")
+    request = DocumentIngestRequest(
+        source_path="data/budgets/budget_2024_q1_fintech.json",
+        document_type="historical_budget",
+        content=payload["budgets"][0],
+    )
+
+    assert request.content.budget_id.startswith("BUD-2024-")
 
 
 def test_sqlalchemy_metadata_contains_documents_and_chunks() -> None:
@@ -82,38 +98,73 @@ def test_sqlalchemy_metadata_contains_documents_and_chunks() -> None:
     assert "chunks" in Base.metadata.tables
 
 
-def test_embeddings_ingest_endpoint_returns_vectorized_chunks(monkeypatch) -> None:
-    class FakeEmbedder:
-        def __init__(self, *args, **kwargs):
-            pass
+def test_embeddings_ingest_endpoint_persists_document(monkeypatch) -> None:
+    class FakeSession:
+        pass
 
-        def embed_many(self, chunks):
-            return [
-                EmbeddedChunk(
-                    chunk_id=chunk.chunk_id,
-                    text=chunk.text,
-                    metadata=chunk.metadata,
-                    token_count=chunk.token_count,
-                    embedding=[0.1, 0.2, 0.3],
-                )
-                for chunk in chunks
-            ]
+    class FakeService:
+        async def ingest_document(self, *, session, request):
+            assert isinstance(session, FakeSession)
+            assert request.document_type == "historical_budget"
+            return DocumentIngestResponse(
+                document_id=42,
+                chunks_created=2,
+                embedding_dimension=1536,
+                ingestion_time_ms=123.45,
+            )
 
-        def estimate_cost_usd(self, total_tokens: int) -> float:
-            return 0.000123
+    async def fake_session_dependency():
+        yield FakeSession()
 
-    monkeypatch.setattr("app.embedding_pipeline.router.OpenAIEmbedder", FakeEmbedder)
+    app.dependency_overrides[get_async_session] = fake_session_dependency
+    monkeypatch.setattr("app.embedding_pipeline.router.EmbeddingIngestService", FakeService)
 
-    response = client.post("/api/v1/embeddings/ingest", json={"budgets": SAMPLE_BUDGETS})
+    response = client.post(
+        "/api/v1/embeddings/ingest",
+        json={
+            "source_path": "data/budgets/budget_2024_q1_fintech.json",
+            "document_type": "historical_budget",
+            "content": SAMPLE_BUDGETS[0],
+        },
+    )
 
+    app.dependency_overrides.clear()
     assert response.status_code == 200
     body = response.json()
-    assert body["stats"]["total_budgets"] == 1
-    assert body["stats"]["total_chunks"] == 2
-    assert body["stats"]["estimated_cost_usd"] == 0.000123
-    assert body["stats"]["processing_latency_ms"] >= 0
-    assert body["chunks"][0]["chunk_id"] == "BUD-2024-014::AUTH-001"
-    assert body["chunks"][0]["embedding"] == [0.1, 0.2, 0.3]
+    assert body["document_id"] == 42
+    assert body["chunks_created"] == 2
+    assert body["embedding_dimension"] == 1536
+    assert body["ingestion_time_ms"] == 123.45
+
+
+def test_embeddings_ingest_endpoint_returns_409_for_duplicate_document(monkeypatch) -> None:
+    class FakeSession:
+        pass
+
+    class FakeService:
+        async def ingest_document(self, *, session, request):
+            from app.embedding_pipeline.ingest_service import DocumentAlreadyIngestedError
+
+            raise DocumentAlreadyIngestedError(42)
+
+    async def fake_session_dependency():
+        yield FakeSession()
+
+    app.dependency_overrides[get_async_session] = fake_session_dependency
+    monkeypatch.setattr("app.embedding_pipeline.router.EmbeddingIngestService", FakeService)
+
+    response = client.post(
+        "/api/v1/embeddings/ingest",
+        json={
+            "source_path": "data/budgets/budget_2024_q1_fintech.json",
+            "document_type": "historical_budget",
+            "content": SAMPLE_BUDGETS[0],
+        },
+    )
+
+    app.dependency_overrides.clear()
+    assert response.status_code == 409
+    assert response.json() == {"detail": "Document already ingested", "document_id": 42}
 
 
 def test_embeddings_search_endpoint_returns_matches(monkeypatch) -> None:

@@ -80,25 +80,19 @@ class ChunkingOptions(BaseModel):
     llm_enrich_context: bool = False
 
 
-class IngestRequest(BaseModel):
-    budgets: list[Budget] = Field(min_length=1)
+class DocumentIngestRequest(BaseModel):
+    source_path: str = Field(min_length=1)
+    document_type: str = Field(min_length=1, max_length=50)
+    content: Budget
     chunking: ChunkingOptions = Field(default_factory=ChunkingOptions)
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
-    persist: bool = False
 
 
-class IngestStats(BaseModel):
-    total_budgets: int = Field(ge=0)
-    total_chunks: int = Field(ge=0)
-    total_tokens: int = Field(ge=0)
-    estimated_cost_usd: float = Field(ge=0)
-    processing_latency_ms: float = Field(ge=0)
-    persisted_chunks: int = Field(ge=0, default=0)
-
-
-class IngestResponse(BaseModel):
-    chunks: list[EmbeddedChunk]
-    stats: IngestStats
+class DocumentIngestResponse(BaseModel):
+    document_id: int = Field(ge=1)
+    chunks_created: int = Field(ge=0)
+    embedding_dimension: int = Field(ge=1)
+    ingestion_time_ms: float = Field(ge=0)
 
 
 class SearchFilters(BaseModel):
