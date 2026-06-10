@@ -2,7 +2,9 @@
 
 Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales persistidas y puede enriquecer cada turno con adjuntos usando **Docling Serve**, referencias a documentos por ruta y contexto externo recuperado desde **Notion** antes de llamar al modelo.
 
-No hay base de datos, no hay retrieval: todo el contexto viaja en cada llamada al LLM.
+Además incluye un carril semántico separado para presupuestos históricos estructurados en JSON. Ese flujo soporta varias estrategias de chunking, generación de embeddings con OpenAI, persistencia opcional en **pgvector**, búsqueda semántica y evaluación básica de retrieval.
+
+La ruta principal de estimación sigue siendo CAG: el contexto del estimador viaja en cada llamada al LLM. La persistencia vectorial solo aplica al módulo `embedding_pipeline`.
 
 ---
 
@@ -61,6 +63,11 @@ estimator-cag/
 │   ├── main.py                # Aplicación FastAPI + router + health
 │   ├── context/
 │   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
+│   ├── embedding_pipeline/
+│   │   ├── chunker.py         # Chunking estructural de presupuestos JSON
+│   │   ├── embedder.py        # Embeddings OpenAI + batching + retries básicos
+│   │   ├── router.py          # Endpoint POST /api/v1/embeddings/ingest
+│   │   └── schemas.py         # Contratos tipados del pipeline de embeddings
 │   ├── prompts/
 │   │   ├── loader.py          # Loader Jinja2 con versiones de prompt y tier por sesión
 │   │   └── estimation/
@@ -79,6 +86,10 @@ estimator-cag/
 │       ├── llm_service.py     # Lógica de llamada a proveedores LLM
 │       ├── notion_context_provider.py
 │       └── session_service.py # Orquestación multi-turno, persistencia y adjuntos
+├── data/
+│   └── budgets_sample.json    # Dataset de ejemplo para ingest y demos
+├── scripts/
+│   └── compare.py             # CLI para similitud coseno con embeddings
 ├── sample-transcriptions/
 │   └── meeting-health-clinic.md
 ├── sample-documents/
@@ -99,7 +110,7 @@ estimator-cag/
 
 ## Endpoints
 
-Número de endpoints funcionales: **4** bajo `/api/v1`.
+Número de endpoints funcionales: **9** bajo `/api/v1`.
 
 Número de endpoints operativos: **1** fuera de `/api/v1`.
 
@@ -176,6 +187,130 @@ Devuelve los alias de proveedores/modelos configurados.
 ```
 
 Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede invocar sin hardcodear configuraciones.
+
+---
+
+### `POST /api/v1/embeddings/ingest`
+
+Genera embeddings para una lista de presupuestos históricos estructurados.
+
+Decisiones de diseño relevantes:
+- se mantiene el namespace `/api/v1` para no romper la convención actual del servicio
+- el chunking es pluggable: `structural`, `fixed_window` y `hierarchical`
+- cada chunk puede incluir contexto del presupuesto padre y enriquecimiento opcional vía LLM
+- la persistencia en `pgvector` es opcional por request con `persist=true`
+- el retrieval y la evaluación salen por endpoints separados para no mezclar ingestión con búsqueda
+
+**Request body:**
+
+```json
+{
+  "budgets": [
+    {
+      "budget_id": "BUD-2024-001",
+      "client_metadata": {
+        "name": "FintechCorp",
+        "sector": "finance",
+        "country": "ES"
+      },
+      "project_summary": "Mobile banking API with OAuth 2.0 authentication and PSD2 compliance",
+      "main_technology": "ruby_on_rails",
+      "year": 2024,
+      "total_estimated_hours": 480,
+      "components": [
+        {
+          "component_id": "AUTH-001",
+          "name": "OAuth 2.0 authentication backend",
+          "description": "Implementation of authorization code, refresh token and session revocation flows.",
+          "tech_stack": ["ruby_on_rails", "postgresql", "redis"],
+          "complexity": "high",
+          "estimated_hours": 120
+        }
+      ]
+    }
+  ],
+  "chunking": {
+    "strategy": "structural",
+    "include_parent_context": true,
+    "max_characters": 900,
+    "overlap_characters": 120,
+    "llm_enrich_context": false
+  },
+  "embedding_model": "text-embedding-3-small",
+  "persist": true
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "chunks": [
+    {
+      "chunk_id": "BUD-2024-001::AUTH-001",
+      "text": "[Project: Mobile banking API with OAuth 2.0 authentication and PSD2 compliance]\n[Client sector: finance | Year: 2024 | Main tech: ruby_on_rails]\n\nComponent: OAuth 2.0 authentication backend\nDescription: Implementation of authorization code, refresh token and session revocation flows.\nTech stack: ruby_on_rails, postgresql, redis\nComplexity: high\nEstimated hours: 120",
+      "metadata": {
+        "budget_id": "BUD-2024-001",
+        "component_id": "AUTH-001",
+        "client_sector": "finance",
+        "main_technology": "ruby_on_rails",
+        "year": 2024,
+        "complexity": "high",
+        "estimated_hours": 120
+      },
+      "token_count": 86,
+      "embedding": [0.0123, -0.0456, 0.0789]
+    }
+  ],
+  "stats": {
+    "total_budgets": 1,
+    "total_chunks": 1,
+    "total_tokens": 86,
+    "estimated_cost_usd": 0.00000172,
+    "processing_latency_ms": 142.37,
+    "persisted_chunks": 1
+  }
+}
+```
+
+**Errores:**
+| Código | Causa |
+|--------|-------|
+| `422`  | payload inválido |
+| `500`  | error al generar embeddings o falta de `OPENAI_API_KEY` |
+
+El dataset de ejemplo para pruebas manuales está en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json).
+
+`stats.processing_latency_ms` mide el tiempo total del pipeline de ingest dentro del backend para esa petición: chunking, preparación y generación de embeddings. No representa únicamente la latencia remota de OpenAI.
+
+---
+
+### `GET /api/v1/embeddings/options`
+
+Devuelve las estrategias de chunking y modelos de embeddings soportados.
+
+---
+
+### `POST /api/v1/embeddings/search`
+
+Busca chunks persistidos en `pgvector` usando similitud coseno. El request incluye:
+- `query`
+- `top_k`
+- `embedding_model`
+- filtros opcionales por `client_sector`, `main_technology`, `year` y `complexity`
+
+La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos.
+
+---
+
+### `POST /api/v1/embeddings/evaluate`
+
+Evalúa retrieval sobre un conjunto de queries etiquetadas y devuelve:
+- resultados por caso
+- `recall@k`
+- `NDCG@k`
+
+Esto permite medir si el pipeline semántico recupera los chunks esperados más allá de un sanity check subjetivo.
 
 ---
 
@@ -444,6 +579,10 @@ Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que apa
 - `POST /api/v1/sessions/{session_id}/estimate`
 - `POST /api/v1/estimate`
 - `GET /api/v1/estimate/friendly-names`
+- `GET /api/v1/embeddings/options`
+- `POST /api/v1/embeddings/ingest`
+- `POST /api/v1/embeddings/search`
+- `POST /api/v1/embeddings/evaluate`
 - `GET /health`
 
 ### 4. Probar el endpoint principal
@@ -473,6 +612,39 @@ curl -X POST http://localhost:8000/api/v1/estimate \
   -d "$(jq -Rs '{description: ., project_type: \"internal_tool\", detail_level: \"medium\", output_format: \"narrative\"}' sample-transcriptions/meeting-health-clinic.md)"
 ```
 
+### 6. Probar la ingesta de embeddings
+
+```bash
+curl -X POST http://localhost:8000/api/v1/embeddings/ingest \
+  -H "Content-Type: application/json" \
+  --data @data/budgets_sample.json
+```
+
+Respuesta esperada:
+- `status 200`
+- JSON con `chunks` vectorizados y `stats`
+
+### 7. Probar búsqueda semántica
+
+Primero ingiere con `persist=true`. Después:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/embeddings/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "JWT-based authorization service for a banking application",
+    "top_k": 3,
+    "embedding_model": "text-embedding-3-small"
+  }'
+```
+
+### 8. Probar benchmark de modelos
+
+```bash
+cd estimator-cag
+python scripts/benchmark_embeddings.py
+```
+
 ## Tests automatizados
 
 El proyecto incluye tests de contrato HTTP y tests unitarios de servicio para verificar lo básico sin consumir LLM real.
@@ -492,6 +664,9 @@ Cobertura actual de tests:
 - rechazo de `description` inválida
 - rechazo de `friendly_name` desconocido
 - respuesta exitosa de `POST /api/v1/estimate` con el servicio LLM mockeado
+- validación tipada del request de embeddings
+- chunking estructural de un componente por chunk
+- respuesta exitosa de `POST /api/v1/embeddings/ingest` con embedder mockeado
 - actualización de `project_metadata` en sesiones multi-turno
 - persistencia de configuración y contexto externo en sesiones
 - inferencia base de términos para búsqueda en Notion
@@ -516,6 +691,71 @@ Cobertura actual de tests:
 - normalización de uso de tokens
 
 Los tests no llaman a OpenAI, Anthropic ni Ollama. Validan el contrato HTTP y el comportamiento base de la API.
+
+## Pipeline mínimo de embeddings
+
+### Qué hace
+
+1. Recibe presupuestos JSON normalizados.
+2. Convierte cada componente del presupuesto en un chunk independiente.
+3. Añade cabeceras contextuales del presupuesto padre al texto del chunk.
+4. Puede añadir una línea contextual generada por LLM antes del embedding.
+5. Cuenta tokens con `tiktoken` para detectar chunks anómalos antes de la llamada remota.
+6. Genera embeddings con `text-embedding-3-small` o `text-embedding-3-large` en batches.
+7. Puede persistir los vectores en `pgvector`.
+8. Expone búsqueda semántica y evaluación de retrieval.
+
+### Por qué esta solución es defendible
+
+- La estrategia estructural mantiene trazabilidad máxima; las variantes `fixed_window` e `hierarchical` sirven para comparar trade-offs sin rehacer el pipeline.
+- Las cabeceras contextuales reducen el riesgo de que chunks genéricos como `Authentication backend` pierdan significado.
+- La persistencia en `pgvector` queda encapsulada en un adapter propio, no mezclada con los routers.
+- El contrato de entrada y salida se modela con Pydantic explícito en lugar de `dict` sueltos; eso hace Swagger y el razonamiento del flujo mucho más claros.
+
+### Limitaciones actuales
+
+- El coste estimado usa constantes de precio y debe revisarse cuando OpenAI cambie tarifas.
+- El enriquecimiento contextual vía LLM mejora semántica, pero añade coste y latencia.
+- `fixed_window` y `hierarchical` están implementadas como comparativas prácticas; no sustituyen técnicas avanzadas como `late chunking`.
+- Si falta `OPENAI_API_KEY`, el endpoint falla con `500` y el CLI aborta con un mensaje claro.
+
+## CLI `compare.py`
+
+Compara dos textos usando el mismo embedder del backend y calcula la similitud coseno manualmente.
+
+Dentro del contenedor:
+
+```bash
+docker compose exec estimator-cag python scripts/compare.py \
+  --text-a "OAuth 2.0 authentication backend for fintech" \
+  --text-b "JWT-based authorization service for banking app" \
+  --model text-embedding-3-small
+```
+
+Fuera del contenedor:
+
+```bash
+cd estimator-cag
+/Users/jmr.pineda/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/compare.py \
+  --text-a "OAuth 2.0 authentication backend for fintech" \
+  --text-b "JWT-based authorization service for banking app" \
+  --model text-embedding-3-large
+```
+
+Si prefieres usar `uv`, el comando equivalente es:
+
+```bash
+uv run python scripts/compare.py \
+  --text-a "OAuth 2.0 authentication backend for fintech" \
+  --text-b "JWT-based authorization service for banking app" \
+  --model text-embedding-3-small
+```
+
+Comparativa rápida entre modelos:
+
+```bash
+python scripts/benchmark_embeddings.py
+```
 
 ## Stress test del CAG
 
@@ -708,5 +948,8 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | `NOTION_TIMEOUT_SECONDS` | timeout HTTP de Notion | `30` |
 | `NOTION_MAX_ITEMS` | máximo de páginas externas por turno | `3` |
 | `SESSION_STORE_PATH` | fichero JSON de sesiones persistidas | `.data/estimator-sessions.json` |
+| `VECTOR_DATABASE_URL` | DSN PostgreSQL/pgvector | vacío |
+| `VECTOR_DB_INITIALIZE_ON_START` | `true` \| `false` | `true` |
+| `EMBEDDING_CONTEXT_MODEL` | modelo chat para enriquecer chunks | `gpt-4o-mini` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |

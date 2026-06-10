@@ -1,0 +1,394 @@
+{
+  "budgets": [
+  {
+    "budget_id": "BUD-2024-001",
+    "client_metadata": { "name": "FintechCorp", "sector": "finance", "country": "ES" },
+    "project_summary": "Mobile banking API with OAuth 2.0 authentication and PSD2 compliance",
+    "main_technology": "ruby_on_rails",
+    "year": 2024,
+    "total_estimated_hours": 480,
+    "components": [
+      {
+        "component_id": "AUTH-001",
+        "name": "OAuth 2.0 authentication backend",
+        "description": "Implementation of authorization code, refresh token and session revocation flows.",
+        "tech_stack": ["ruby_on_rails", "postgresql", "redis"],
+        "complexity": "high",
+        "estimated_hours": 120
+      },
+      {
+        "component_id": "API-002",
+        "name": "Account aggregation API",
+        "description": "Secure API endpoints for balances, transactions and account metadata.",
+        "tech_stack": ["ruby_on_rails", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 90
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-002",
+    "client_metadata": { "name": "ShopWave", "sector": "ecommerce", "country": "PT" },
+    "project_summary": "Headless commerce backend with promotions and order orchestration",
+    "main_technology": "nodejs",
+    "year": 2024,
+    "total_estimated_hours": 420,
+    "components": [
+      {
+        "component_id": "CAT-001",
+        "name": "Catalog and pricing service",
+        "description": "Product catalog, dynamic pricing and promotions rules engine.",
+        "tech_stack": ["nodejs", "mongodb"],
+        "complexity": "medium",
+        "estimated_hours": 110
+      },
+      {
+        "component_id": "ORD-002",
+        "name": "Order orchestration workflow",
+        "description": "Order lifecycle, payment events and fulfillment integration.",
+        "tech_stack": ["nodejs", "rabbitmq", "mongodb"],
+        "complexity": "high",
+        "estimated_hours": 130
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-003",
+    "client_metadata": { "name": "HealthBridge", "sector": "healthcare", "country": "ES" },
+    "project_summary": "Telemedicine platform with appointment scheduling and doctor notes",
+    "main_technology": "python",
+    "year": 2024,
+    "total_estimated_hours": 510,
+    "components": [
+      {
+        "component_id": "VID-001",
+        "name": "Video consultation module",
+        "description": "Secure consultation rooms, connection retries and visit metadata capture.",
+        "tech_stack": ["python", "postgresql", "webrtc"],
+        "complexity": "high",
+        "estimated_hours": 140
+      },
+      {
+        "component_id": "MED-002",
+        "name": "Clinical notes workspace",
+        "description": "Doctor note templates, prescription drafts and attachment uploads.",
+        "tech_stack": ["python", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 100
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-004",
+    "client_metadata": { "name": "FactoryPulse", "sector": "industrial", "country": "DE" },
+    "project_summary": "Manufacturing monitoring dashboard with IoT alerts",
+    "main_technology": "dotnet",
+    "year": 2024,
+    "total_estimated_hours": 390,
+    "components": [
+      {
+        "component_id": "ING-001",
+        "name": "Telemetry ingest pipeline",
+        "description": "Collect machine events, normalize payloads and buffer bursts from sensors.",
+        "tech_stack": ["dotnet", "kafka", "postgresql"],
+        "complexity": "high",
+        "estimated_hours": 125
+      },
+      {
+        "component_id": "ALR-002",
+        "name": "Alert rules engine",
+        "description": "Threshold checks, anomaly triggers and escalation notifications.",
+        "tech_stack": ["dotnet", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 85
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-005",
+    "client_metadata": { "name": "EduPilot", "sector": "education", "country": "MX" },
+    "project_summary": "Learning platform with assessments and progress analytics",
+    "main_technology": "django",
+    "year": 2024,
+    "total_estimated_hours": 360,
+    "components": [
+      {
+        "component_id": "ASN-001",
+        "name": "Assessment engine",
+        "description": "Question banks, timed tests and grading workflows.",
+        "tech_stack": ["django", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 95
+      },
+      {
+        "component_id": "ANL-002",
+        "name": "Student progress analytics",
+        "description": "Dashboards for completion rates, weak topics and cohort comparison.",
+        "tech_stack": ["django", "postgresql", "metabase"],
+        "complexity": "medium",
+        "estimated_hours": 80
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-006",
+    "client_metadata": { "name": "ShipGrid", "sector": "logistics", "country": "NL" },
+    "project_summary": "Fleet dispatch system with driver mobile updates",
+    "main_technology": "java",
+    "year": 2024,
+    "total_estimated_hours": 430,
+    "components": [
+      {
+        "component_id": "DSP-001",
+        "name": "Dispatch planning service",
+        "description": "Route assignment, capacity checks and planner overrides.",
+        "tech_stack": ["java", "postgresql"],
+        "complexity": "high",
+        "estimated_hours": 120
+      },
+      {
+        "component_id": "DRV-002",
+        "name": "Driver status sync",
+        "description": "Mobile updates for pickup, transit and delivery checkpoints.",
+        "tech_stack": ["java", "redis", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 90
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-007",
+    "client_metadata": { "name": "RetailPilot", "sector": "retail", "country": "FR" },
+    "project_summary": "Store operations assistant with inventory reconciliation",
+    "main_technology": "nodejs",
+    "year": 2024,
+    "total_estimated_hours": 340,
+    "components": [
+      {
+        "component_id": "INV-001",
+        "name": "Inventory reconciliation worker",
+        "description": "Cross-store stock adjustments and discrepancy resolution jobs.",
+        "tech_stack": ["nodejs", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 85
+      },
+      {
+        "component_id": "RPT-002",
+        "name": "Store operations dashboard",
+        "description": "KPIs for shortages, cycle counts and transfer requests.",
+        "tech_stack": ["nodejs", "react", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 75
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-008",
+    "client_metadata": { "name": "GreenVolt", "sector": "energy", "country": "ES" },
+    "project_summary": "Solar asset maintenance system with field service workflows",
+    "main_technology": "python",
+    "year": 2024,
+    "total_estimated_hours": 410,
+    "components": [
+      {
+        "component_id": "WRK-001",
+        "name": "Work order planning",
+        "description": "Maintenance scheduling, SLA prioritization and technician matching.",
+        "tech_stack": ["python", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 100
+      },
+      {
+        "component_id": "FLD-002",
+        "name": "Field inspection capture",
+        "description": "Checklist completion, photo evidence and issue tagging for sites.",
+        "tech_stack": ["python", "postgresql", "s3"],
+        "complexity": "medium",
+        "estimated_hours": 88
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-009",
+    "client_metadata": { "name": "CivicFlow", "sector": "public_sector", "country": "ES" },
+    "project_summary": "Citizen request portal with backoffice triage",
+    "main_technology": "dotnet",
+    "year": 2024,
+    "total_estimated_hours": 450,
+    "components": [
+      {
+        "component_id": "REQ-001",
+        "name": "Citizen intake portal",
+        "description": "Form submissions, case tracking and multilingual confirmation notices.",
+        "tech_stack": ["dotnet", "sqlserver"],
+        "complexity": "medium",
+        "estimated_hours": 110
+      },
+      {
+        "component_id": "TRI-002",
+        "name": "Backoffice triage queue",
+        "description": "Assignment rules, SLA views and resolution workflow states.",
+        "tech_stack": ["dotnet", "sqlserver"],
+        "complexity": "high",
+        "estimated_hours": 120
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-010",
+    "client_metadata": { "name": "TravelNest", "sector": "travel", "country": "IT" },
+    "project_summary": "Booking orchestration API for boutique hotels",
+    "main_technology": "golang",
+    "year": 2024,
+    "total_estimated_hours": 370,
+    "components": [
+      {
+        "component_id": "AVL-001",
+        "name": "Availability synchronization",
+        "description": "Inventory sync with channel managers and conflict prevention.",
+        "tech_stack": ["golang", "postgresql", "redis"],
+        "complexity": "medium",
+        "estimated_hours": 96
+      },
+      {
+        "component_id": "PAY-002",
+        "name": "Reservation payment workflow",
+        "description": "Deposits, payment capture and refund automation.",
+        "tech_stack": ["golang", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 82
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-011",
+    "client_metadata": { "name": "InsureMap", "sector": "insurance", "country": "UK" },
+    "project_summary": "Claims intake automation with document classification",
+    "main_technology": "python",
+    "year": 2024,
+    "total_estimated_hours": 520,
+    "components": [
+      {
+        "component_id": "DOC-001",
+        "name": "Claim document intake",
+        "description": "Upload flows, metadata capture and document status tracking.",
+        "tech_stack": ["python", "postgresql", "s3"],
+        "complexity": "medium",
+        "estimated_hours": 110
+      },
+      {
+        "component_id": "CLS-002",
+        "name": "Classification and routing",
+        "description": "Policy type detection and claim routing to the correct desk.",
+        "tech_stack": ["python", "postgresql"],
+        "complexity": "high",
+        "estimated_hours": 135
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-012",
+    "client_metadata": { "name": "AgroSense", "sector": "agriculture", "country": "AR" },
+    "project_summary": "Farm operations dashboard with irrigation alerts",
+    "main_technology": "java",
+    "year": 2024,
+    "total_estimated_hours": 355,
+    "components": [
+      {
+        "component_id": "SEN-001",
+        "name": "Sensor ingestion adapter",
+        "description": "Moisture sensor normalization and delayed packet reconciliation.",
+        "tech_stack": ["java", "postgresql", "mqtt"],
+        "complexity": "medium",
+        "estimated_hours": 88
+      },
+      {
+        "component_id": "ALR-002",
+        "name": "Irrigation alert service",
+        "description": "Threshold alerts, daily digests and operator acknowledgment.",
+        "tech_stack": ["java", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 74
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-013",
+    "client_metadata": { "name": "MediaSpark", "sector": "media", "country": "US" },
+    "project_summary": "Content operations platform with editorial workflow",
+    "main_technology": "nodejs",
+    "year": 2024,
+    "total_estimated_hours": 395,
+    "components": [
+      {
+        "component_id": "EDT-001",
+        "name": "Editorial planning board",
+        "description": "Story planning, deadlines and content handoff between teams.",
+        "tech_stack": ["nodejs", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 92
+      },
+      {
+        "component_id": "PUB-002",
+        "name": "Publishing workflow API",
+        "description": "Approval states, scheduled publishing and rollback support.",
+        "tech_stack": ["nodejs", "postgresql", "redis"],
+        "complexity": "medium",
+        "estimated_hours": 86
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-014",
+    "client_metadata": { "name": "BuildFlow", "sector": "construction", "country": "ES" },
+    "project_summary": "Field project reporting with progress snapshots",
+    "main_technology": "dotnet",
+    "year": 2024,
+    "total_estimated_hours": 365,
+    "components": [
+      {
+        "component_id": "REP-001",
+        "name": "Daily field report capture",
+        "description": "Progress notes, incident records and media attachments from site visits.",
+        "tech_stack": ["dotnet", "sqlserver", "blob_storage"],
+        "complexity": "medium",
+        "estimated_hours": 90
+      },
+      {
+        "component_id": "SNP-002",
+        "name": "Progress snapshot dashboard",
+        "description": "Visual summaries for delays, blockers and milestone completion.",
+        "tech_stack": ["dotnet", "sqlserver"],
+        "complexity": "medium",
+        "estimated_hours": 78
+      }
+    ]
+  },
+  {
+    "budget_id": "BUD-2024-015",
+    "client_metadata": { "name": "LegalBridge", "sector": "legal", "country": "CL" },
+    "project_summary": "Matter intake and legal document workflow platform",
+    "main_technology": "django",
+    "year": 2024,
+    "total_estimated_hours": 440,
+    "components": [
+      {
+        "component_id": "MAT-001",
+        "name": "Matter intake workflow",
+        "description": "Case opening, conflict checks and assignment to practice areas.",
+        "tech_stack": ["django", "postgresql"],
+        "complexity": "medium",
+        "estimated_hours": 104
+      },
+      {
+        "component_id": "DOC-002",
+        "name": "Document review workspace",
+        "description": "Review queues, annotations and approval checkpoints for drafts.",
+        "tech_stack": ["django", "postgresql", "s3"],
+        "complexity": "high",
+        "estimated_hours": 126
+      }
+    ]
+  }
+  ]
+}

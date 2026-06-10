@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     notion_timeout_seconds: float = 30.0
     notion_max_items: int = 3
     session_store_path: str = ".data/estimator-sessions.json"
+    vector_database_url: str = ""
+    vector_db_initialize_on_start: bool = True
+    embedding_context_model: str = "gpt-4o-mini"
     llm_provider: str = "openai"  # openai | anthropic
     llm_model: str = ""
     app_env: str = "development"

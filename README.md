@@ -12,12 +12,16 @@ Aunque el repo incluye `sih-smart-analysis`, ese proyecto aquí actúa como comp
 
 API FastAPI y UI Streamlit para estimar proyectos software a partir de una conversación, una transcripción o material documental de apoyo.
 
-El proyecto mantiene una aproximación deliberadamente **CAG**:
+El proyecto mantiene una aproximación deliberadamente **CAG** en su flujo principal de estimación:
 
-- no hay base de datos
-- no hay vector store
-- no hay retrieval semántico
 - el contexto relevante viaja en cada invocación al modelo
+
+En paralelo, el repo incorpora ya un carril semántico separado para presupuestos históricos:
+
+- chunking estructural y variantes comparables
+- embeddings OpenAI
+- persistencia opcional en `pgvector`
+- búsqueda semántica y evaluación básica de retrieval
 
 La base del ejercicio del máster era construir un estimador con contexto estático y llamada a LLM. Sobre esa base, el repositorio ya recoge una versión bastante más completa.
 
@@ -54,6 +58,7 @@ Además de lo trabajado en la sesión, el proyecto se amplió con capacidades pr
 - prompts versionados con Jinja2
 - selección de proveedor/modelo mediante `friendly_name`
 - soporte multi proveedor vía **LiteLLM**
+- pipeline semántico de embeddings con persistencia vectorial y search endpoints
 
 ## Cómo encaja el flujo principal
 
