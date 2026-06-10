@@ -9,6 +9,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 import pgvector.sqlalchemy
+from app.embedding_pipeline.db import Base
+from app.embedding_pipeline import models as _embedding_models  # noqa: F401
 
 config = context.config
 
@@ -21,7 +23,7 @@ if not database_url:
 
 config.set_main_option("sqlalchemy.url", database_url)
 
-target_metadata = None
+target_metadata = Base.metadata
 
 
 def do_run_migrations(connection: Connection) -> None:

@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from app.embedding_pipeline.db import Base
+from app.embedding_pipeline.models import ChunkRecord, DocumentRecord
 from app.embedding_pipeline.chunker import JSONStructuralChunker
 from app.embedding_pipeline.schemas import (
     ComplexityLevel,
@@ -71,6 +73,13 @@ def test_sample_file_matches_ingest_request_schema() -> None:
 
     assert len(request.budgets) == 15
     assert request.budgets[0].budget_id.startswith("BUD-2024-")
+
+
+def test_sqlalchemy_metadata_contains_documents_and_chunks() -> None:
+    assert DocumentRecord.__tablename__ == "documents"
+    assert ChunkRecord.__tablename__ == "chunks"
+    assert "documents" in Base.metadata.tables
+    assert "chunks" in Base.metadata.tables
 
 
 def test_embeddings_ingest_endpoint_returns_vectorized_chunks(monkeypatch) -> None:

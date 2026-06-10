@@ -484,6 +484,33 @@ uv run uvicorn app.main:app --reload
 
 El servicio queda disponible en `http://localhost:8000`.
 
+### Preparación de PostgreSQL + pgvector para la sesión 8
+
+El carril semántico usa dos URLs distintas a propósito:
+
+- `DATABASE_URL`: conexión async de SQLAlchemy/Alembic sobre `asyncpg`
+- `VECTOR_DATABASE_URL`: conexión simple usada por el adapter actual de `pgvector`
+
+Arranque mínimo recomendado:
+
+```bash
+docker compose up -d pgvector
+docker compose exec pgvector psql -U estimator -d estimator -c "SELECT version();"
+```
+
+La base de migraciones queda preparada en:
+
+- [alembic.ini](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic.ini)
+- [alembic/env.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/env.py)
+- [0001_initial_schema.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0001_initial_schema.py)
+
+El schema base de la sesión 8 queda modelado con dos tablas:
+
+- `documents`: identidad y metadatos del documento ingestado
+- `chunks`: fragmentos persistidos con `content`, `embedding` y `metadata`
+
+La creación de schema deja de ocurrir en el arranque de FastAPI. A partir de aquí la fuente de verdad del DDL son las migraciones de Alembic, no el runtime.
+
 ### Arranque unificado del workspace
 
 Desde la raíz del repo puedes levantar Docling y los procesos locales con un único entrypoint:
@@ -948,8 +975,14 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | `NOTION_TIMEOUT_SECONDS` | timeout HTTP de Notion | `30` |
 | `NOTION_MAX_ITEMS` | máximo de páginas externas por turno | `3` |
 | `SESSION_STORE_PATH` | fichero JSON de sesiones persistidas | `.data/estimator-sessions.json` |
+| `DATABASE_URL` | DSN async de SQLAlchemy/Alembic | vacío |
 | `VECTOR_DATABASE_URL` | DSN PostgreSQL/pgvector | vacío |
 | `VECTOR_DB_INITIALIZE_ON_START` | `true` \| `false` | `true` |
 | `EMBEDDING_CONTEXT_MODEL` | modelo chat para enriquecer chunks | `gpt-4o-mini` |
+| `CHUNKING_DEFAULT_STRATEGY` | `structural` \| `fixed_window` \| `hierarchical` | `structural` |
+| `CHUNKING_INCLUDE_PARENT_CONTEXT` | `true` \| `false` | `true` |
+| `CHUNKING_MAX_CHARACTERS` | entero | `900` |
+| `CHUNKING_OVERLAP_CHARACTERS` | entero | `120` |
+| `CHUNKING_ENABLE_LLM_CONTEXT` | `true` \| `false` | `false` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |
