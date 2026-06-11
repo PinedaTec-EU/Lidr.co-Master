@@ -706,6 +706,51 @@ cd estimator-cag
 python scripts/benchmark_embeddings.py
 ```
 
+### 9. Explorar retrieval con queries representativas
+
+La herramienta de esta sesión para inspeccionar el comportamiento del buscador no es `compare.py`, sino `query_examples.py`.
+
+Lanza cinco consultas pensadas para observar:
+- un match casi directo
+- una reformulación semántica
+- una consulta fuera de dominio
+- una consulta ambigua
+- una consulta muy específica
+
+```bash
+cd estimator-cag
+python scripts/query_examples.py
+```
+
+Opciones útiles:
+
+```bash
+python scripts/query_examples.py --base-url http://localhost:8000 --k 5 --model text-embedding-3-small
+```
+
+La salida imprime, para cada query, el top-k con:
+- `chunk_id`
+- `distance`
+- `chunk_type`
+- un extracto del `content`
+
+### 10. Generar el datasheet de conclusiones de la sesión 8
+
+Si quieres una lectura muy rápida para responder qué conclusiones deja el retrieval, genera el datasheet sessionado:
+
+```bash
+cd estimator-cag
+python -m evals.session_08_query_eval
+```
+
+Salida esperada:
+- [session-08-query-eval.md](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/evals/session-08-query-eval.md)
+
+Este artefacto está pensado para leerlo en dos capas:
+- resumen de 10 segundos con estado por query
+- gráfico de barras `expected rank vs observed rank`
+- detalle y conclusiones debajo
+
 ## Tests automatizados
 
 El proyecto incluye tests de contrato HTTP, tests unitarios y tests de integración del carril semántico contra FastAPI + PostgreSQL/pgvector.
@@ -730,6 +775,8 @@ Cobertura actual de tests:
 - respuesta exitosa de `POST /api/v1/embeddings/ingest` con embedder mockeado
 - persistencia real de `POST /api/v1/embeddings/ingest` en `documents` y `chunks`
 - búsqueda real de `POST /api/v1/search` con filtros de metadata sobre pgvector
+- smoke test del formateo de `scripts/query_examples.py`
+- smoke test del datasheet `session-08-query-eval.md`
 - actualización de `project_metadata` en sesiones multi-turno
 - persistencia de configuración y contexto externo en sesiones
 
