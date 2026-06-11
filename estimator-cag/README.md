@@ -192,43 +192,43 @@ Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede 
 
 ### `POST /api/v1/embeddings/ingest`
 
-Genera embeddings para una lista de presupuestos históricos estructurados.
+Ingiere un presupuesto histórico estructurado, genera sus chunks y embeddings, y persiste todo como `document` + `chunks` en una sola transacción.
 
 Decisiones de diseño relevantes:
 - se mantiene el namespace `/api/v1` para no romper la convención actual del servicio
 - el chunking es pluggable: `structural`, `fixed_window` y `hierarchical`
 - cada chunk puede incluir contexto del presupuesto padre y enriquecimiento opcional vía LLM
-- la persistencia en `pgvector` es opcional por request con `persist=true`
-- el retrieval y la evaluación salen por endpoints separados para no mezclar ingestión con búsqueda
+- la persistencia ya no es opcional en esta fase: la ingesta existe para poblar el corpus searchable
+- el endpoint devuelve métricas e identificadores, no los vectores completos
 
 **Request body:**
 
 ```json
 {
-  "budgets": [
-    {
-      "budget_id": "BUD-2024-001",
-      "client_metadata": {
-        "name": "FintechCorp",
-        "sector": "finance",
-        "country": "ES"
-      },
-      "project_summary": "Mobile banking API with OAuth 2.0 authentication and PSD2 compliance",
-      "main_technology": "ruby_on_rails",
-      "year": 2024,
-      "total_estimated_hours": 480,
-      "components": [
-        {
-          "component_id": "AUTH-001",
-          "name": "OAuth 2.0 authentication backend",
-          "description": "Implementation of authorization code, refresh token and session revocation flows.",
-          "tech_stack": ["ruby_on_rails", "postgresql", "redis"],
-          "complexity": "high",
-          "estimated_hours": 120
-        }
-      ]
-    }
-  ],
+  "source_path": "data/budgets/budget_2024_q1_fintech.json",
+  "document_type": "historical_budget",
+  "content": {
+    "budget_id": "BUD-2024-001",
+    "client_metadata": {
+      "name": "FintechCorp",
+      "sector": "finance",
+      "country": "ES"
+    },
+    "project_summary": "Mobile banking API with OAuth 2.0 authentication and PSD2 compliance",
+    "main_technology": "ruby_on_rails",
+    "year": 2024,
+    "total_estimated_hours": 480,
+    "components": [
+      {
+        "component_id": "AUTH-001",
+        "name": "OAuth 2.0 authentication backend",
+        "description": "Implementation of authorization code, refresh token and session revocation flows.",
+        "tech_stack": ["ruby_on_rails", "postgresql", "redis"],
+        "complexity": "high",
+        "estimated_hours": 120
+      }
+    ]
+  },
   "chunking": {
     "strategy": "structural",
     "include_parent_context": true,
@@ -236,8 +236,7 @@ Decisiones de diseño relevantes:
     "overlap_characters": 120,
     "llm_enrich_context": false
   },
-  "embedding_model": "text-embedding-3-small",
-  "persist": true
+  "embedding_model": "text-embedding-3-small"
 }
 ```
 
@@ -245,43 +244,23 @@ Decisiones de diseño relevantes:
 
 ```json
 {
-  "chunks": [
-    {
-      "chunk_id": "BUD-2024-001::AUTH-001",
-      "text": "[Project: Mobile banking API with OAuth 2.0 authentication and PSD2 compliance]\n[Client sector: finance | Year: 2024 | Main tech: ruby_on_rails]\n\nComponent: OAuth 2.0 authentication backend\nDescription: Implementation of authorization code, refresh token and session revocation flows.\nTech stack: ruby_on_rails, postgresql, redis\nComplexity: high\nEstimated hours: 120",
-      "metadata": {
-        "budget_id": "BUD-2024-001",
-        "component_id": "AUTH-001",
-        "client_sector": "finance",
-        "main_technology": "ruby_on_rails",
-        "year": 2024,
-        "complexity": "high",
-        "estimated_hours": 120
-      },
-      "token_count": 86,
-      "embedding": [0.0123, -0.0456, 0.0789]
-    }
-  ],
-  "stats": {
-    "total_budgets": 1,
-    "total_chunks": 1,
-    "total_tokens": 86,
-    "estimated_cost_usd": 0.00000172,
-    "processing_latency_ms": 142.37,
-    "persisted_chunks": 1
-  }
+  "document_id": 42,
+  "chunks_created": 17,
+  "embedding_dimension": 1536,
+  "ingestion_time_ms": 1240
 }
 ```
 
 **Errores:**
 | Código | Causa |
 |--------|-------|
+| `409`  | ya existe un documento con ese `source_path` |
 | `422`  | payload inválido |
-| `500`  | error al generar embeddings o falta de `OPENAI_API_KEY` |
+| `500`  | error al generar embeddings o al persistir la transacción |
 
-El dataset de ejemplo para pruebas manuales está en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json).
+El dataset de ejemplo sigue estando en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json), pero ahora la API espera un único documento por request. Ese dataset sirve como corpus fuente para construir requests individuales de ingesta.
 
-`stats.processing_latency_ms` mide el tiempo total del pipeline de ingest dentro del backend para esa petición: chunking, preparación y generación de embeddings. No representa únicamente la latencia remota de OpenAI.
+`ingestion_time_ms` mide el tiempo total de chunking, embedding, inserción del documento y persistencia de todos los chunks.
 
 ---
 
@@ -293,24 +272,48 @@ Devuelve las estrategias de chunking y modelos de embeddings soportados.
 
 ### `POST /api/v1/embeddings/search`
 
-Busca chunks persistidos en `pgvector` usando similitud coseno. El request incluye:
-- `query`
-- `top_k`
-- `embedding_model`
-- filtros opcionales por `client_sector`, `main_technology`, `year` y `complexity`
-
-La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos.
+Endpoint heredado del carril semántico anterior. La búsqueda alineada con la sesión 8 se expone en `POST /api/v1/search`.
 
 ---
 
-### `POST /api/v1/embeddings/evaluate`
+### `POST /api/v1/search`
 
-Evalúa retrieval sobre un conjunto de queries etiquetadas y devuelve:
-- resultados por caso
-- `recall@k`
-- `NDCG@k`
+Busca chunks persistidos en `chunks` usando `cosine_distance` sobre `pgvector`.
 
-Esto permite medir si el pipeline semántico recupera los chunks esperados más allá de un sanity check subjetivo.
+**Request body:**
+
+```json
+{
+  "query": "REST API with OAuth authentication for fintech sector",
+  "k": 5,
+  "embedding_model": "text-embedding-3-small"
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "query": "REST API with OAuth authentication for fintech sector",
+  "k": 5,
+  "search_time_ms": 87,
+  "results": [
+    {
+      "chunk_id": 156,
+      "document_id": 12,
+      "chunk_type": "budget_component",
+      "content": "Backend service implementation with JWT-based authentication...",
+      "distance": 0.231,
+      "metadata": {
+        "scope": "backend",
+        "technologies": ["python", "fastapi"]
+      }
+    }
+  ]
+}
+```
+
+La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos y ordena por `cosine_distance` ascendente.
 
 ---
 
@@ -608,8 +611,7 @@ Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que apa
 - `GET /api/v1/estimate/friendly-names`
 - `GET /api/v1/embeddings/options`
 - `POST /api/v1/embeddings/ingest`
-- `POST /api/v1/embeddings/search`
-- `POST /api/v1/embeddings/evaluate`
+- `POST /api/v1/search`
 - `GET /health`
 
 ### 4. Probar el endpoint principal
@@ -653,14 +655,14 @@ Respuesta esperada:
 
 ### 7. Probar búsqueda semántica
 
-Primero ingiere con `persist=true`. Después:
+Primero ingiere un documento histórico. Después:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/embeddings/search \
+curl -X POST http://localhost:8000/api/v1/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "JWT-based authorization service for a banking application",
-    "top_k": 3,
+    "k": 3,
     "embedding_model": "text-embedding-3-small"
   }'
 ```

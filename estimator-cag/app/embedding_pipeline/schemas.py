@@ -95,45 +95,31 @@ class DocumentIngestResponse(BaseModel):
     ingestion_time_ms: float = Field(ge=0)
 
 
-class SearchFilters(BaseModel):
-    client_sector: str | None = None
-    main_technology: str | None = None
-    year: int | None = None
-    complexity: ComplexityLevel | None = None
-
-
 class SearchRequest(BaseModel):
     query: str = Field(min_length=3)
-    top_k: int = Field(default=5, ge=1, le=50)
+    k: int = Field(default=5, ge=1, le=50)
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
-    filters: SearchFilters | None = None
 
 
-class SearchMatch(BaseModel):
-    chunk_id: str
-    text: str
-    metadata: ChunkMetadata
-    token_count: int = Field(ge=0)
-    chunking_strategy: ChunkingStrategy
-    embedding_model: EmbeddingModelName
-    score: float
-    llm_context: str | None = None
-
-
-class SearchStats(BaseModel):
-    returned_matches: int = Field(ge=0)
-    latency_ms: float = Field(ge=0)
+class SearchResult(BaseModel):
+    chunk_id: int = Field(ge=1)
+    document_id: int = Field(ge=1)
+    chunk_type: str
+    content: str
+    distance: float = Field(ge=0)
+    metadata: dict
 
 
 class SearchResponse(BaseModel):
-    matches: list[SearchMatch]
-    stats: SearchStats
+    query: str
+    k: int = Field(ge=1)
+    search_time_ms: float = Field(ge=0)
+    results: list[SearchResult]
 
 
 class RetrievalEvalCase(BaseModel):
     query: str = Field(min_length=3)
     relevant_chunk_ids: list[str] = Field(min_length=1)
-    filters: SearchFilters | None = None
 
 
 class RetrievalEvalRequest(BaseModel):

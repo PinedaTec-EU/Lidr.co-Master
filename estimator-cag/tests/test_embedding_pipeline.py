@@ -8,8 +8,7 @@ from app.embedding_pipeline.schemas import (
     ComplexityLevel,
     DocumentIngestRequest,
     DocumentIngestResponse,
-    EmbeddedChunk,
-    SearchMatch,
+    SearchResponse,
 )
 from app.embedding_pipeline.db import get_async_session
 from app.main import app
@@ -168,49 +167,47 @@ def test_embeddings_ingest_endpoint_returns_409_for_duplicate_document(monkeypat
 
 
 def test_embeddings_search_endpoint_returns_matches(monkeypatch) -> None:
-    class FakeEmbedder:
-        def __init__(self, *args, **kwargs):
-            pass
+    class FakeSession:
+        pass
 
-        def embed_one(self, text: str):
-            return [0.1, 0.2, 0.3]
-
-    class FakeStore:
-        def ensure_schema(self):
-            return None
-
-        def search(self, **kwargs):
-            return [
-                SearchMatch.model_validate(
+    class FakeSearchService:
+        async def search(self, *, session, request):
+            assert isinstance(session, FakeSession)
+            return SearchResponse(
+                query=request.query,
+                k=request.k,
+                search_time_ms=87.0,
+                results=[
                     {
-                        "chunk_id": "BUD-2024-014::AUTH-001",
-                        "text": "chunk text",
+                        "chunk_id": 156,
+                        "document_id": 12,
+                        "chunk_type": "budget_component",
+                        "content": "Backend service implementation with JWT-based authentication...",
+                        "distance": 0.231,
                         "metadata": {
-                            "budget_id": "BUD-2024-014",
-                            "component_id": "AUTH-001",
-                            "client_sector": "finance",
-                            "main_technology": "ruby_on_rails",
-                            "year": 2024,
-                            "complexity": "high",
-                            "estimated_hours": 120,
+                            "scope": "backend",
+                            "technologies": ["python", "fastapi"],
                         },
-                        "token_count": 42,
-                        "chunking_strategy": "structural",
-                        "embedding_model": "text-embedding-3-small",
-                        "score": 0.91,
                     }
-                )
-            ]
+                ],
+            )
 
-    monkeypatch.setattr("app.embedding_pipeline.router.OpenAIEmbedder", FakeEmbedder)
-    monkeypatch.setattr("app.embedding_pipeline.router.PgVectorStore", FakeStore)
+    async def fake_session_dependency():
+        yield FakeSession()
+
+    app.dependency_overrides[get_async_session] = fake_session_dependency
+    monkeypatch.setattr("app.embedding_pipeline.router.SemanticSearchService", FakeSearchService)
 
     response = client.post(
-        "/api/v1/embeddings/search",
-        json={"query": "OAuth authentication for banking", "top_k": 3},
+        "/api/v1/search",
+        json={"query": "OAuth authentication for banking", "k": 3},
     )
 
+    app.dependency_overrides.clear()
     assert response.status_code == 200
     body = response.json()
-    assert body["stats"]["returned_matches"] == 1
-    assert body["matches"][0]["chunk_id"] == "BUD-2024-014::AUTH-001"
+    assert body["query"] == "OAuth authentication for banking"
+    assert body["k"] == 3
+    assert body["search_time_ms"] == 87.0
+    assert body["results"][0]["chunk_id"] == 156
+    assert body["results"][0]["document_id"] == 12
