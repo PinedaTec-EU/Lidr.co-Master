@@ -523,6 +523,7 @@ La base de migraciones queda preparada en:
 - [alembic.ini](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic.ini)
 - [alembic/env.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/env.py)
 - [0001_initial_schema.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0001_initial_schema.py)
+- [0002_add_hnsw_vector_index.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0002_add_hnsw_vector_index.py)
 
 El schema base de la sesión 8 queda modelado con dos tablas:
 
@@ -530,6 +531,9 @@ El schema base de la sesión 8 queda modelado con dos tablas:
 - `chunks`: fragmentos persistidos con `content`, `embedding` y `metadata`
 
 La creación de schema deja de ocurrir en el arranque de FastAPI. A partir de aquí la fuente de verdad del DDL son las migraciones de Alembic, no el runtime.
+
+En la ampliación post-live de la sesión 8 también se crea un índice vectorial `HNSW` sobre `chunks.embedding` usando `vector_cosine_ops`.
+Eso alinea el índice con la métrica real del endpoint (`cosine_distance`) y deja preparado el terreno para el tuning posterior de `ef_search`.
 
 ### Arranque unificado del workspace
 

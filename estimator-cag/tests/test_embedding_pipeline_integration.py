@@ -11,7 +11,7 @@ from alembic.config import Config
 from httpx import ASGITransport, AsyncClient
 import psycopg
 import pytest
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.embedding_pipeline.db import get_async_session
@@ -299,3 +299,25 @@ async def test_search_endpoint_respects_metadata_filters(
         }
         assert len(chunks) == 3
         assert {chunk.metadata_json["client_sector"] for chunk in chunks} == {"finance", "ecommerce"}
+
+
+@pytest.mark.anyio
+async def test_migrations_create_hnsw_vector_index(
+    integration_session_factory: async_sessionmaker[AsyncSession],
+) -> None:
+    async with integration_session_factory() as session:
+        result = await session.execute(
+            text(
+                """
+                SELECT indexname, indexdef
+                FROM pg_indexes
+                WHERE schemaname = 'public' AND indexname = 'ix_chunks_embedding_hnsw'
+                """
+            )
+        )
+        row = result.one_or_none()
+
+    assert row is not None
+    assert row.indexname == "ix_chunks_embedding_hnsw"
+    assert "USING hnsw" in row.indexdef
+    assert "vector_cosine_ops" in row.indexdef
