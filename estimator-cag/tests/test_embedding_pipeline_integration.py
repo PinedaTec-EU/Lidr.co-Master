@@ -311,13 +311,14 @@ async def test_migrations_create_hnsw_vector_index(
                 """
                 SELECT indexname, indexdef
                 FROM pg_indexes
-                WHERE schemaname = 'public' AND indexname = 'ix_chunks_embedding_hnsw'
+                WHERE schemaname = 'public' AND indexname = 'ix_chunks_embedding_halfvec_hnsw'
                 """
             )
         )
         row = result.one_or_none()
 
     assert row is not None
-    assert row.indexname == "ix_chunks_embedding_hnsw"
+    assert row.indexname == "ix_chunks_embedding_halfvec_hnsw"
     assert "USING hnsw" in row.indexdef
-    assert "vector_cosine_ops" in row.indexdef
+    assert "embedding)::halfvec(1536)" in row.indexdef
+    assert "halfvec_cosine_ops" in row.indexdef

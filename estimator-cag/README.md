@@ -524,6 +524,7 @@ La base de migraciones queda preparada en:
 - [alembic/env.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/env.py)
 - [0001_initial_schema.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0001_initial_schema.py)
 - [0002_add_hnsw_vector_index.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0002_add_hnsw_vector_index.py)
+- [0003_use_halfvec_hnsw_expression_index.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0003_use_halfvec_hnsw_expression_index.py)
 
 El schema base de la sesión 8 queda modelado con dos tablas:
 
@@ -532,8 +533,8 @@ El schema base de la sesión 8 queda modelado con dos tablas:
 
 La creación de schema deja de ocurrir en el arranque de FastAPI. A partir de aquí la fuente de verdad del DDL son las migraciones de Alembic, no el runtime.
 
-En la ampliación post-live de la sesión 8 también se crea un índice vectorial `HNSW` sobre `chunks.embedding` usando `vector_cosine_ops`.
-Eso alinea el índice con la métrica real del endpoint (`cosine_distance`) y deja preparado el terreno para el tuning posterior de `ef_search`.
+En la ampliación post-live de la sesión 8 el índice vectorial `HNSW` evoluciona a una expresión sobre `CAST(embedding AS HALFVEC(1536))` usando `halfvec_cosine_ops`.
+La columna persistida sigue siendo `vector(1536)`, pero el índice y la query se alinean con la optimización half-precision que reduce tamaño y deja preparado el terreno para el tuning posterior de `ef_search`.
 
 ### Arranque unificado del workspace
 
@@ -754,6 +755,51 @@ Este artefacto está pensado para leerlo en dos capas:
 - resumen de 10 segundos con estado por query
 - gráfico de barras `expected rank vs observed rank`
 - detalle y conclusiones debajo
+
+### 11. Justificación de diseño de la sesión 8
+
+Esta es la justificación pedida por el ejercicio base, separando claramente la solución mínima y la ampliación post-live.
+
+**Por qué dos tablas y no una**
+
+- `documents` representa la unidad lógica de ingesta: identidad, tipo documental, ruta de origen y metadatos generales.
+- `chunks` representa la unidad física de retrieval: cada fragmento searchable con su embedding y metadata derivada.
+- Separarlas evita duplicar información de documento en cada fila chunk y permite:
+  - deduplicar por `source_path`
+  - borrar en cascada todos los chunks de un documento
+  - filtrar por propiedades documentales sin contaminar la granularidad del chunk
+
+**Por qué metadata en `JSONB` y no como columnas fijas**
+
+- El pipeline docente necesita flexibilidad para evolucionar chunking y enriquecer metadata sin una migración por cada nuevo campo.
+- `JSONB` permite guardar campos como `budget_id`, `component_id`, `client_sector`, `main_technology`, `complexity` o `llm_context` sin rigidizar el esquema demasiado pronto.
+- Para este corpus pequeño y cambiante, la combinación de:
+  - columnas fijas para identidad y joins
+  - `JSONB` para metadata variable
+  ofrece mejor equilibrio que convertir todo en columnas relacionales desde el principio.
+
+**Por qué `cosine_distance` y no `L2` ni `inner product`**
+
+- En embeddings de texto, el ángulo entre vectores suele ser más estable semánticamente que la magnitud absoluta.
+- `cosine_distance` funciona bien para comparar significado relativo entre chunks y queries aunque la longitud del vector no sea la señal relevante.
+- `L2` y `inner product` son válidos en otros contextos, pero aquí `cosine_distance` es la opción más didáctica y alineada con el material del máster.
+
+**Por qué deliberadamente no había índice vectorial en la versión base**
+
+- La sesión live quería partir de un baseline con `sequential scan` para poder observar después el impacto real del índice.
+- Con el volumen del corpus base del ejercicio, ese baseline sigue siendo perfectamente usable y mantiene el foco en:
+  - persistencia correcta
+  - contrato HTTP
+  - semántica del retrieval
+- En esta rama hemos ido más allá de ese entregable base y hemos añadido la ampliación post-live:
+  - índice `HNSW`
+  - optimización `HALFVEC`
+  - datasheet de evaluación de queries
+
+### 12. Artefactos de salida del ejercicio
+
+- [output_examples.txt](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/output_examples.txt): salida real de `query_examples.py` contra el corpus de ejemplo cargado en PostgreSQL/pgvector.
+- [session-08-query-eval.md](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/evals/session-08-query-eval.md): lectura rápida y visual del comportamiento del retrieval.
 
 ## Tests automatizados
 

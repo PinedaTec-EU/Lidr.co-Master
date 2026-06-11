@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import time
 
-from sqlalchemy import select
+from pgvector.sqlalchemy import HALFVEC
+from sqlalchemy import cast, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.embedding_pipeline.embedder import OpenAIEmbedder
 from app.embedding_pipeline.models import ChunkRecord, DocumentRecord
 from app.embedding_pipeline.schemas import SearchRequest, SearchResponse, SearchResult
+
+EMBEDDING_DIMENSIONS = 1536
 
 
 class SemanticSearchService:
@@ -22,7 +25,8 @@ class SemanticSearchService:
         embedder = OpenAIEmbedder(model_name=request.embedding_model)
         query_vector = embedder.embed_one(request.query)
 
-        distance = ChunkRecord.embedding.cosine_distance(query_vector)
+        indexed_embedding = cast(ChunkRecord.embedding, HALFVEC(EMBEDDING_DIMENSIONS))
+        distance = indexed_embedding.cosine_distance(query_vector)
         stmt = (
             select(
                 ChunkRecord.id,

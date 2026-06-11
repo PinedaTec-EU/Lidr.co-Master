@@ -2,20 +2,20 @@
 
 ## Lectura en 10 segundos
 
-- Base URL: `http://localhost:8000`
+- Base URL: `http://127.0.0.1:8000`
 - Modelo: `text-embedding-3-small`
 - Top K: `5`
 - Queries evaluadas: `5`
-- Estado rápido: `4 ok`, `0 warn`, `1 review`
-- Distancia media top-1 observada: `0.5792`
+- Estado rápido: `3 ok`, `1 warn`, `1 review`
+- Distancia media top-1 observada: `0.5392`
 
 | query | status | expected | observed | top-1 ref | lectura rápida |
 |---|---|---:|---:|---|---|
 | direct-match | ok | 1 | 1 | BUD-2024-001::AUTH-001 | Baseline retrieval fuerte. |
 | semantic-rephrase | ok | 3 | 1 | BUD-2024-001::AUTH-001 | La semántica aguanta reformulación. |
-| out-of-domain | ok | 6 | n/a | BUD-2024-001::AUTH-001 | La distancia empeora claramente frente al caso fácil. |
-| ambiguous | review | review | 4 | BUD-2024-002::ORD-002 | Consulta ambigua: sirve para observar mezcla de candidatos, no para aprobar o suspender automáticamente. |
-| very-specific | ok | 6 | n/a | BUD-2024-002::ORD-002 | La distancia empeora claramente frente al caso fácil. |
+| out-of-domain | warn | 6 | n/a | BUD-2024-010::PAY-002 | El sistema sigue viendo demasiado parecido un caso que debería alejarse. |
+| ambiguous | review | review | n/a | BUD-2024-012::SEN-001 | Consulta ambigua: sirve para observar mezcla de candidatos, no para aprobar o suspender automáticamente. |
+| very-specific | ok | 6 | n/a | BUD-2024-004::ING-001 | La distancia empeora claramente frente al caso fácil. |
 
 ## Desvío visual
 
@@ -32,11 +32,11 @@ xychart-beta
 
 | query | expectation | expected_chunks | expected_rank | observed_rank | top-1 ref | top-1 distance | takeaway |
 |---|---|---|---:|---:|---|---:|---|
-| direct-match | El chunk AUTH-001 debería aparecer en top-1. | BUD-2024-001::AUTH-001 | 1 | 1 | BUD-2024-001::AUTH-001 | 0.4474 | Baseline retrieval fuerte. |
-| semantic-rephrase | La misma idea debería seguir recuperando AUTH-001 en top-3. | BUD-2024-001::AUTH-001 | 3 | 1 | BUD-2024-001::AUTH-001 | 0.4349 | La semántica aguanta reformulación. |
-| out-of-domain | No debería aparecer un match fuerte; la distancia top-1 debería empeorar claramente. | n/a | 6 | n/a | BUD-2024-001::AUTH-001 | 0.6841 | La distancia empeora claramente frente al caso fácil. |
-| ambiguous | Es normal ver varios candidatos parciales; lo importante es observar mezcla y ranking. | BUD-2024-001::API-002, BUD-2024-010::AVL-001, BUD-2024-013::PUB-002 | review | 4 | BUD-2024-002::ORD-002 | 0.6722 | Consulta ambigua: sirve para observar mezcla de candidatos, no para aprobar o suspender automáticamente. |
-| very-specific | No debería existir un match fuerte si el corpus no cubre microservicios + Kubernetes. | n/a | 6 | n/a | BUD-2024-002::ORD-002 | 0.6572 | La distancia empeora claramente frente al caso fácil. |
+| direct-match | El chunk AUTH-001 debería aparecer en top-1. | BUD-2024-001::AUTH-001 | 1 | 1 | BUD-2024-001::AUTH-001 | 0.4473 | Baseline retrieval fuerte. |
+| semantic-rephrase | La misma idea debería seguir recuperando AUTH-001 en top-3. | BUD-2024-001::AUTH-001 | 3 | 1 | BUD-2024-001::AUTH-001 | 0.4348 | La semántica aguanta reformulación. |
+| out-of-domain | No debería aparecer un match fuerte; la distancia top-1 debería empeorar claramente. | n/a | 6 | n/a | BUD-2024-010::PAY-002 | 0.5751 | El sistema sigue viendo demasiado parecido un caso que debería alejarse. |
+| ambiguous | Es normal ver varios candidatos parciales; lo importante es observar mezcla y ranking. | BUD-2024-001::API-002, BUD-2024-010::AVL-001, BUD-2024-013::PUB-002 | review | n/a | BUD-2024-012::SEN-001 | 0.5922 | Consulta ambigua: sirve para observar mezcla de candidatos, no para aprobar o suspender automáticamente. |
+| very-specific | No debería existir un match fuerte si el corpus no cubre microservicios + Kubernetes. | n/a | 6 | n/a | BUD-2024-004::ING-001 | 0.6464 | La distancia empeora claramente frente al caso fácil. |
 
 ## Conclusiones
 
