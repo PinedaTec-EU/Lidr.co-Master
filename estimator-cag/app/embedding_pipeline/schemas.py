@@ -95,10 +95,20 @@ class DocumentIngestResponse(BaseModel):
     ingestion_time_ms: float = Field(ge=0)
 
 
+class SearchFilters(BaseModel):
+    client_sector: str | None = None
+    main_technology: str | None = None
+    year: int | None = None
+    complexity: ComplexityLevel | None = None
+    document_type: str | None = None
+    chunk_type: str | None = None
+
+
 class SearchRequest(BaseModel):
     query: str = Field(min_length=3)
     k: int = Field(default=5, ge=1, le=50)
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
+    filters: SearchFilters | None = None
 
 
 class SearchResult(BaseModel):

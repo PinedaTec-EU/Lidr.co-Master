@@ -290,6 +290,22 @@ Busca chunks persistidos en `chunks` usando `cosine_distance` sobre `pgvector`.
 }
 ```
 
+También admite filtros opcionales de metadata para acotar el retrieval antes de ordenar por distancia vectorial:
+
+```json
+{
+  "query": "REST API with OAuth authentication for fintech sector",
+  "k": 5,
+  "filters": {
+    "client_sector": "finance",
+    "main_technology": "ruby_on_rails",
+    "year": 2024,
+    "document_type": "historical_budget",
+    "chunk_type": "budget_component"
+  }
+}
+```
+
 **Respuesta:**
 
 ```json
@@ -314,6 +330,7 @@ Busca chunks persistidos en `chunks` usando `cosine_distance` sobre `pgvector`.
 ```
 
 La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos y ordena por `cosine_distance` ascendente.
+Los filtros de metadata se aplican en la propia consulta SQL para reducir el corpus elegible antes del ranking semántico.
 
 ---
 
@@ -667,6 +684,21 @@ curl -X POST http://localhost:8000/api/v1/search \
   }'
 ```
 
+Si quieres restringir la búsqueda a un subconjunto del corpus, añade filtros:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "JWT-based authorization service for a banking application",
+    "k": 3,
+    "filters": {
+      "client_sector": "finance",
+      "document_type": "historical_budget"
+    }
+  }'
+```
+
 ### 8. Probar benchmark de modelos
 
 ```bash
@@ -676,7 +708,7 @@ python scripts/benchmark_embeddings.py
 
 ## Tests automatizados
 
-El proyecto incluye tests de contrato HTTP y tests unitarios de servicio para verificar lo básico sin consumir LLM real.
+El proyecto incluye tests de contrato HTTP, tests unitarios y tests de integración del carril semántico contra FastAPI + PostgreSQL/pgvector.
 
 ### Ejecutar tests
 
@@ -696,8 +728,14 @@ Cobertura actual de tests:
 - validación tipada del request de embeddings
 - chunking estructural de un componente por chunk
 - respuesta exitosa de `POST /api/v1/embeddings/ingest` con embedder mockeado
+- persistencia real de `POST /api/v1/embeddings/ingest` en `documents` y `chunks`
+- búsqueda real de `POST /api/v1/search` con filtros de metadata sobre pgvector
 - actualización de `project_metadata` en sesiones multi-turno
 - persistencia de configuración y contexto externo en sesiones
+
+Notas de ejecución:
+- los tests de integración del pipeline de embeddings requieren Docker operativo
+- si la imagen `pgvector` no puede descargarse o arrancar, esos tests se marcan como `skip`
 - inferencia base de términos para búsqueda en Notion
 - paso de `external_context` al servicio LLM
 - influencia de adjuntos `.docx` convertidos por Docling en el request efectivo al LLM

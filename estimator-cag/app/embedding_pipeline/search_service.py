@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.embedding_pipeline.embedder import OpenAIEmbedder
-from app.embedding_pipeline.models import ChunkRecord
+from app.embedding_pipeline.models import ChunkRecord, DocumentRecord
 from app.embedding_pipeline.schemas import SearchRequest, SearchResponse, SearchResult
 
 
@@ -30,12 +30,34 @@ class SemanticSearchService:
                 ChunkRecord.chunk_type,
                 ChunkRecord.content,
                 ChunkRecord.metadata_json,
+                DocumentRecord.document_type,
                 distance.label("distance"),
             )
+            .join(DocumentRecord, DocumentRecord.id == ChunkRecord.document_id)
             .where(ChunkRecord.embedding.is_not(None))
-            .order_by(distance)
-            .limit(request.k)
         )
+
+        if request.filters:
+            if request.filters.client_sector:
+                stmt = stmt.where(
+                    ChunkRecord.metadata_json["client_sector"].astext == request.filters.client_sector
+                )
+            if request.filters.main_technology:
+                stmt = stmt.where(
+                    ChunkRecord.metadata_json["main_technology"].astext == request.filters.main_technology
+                )
+            if request.filters.year is not None:
+                stmt = stmt.where(ChunkRecord.metadata_json["year"].astext == str(request.filters.year))
+            if request.filters.complexity is not None:
+                stmt = stmt.where(
+                    ChunkRecord.metadata_json["complexity"].astext == request.filters.complexity.value
+                )
+            if request.filters.document_type:
+                stmt = stmt.where(DocumentRecord.document_type == request.filters.document_type)
+            if request.filters.chunk_type:
+                stmt = stmt.where(ChunkRecord.chunk_type == request.filters.chunk_type)
+
+        stmt = stmt.order_by(distance).limit(request.k)
         rows = (await session.execute(stmt)).all()
 
         return SearchResponse(
