@@ -1,0 +1,741 @@
+{
+  "course": "AI Engineering 2026/04",
+  "generated_at": "2026-06-17T17:38:21.527721+00:00",
+  "root_dir": "training-archive/ai-engineering-2026-04",
+  "summary": {
+    "discovered_posts": 104,
+    "archived_posts": 101,
+    "partial_posts": 3,
+    "pending_posts": 0
+  },
+  "items": [
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min",
+      "title": "¿Cómo usar la plataforma? — 19 min",
+      "slug": "ai-engineering-202604-como-usar-la-plataforma-19-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min",
+      "title": "Módulo de bienvenida — 2 min",
+      "slug": "ai-engineering-202604-modulo-de-bienvenida-2-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-⚒️-enlaces-utiles-y-soporte-1-min",
+      "title": "⚒️ Enlaces útiles y soporte — 1 min",
+      "slug": "ai-engineering-202604-⚒️-enlaces-utiles-y-soporte-1-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-presentacion-del-programa-🤖-13-min",
+      "title": "🎥 Presentación del programa 🤖 — 13 min",
+      "slug": "ai-engineering-202604-🎥-presentacion-del-programa-🤖-13-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-👋-bienvenida-y-expectativas-55-min",
+      "title": "👋 Bienvenida y expectativas — 55 min",
+      "slug": "ai-engineering-202604-👋-bienvenida-y-expectativas-55-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-💬-expectativas-9-min",
+      "title": "💬 Expectativas — 9 min",
+      "slug": "ai-engineering-202604-💬-expectativas-9-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📜-politica-de-gestion-de-repositorios",
+      "title": "📜 Política de Gestión de Repositorios",
+      "slug": "ai-engineering-202604-📜-politica-de-gestion-de-repositorios",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-de-sesion",
+      "title": "📼 Grabación de sesión",
+      "slug": "ai-engineering-202604-📼-grabacion-de-sesion",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗓️-agenda-3-min",
+      "title": "🗓️ Agenda — 3 min",
+      "slug": "ai-engineering-202604-🗓️-agenda-3-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🚦-sistema-de-emojis-1-min",
+      "title": "🚦 Sistema de Emojis — 1 min",
+      "slug": "ai-engineering-202604-🚦-sistema-de-emojis-1-min",
+      "group": "00-intro",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min",
+      "title": "Pre-curso: Introducción al rol de AI Engineer y panorama actual  — 127 min",
+      "slug": "ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min",
+      "title": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "slug": "ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724136",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724136",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-el-auge-de-la-ia-en-productos-de-software-🔴-21-min",
+      "title": "🎥 El auge de la IA en productos de software 🔴 — 21 min",
+      "slug": "ai-engineering-202604-🎥-el-auge-de-la-ia-en-productos-de-software-🔴-21-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-el-rol-de-un-ai-engineer-🔴-16-min",
+      "title": "🎥 El rol de un AI Engineer 🔴 — 16 min",
+      "slug": "ai-engineering-202604-🎥-el-rol-de-un-ai-engineer-🔴-16-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-primeros-pasos-para-integrar-ia-en-tus-proyectos-🔴-40-min",
+      "title": "🎥 Primeros pasos para integrar IA en tus proyectos 🔴 — 40 min",
+      "slug": "ai-engineering-202604-🎥-primeros-pasos-para-integrar-ia-en-tus-proyectos-🔴-40-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-software-30-in-the-era-of-ai-andrej-karpathy-🔴-50-min",
+      "title": "🎥 Software 3.0 in the era of AI - Andrej Karpathy 🔴 — 50 min",
+      "slug": "ai-engineering-202604-🎥-software-30-in-the-era-of-ai-andrej-karpathy-🔴-50-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-configuracion-del-entorno-en-local-🔴-13-min",
+      "title": "📄  Configuración del entorno en local 🔴 — 13 min",
+      "slug": "ai-engineering-202604-📄-configuracion-del-entorno-en-local-🔴-13-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-introduccion-a-google-colab-🔴-9-min",
+      "title": "📄  Introducción a Google colab 🔴 — 9 min",
+      "slug": "ai-engineering-202604-📄-introduccion-a-google-colab-🔴-9-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-principales-apis-y-modelos-que-vamos-a-usar-🔴-12-min",
+      "title": "🗒️ Principales APIs y modelos que vamos a usar 🔴 — 12 min",
+      "slug": "ai-engineering-202604-🗒️-principales-apis-y-modelos-que-vamos-a-usar-🔴-12-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-stack-y-entorno-tecnologico🔴-12-min",
+      "title": "🗒️ Stack y entorno tecnológico🔴 — 12 min",
+      "slug": "ai-engineering-202604-🗒️-stack-y-entorno-tecnologico🔴-12-min",
+      "group": "00-pre-course",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min",
+      "title": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "slug": "ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-crear-tu-cuenta-en-anthropic-y-openai",
+      "title": "✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI",
+      "slug": "ai-engineering-202604-✍️-ejercicio-crear-tu-cuenta-en-anthropic-y-openai",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-respuesta-de-modelo-via-api",
+      "title": "✍️ Ejercicio - Respuesta de modelo via API",
+      "slug": "ai-engineering-202604-✍️-ejercicio-respuesta-de-modelo-via-api",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-tener-google-colab-inicializado-con-las-claves-de-api-de-openai-o-anthropic-y-una-llamada",
+      "title": "✍️ Ejercicio - Tener google colab inicializado con las claves de api de openAI o anthropic y una llamada",
+      "slug": "ai-engineering-202604-✍️-ejercicio-tener-google-colab-inicializado-con-las-claves-de-api-de-openai-o-anthropic-y-una-llamada",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724179",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724179",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-comparacion-de-modelos-2026-🔴-17-min",
+      "title": "🗒️ Comparación de modelos 2026 🔴 — 17 min",
+      "slug": "ai-engineering-202604-🗒️-comparacion-de-modelos-2026-🔴-17-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-estructura-de-una-llamada-al-api-de-anthropic-🔴-25-min",
+      "title": "🗒️ Estructura de una llamada al API de Anthropic 🔴 — 25 min",
+      "slug": "ai-engineering-202604-🗒️-estructura-de-una-llamada-al-api-de-anthropic-🔴-25-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-estructura-de-una-llamada-al-api-de-gemini-🔴-24-min",
+      "title": "🗒️ Estructura de una llamada al API de Gemini 🔴 — 24 min",
+      "slug": "ai-engineering-202604-🗒️-estructura-de-una-llamada-al-api-de-gemini-🔴-24-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-estructura-de-una-llamada-al-api-de-openai-🔴-25-min",
+      "title": "🗒️ Estructura de una llamada al API de OpenAI 🔴 — 25 min",
+      "slug": "ai-engineering-202604-🗒️-estructura-de-una-llamada-al-api-de-openai-🔴-25-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-parametros-en-modelos-de-razonamiento-🔴-12-min",
+      "title": "🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min",
+      "slug": "ai-engineering-202604-🗒️-parametros-en-modelos-de-razonamiento-🔴-12-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-tokenizacion-conceptos-avanzados-🔴-39-min",
+      "title": "🗒️ Tokenización: conceptos avanzados 🔴 — 39 min",
+      "slug": "ai-engineering-202604-🗒️-tokenizacion-conceptos-avanzados-🔴-39-min",
+      "group": "01-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min",
+      "title": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "slug": "ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-scaffolding-del-proyecto-fastapi-🔴",
+      "title": "✍️ Ejercicio - Scaffolding del proyecto FastAPI 🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-scaffolding-del-proyecto-fastapi-🔴",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724195",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724195",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-video-introductorio-de-la-sesion-🔴-4-min",
+      "title": "🎥 Video introductorio de la sesión 🔴— 4 min",
+      "slug": "ai-engineering-202604-🎥-video-introductorio-de-la-sesion-🔴-4-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-arquitectura-de-conversaciones-con-modelos🔴-24-min",
+      "title": "📄 Arquitectura de conversaciones con modelos🔴— 24 min",
+      "slug": "ai-engineering-202604-📄-arquitectura-de-conversaciones-con-modelos🔴-24-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-arquitectura-escalable-en-proyectos-ia-generativa-🔴-20-min",
+      "title": "📄 Arquitectura escalable en proyectos IA generativa 🔴— 20 min",
+      "slug": "ai-engineering-202604-📄-arquitectura-escalable-en-proyectos-ia-generativa-🔴-20-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-dont-do-rag-when-cag-is-all-you-need-paper-🔴-1-min",
+      "title": "📄 Don´t do RAG when CAG is all you need (paper) 🔴— 1 min",
+      "slug": "ai-engineering-202604-📄-dont-do-rag-when-cag-is-all-you-need-paper-🔴-1-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-gestion-efectiva-de-contexto-en-arquitectura-cag-🔴-27-min",
+      "title": "📄 Gestión efectiva de contexto en arquitectura CAG 🔴— 27 min",
+      "slug": "ai-engineering-202604-📄-gestion-efectiva-de-contexto-en-arquitectura-cag-🔴-27-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-que-es-cag-cache-augmented-generation-🔴-19-min",
+      "title": "📄 Qué es CAG (Cache augmented generation) 🔴— 19 min",
+      "slug": "ai-engineering-202604-📄-que-es-cag-cache-augmented-generation-🔴-19-min",
+      "group": "02-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min",
+      "title": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "slug": "ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-wrapper-de-interfaz-conversacional-🔴",
+      "title": "✍️ Ejercicio - Wrapper de interfaz conversacional 🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-wrapper-de-interfaz-conversacional-🔴",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724212",
+      "title": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724212",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-introduccion-de-prototipo-a-producto-wrappers-streaming-y-trazabilidad-🔴-3-min",
+      "title": "🎥 Introducción: De prototipo a producto: wrappers, streaming y trazabilidad 🔴 — 3 min",
+      "slug": "ai-engineering-202604-🎥-introduccion-de-prototipo-a-producto-wrappers-streaming-y-trazabilidad-🔴-3-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-abstraccion-de-proveedores-y-estrategias-de-fallback-🔴-20-min",
+      "title": "📄 Abstracción de proveedores y estrategias de fallback 🔴 — 20 min",
+      "slug": "ai-engineering-202604-📄-abstraccion-de-proveedores-y-estrategias-de-fallback-🔴-20-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-cacheo-inteligente-de-respuestas-de-llms-🔴-19-min",
+      "title": "📄 Cacheo inteligente de respuestas de LLMs 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄-cacheo-inteligente-de-respuestas-de-llms-🔴-19-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-interfaces-conversacionales-frameworks-y-librerias-🔴-13-min",
+      "title": "📄 Interfaces conversacionales, frameworks y librerías 🔴— 13 min",
+      "slug": "ai-engineering-202604-📄-interfaces-conversacionales-frameworks-y-librerias-🔴-13-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-observabilidad-logging-y-trazabilidad-🔴-16-min",
+      "title": "📄 Observabilidad, logging y trazabilidad 🔴 — 16 min",
+      "slug": "ai-engineering-202604-📄-observabilidad-logging-y-trazabilidad-🔴-16-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-streaming-y-manejo-de-respuestas-largas-🔴-18-min",
+      "title": "📄 Streaming y manejo de respuestas largas 🔴 — 18 min",
+      "slug": "ai-engineering-202604-📄-streaming-y-manejo-de-respuestas-largas-🔴-18-min",
+      "group": "03-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min",
+      "title": "Sesión 4: Productos IA avanzados — 117 min",
+      "slug": "ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-del-chat-a-la-interfaz-de-producto-🔴",
+      "title": "✍️ Ejercicio - del chat a la interfaz de producto 🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-del-chat-a-la-interfaz-de-producto-🔴",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724234",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724234",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🎥-introduccion-productos-ia-avanzados-🔴-3-min",
+      "title": "🎥 Introducción: Productos IA avanzados 🔴 — 3 min",
+      "slug": "ai-engineering-202604-🎥-introduccion-productos-ia-avanzados-🔴-3-min",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-cacheo-semantico-de-respuestas-25-min🔴",
+      "title": "📄 Cacheo semántico de respuestas— 25 min🔴",
+      "slug": "ai-engineering-202604-📄-cacheo-semantico-de-respuestas-25-min🔴",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-extraccion-de-datos-estructurados-🔴-22-min",
+      "title": "📄 Extracción de datos estructurados 🔴 — 22 min",
+      "slug": "ai-engineering-202604-📄-extraccion-de-datos-estructurados-🔴-22-min",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-plantillas-de-prompts-y-prompting-desde-backend-🔴-22-min",
+      "title": "📄 Plantillas de prompts y prompting desde backend 🔴 — 22 min",
+      "slug": "ai-engineering-202604-📄-plantillas-de-prompts-y-prompting-desde-backend-🔴-22-min",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄de-interfaz-conversacional-a-interfaz-de-producto-🔴-19-min",
+      "title": "📄De interfaz conversacional a interfaz de producto 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄de-interfaz-conversacional-a-interfaz-de-producto-🔴-19-min",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄guardrails-y-validacion-de-outputs-26-min🔴",
+      "title": "📄Guardrails y validación de outputs — 26 min🔴",
+      "slug": "ai-engineering-202604-📄guardrails-y-validacion-de-outputs-26-min🔴",
+      "group": "04-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min",
+      "title": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "slug": "ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-memoria-conversacional-y-contexto-enriquecido🔴",
+      "title": "✍️ Ejercicio - memoria conversacional y contexto enriquecido🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-memoria-conversacional-y-contexto-enriquecido🔴",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724253",
+      "title": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724253",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-actor-critic-boss-la-composicion-de-roles-que-eleva-la-calidad-🔴-18-min",
+      "title": "📄 Actor-Critic-Boss: la composición de roles que eleva la calidad 🔴 — 18 min",
+      "slug": "ai-engineering-202604-📄-actor-critic-boss-la-composicion-de-roles-que-eleva-la-calidad-🔴-18-min",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-integracion-de-contexto-dinamico-desde-fuentes-externas-🔴-27-min",
+      "title": "📄 Integración de contexto dinámico desde fuentes externas 🔴 — 27 min",
+      "slug": "ai-engineering-202604-📄-integracion-de-contexto-dinamico-desde-fuentes-externas-🔴-27-min",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-memoria-conversacional-vs-historial-estrategias-para-sistemas-cag-🔴-26-min",
+      "title": "📄 Memoria conversacional vs historial: estrategias para sistemas CAG 🔴 — 26 min",
+      "slug": "ai-engineering-202604-📄-memoria-conversacional-vs-historial-estrategias-para-sistemas-cag-🔴-26-min",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-prompts-adaptativos-por-perfil-de-usuario-el-patron-tier-🔴-26-min",
+      "title": "📄 Prompts adaptativos por perfil de usuario: el patrón \"tier” 🔴 — 26 min",
+      "slug": "ai-engineering-202604-📄-prompts-adaptativos-por-perfil-de-usuario-el-patron-tier-🔴-26-min",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-testing-y-evaluacion-de-sistemas-con-llms-🔴-28-min",
+      "title": "📄 Testing y evaluación de sistemas con LLMs 🔴 — 28 min",
+      "slug": "ai-engineering-202604-📄-testing-y-evaluacion-de-sistemas-con-llms-🔴-28-min",
+      "group": "05-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min",
+      "title": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "slug": "ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-stress-test-del-cag-medir-donde-rompe-🔴",
+      "title": "✍️ Ejercicio: Stress test del CAG: Medir donde rompe 🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-stress-test-del-cag-medir-donde-rompe-🔴",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724265",
+      "title": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724265",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-auditoria-e-inventario-de-datos-empresariales-🔴-27-min",
+      "title": "📄 Auditoría e inventario de datos empresariales 🔴 — 27 min",
+      "slug": "ai-engineering-202604-📄-auditoria-e-inventario-de-datos-empresariales-🔴-27-min",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-calidad-del-dato-y-decisiones-de-arquitectura-🔴-24-min",
+      "title": "📄 Calidad del dato y decisiones de arquitectura 🔴 — 24 min",
+      "slug": "ai-engineering-202604-📄-calidad-del-dato-y-decisiones-de-arquitectura-🔴-24-min",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-pipeline-de-extraccion-multi-formato-🔴-25-min",
+      "title": "📄 Pipeline de extracción multi-formato 🔴 — 25 min",
+      "slug": "ai-engineering-202604-📄-pipeline-de-extraccion-multi-formato-🔴-25-min",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄limpieza-normalizacion-y-validacion-de-datos🔴-28-min",
+      "title": "📄Limpieza, normalización y validación de datos🔴 — 28 min",
+      "slug": "ai-engineering-202604-📄limpieza-normalizacion-y-validacion-de-datos🔴-28-min",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄pii-anonimizacion-y-gdpr-en-el-pipeline-de-ingest🔴-28-min",
+      "title": "📄PII, anonimización y GDPR en el pipeline de ingest🔴 — 28 min",
+      "slug": "ai-engineering-202604-📄pii-anonimizacion-y-gdpr-en-el-pipeline-de-ingest🔴-28-min",
+      "group": "06-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min",
+      "title": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "slug": "ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min",
+      "group": "07-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-pipeline-minimo-de-embeddings-y-chunking🔴",
+      "title": "✍️ Ejercicio: Pipeline mínimo de embeddings y chunking🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-pipeline-minimo-de-embeddings-y-chunking🔴",
+      "group": "07-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-chunking-del-proyecto-presupuestos-json-y-transcripciones🔴-26-min",
+      "title": "📄 Chunking del proyecto: presupuestos JSON y transcripciones🔴 — 26 min",
+      "slug": "ai-engineering-202604-📄-chunking-del-proyecto-presupuestos-json-y-transcripciones🔴-26-min",
+      "group": "07-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-embeddings-del-texto-a-la-geometria-semantica-🔴-21-min",
+      "title": "📄 Embeddings: Del texto a la geometría semántica 🔴 — 21 min",
+      "slug": "ai-engineering-202604-📄-embeddings-del-texto-a-la-geometria-semantica-🔴-21-min",
+      "group": "07-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-estrategias-profesionales-de-chunking-🔴-32-min",
+      "title": "📄 Estrategias profesionales de chunking 🔴 — 32 min",
+      "slug": "ai-engineering-202604-📄-estrategias-profesionales-de-chunking-🔴-32-min",
+      "group": "07-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-seleccion-de-modelos-de-embeddings-trade-offs-en-produccion-🔴-28-min",
+      "title": "📄 Selección de modelos de embeddings: trade-offs en producción 🔴 — 28 min",
+      "slug": "ai-engineering-202604-📄-seleccion-de-modelos-de-embeddings-trade-offs-en-produccion-🔴-28-min",
+      "group": "07-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min",
+      "title": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "slug": "ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-migracion-a-pgvector-endpoint-de-busqueda-🔴",
+      "title": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "slug": "ai-engineering-202604-✍️-migracion-a-pgvector-endpoint-de-busqueda-🔴",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293",
+      "title": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann🔴-40-min",
+      "title": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "slug": "ai-engineering-202604-📄-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann🔴-40-min",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-diseno-del-esquema-y-busqueda-semantica🔴-32-min",
+      "title": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "slug": "ai-engineering-202604-📄-diseno-del-esquema-y-busqueda-semantica🔴-32-min",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-estado-del-mercado-de-bbdd-vectoriales-2026-🔴-40-min",
+      "title": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "slug": "ai-engineering-202604-📄-estado-del-mercado-de-bbdd-vectoriales-2026-🔴-40-min",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-🔴-31-min",
+      "title": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "slug": "ai-engineering-202604-📄-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-🔴-31-min",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-🔴-40-min",
+      "title": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "slug": "ai-engineering-202604-📄del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-🔴-40-min",
+      "group": "08-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-4️⃣-modulo-arquitectura-rag",
+      "title": "4️⃣ Módulo: Arquitectura RAG",
+      "slug": "ai-engineering-202604-4️⃣-modulo-arquitectura-rag",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-9-fundamentos-de-rag-y-tecnicas-de-recuperacion-144-min",
+      "title": "Sesión 9: Fundamentos de RAG y técnicas de recuperación — 144 min",
+      "slug": "ai-engineering-202604-sesion-9-fundamentos-de-rag-y-tecnicas-de-recuperacion-144-min",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-diagnostico-arquitectonico-del-sistema-rag-actual-🔴",
+      "title": "✍️ Ejercicio: Diagnóstico arquitectónico del sistema RAG actual 🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-diagnostico-arquitectonico-del-sistema-rag-actual-🔴",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724306",
+      "title": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724306",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📋-augmentation-ensamblar-contexto-para-que-el-llm-lo-use-bien-🔴-32-min",
+      "title": "📋 Augmentation: ensamblar contexto para que el LLM lo use bien 🔴 — 32 min",
+      "slug": "ai-engineering-202604-📋-augmentation-ensamblar-contexto-para-que-el-llm-lo-use-bien-🔴-32-min",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📋-del-cag-estatico-al-flujo-rag-las-cuatro-etapas-y-por-que-el-retrieval-domina-🔴-25-min",
+      "title": "📋 Del CAG estático al flujo RAG: las cuatro etapas y por qué el retrieval domina 🔴 — 25 min",
+      "slug": "ai-engineering-202604-📋-del-cag-estatico-al-flujo-rag-las-cuatro-etapas-y-por-que-el-retrieval-domina-🔴-25-min",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📋-la-capa-de-datos-como-servicio-aislar-y-securizar-el-retriever🔴-32-min",
+      "title": "📋 La capa de datos como servicio: aislar y securizar el retriever🔴 — 32 min",
+      "slug": "ai-engineering-202604-📋-la-capa-de-datos-como-servicio-aislar-y-securizar-el-retriever🔴-32-min",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📋-reformulacion-de-queries🔴-25-min",
+      "title": "📋 Reformulación de queries🔴 — 25 min",
+      "slug": "ai-engineering-202604-📋-reformulacion-de-queries🔴-25-min",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📋-retrieval-que-no-es-solo-cosine-top-k-threshold-y-filtros-sobre-pgvector-🔴-30-min",
+      "title": "📋 Retrieval que no es solo cosine: top-K, threshold y filtros sobre pgvector 🔴 — 30 min",
+      "slug": "ai-engineering-202604-📋-retrieval-que-no-es-solo-cosine-top-k-threshold-y-filtros-sobre-pgvector-🔴-30-min",
+      "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia",
+      "title": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "slug": "ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia",
+      "group": "98-misc",
+      "status": "partial"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation",
+      "title": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "slug": "ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation",
+      "group": "98-misc",
+      "status": "partial"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3️⃣-modulo-data-driven-ai",
+      "title": "3️⃣ Módulo: Data-driven AI",
+      "slug": "ai-engineering-202604-3️⃣-modulo-data-driven-ai",
+      "group": "98-misc",
+      "status": "partial"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724277",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724277",
+      "group": "98-misc",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🧑💻-proyecto-final-master-ai-engineering-13-min",
+      "title": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "slug": "ai-engineering-202604-🧑💻-proyecto-final-master-ai-engineering-13-min",
+      "group": "99-final-project",
+      "status": "archived"
+    }
+  ]
+}
