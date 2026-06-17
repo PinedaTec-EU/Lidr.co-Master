@@ -1,0 +1,179 @@
+{
+  "slug": "ai-engineering-202604-🗒️-parametros-en-modelos-de-razonamiento-🔴-12-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-parametros-en-modelos-de-razonamiento-🔴-12-min",
+  "title": "🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min",
+  "archived_at": "2026-06-12T09:21:22.481Z",
+  "group_hint": "01-session",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724179"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-crear-tu-cuenta-en-anthropic-y-openai"
+    },
+    {
+      "text": "✍️ Ejercicio - Respuesta de modelo via API",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-respuesta-de-modelo-via-api"
+    },
+    {
+      "text": "✍️ Ejercicio - Tener google colab inicializado con las claves de api de openAI o anthropic y una llamada",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-tener-google-colab-inicializado-con-las-claves-de-api-de-openai-o-anthropic-y-una-llamada"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de OpenAI 🔴 — 25 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-openai-%F0%9F%94%B4-25-min"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de Anthropic 🔴 — 25 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-anthropic-%F0%9F%94%B4-25-min"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de Gemini 🔴 — 24 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-gemini-%F0%9F%94%B4-24-min"
+    },
+    {
+      "text": "🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-parametros-en-modelos-de-razonamiento-%F0%9F%94%B4-12-min"
+    },
+    {
+      "text": "🗒️ Tokenización: conceptos avanzados 🔴 — 39 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-tokenizacion-conceptos-avanzados-%F0%9F%94%B4-39-min"
+    },
+    {
+      "text": "🗒️ Comparación de modelos 2026 🔴 — 17 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-comparacion-de-modelos-2026-%F0%9F%94%B4-17-min"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><div class=\"profile-attribution-link-container toggle-with-presence is-small has-centered-name is-profile-preview-on-name\" data-user-id=\"36030888\" data-space-id=\"7296662\"><div class=\"profile-preview-avatar-region mighty-attribution-avatar\"><div class=\"MuiStack-root css-8v90jo\"><div class=\"MuiBox-root css-4g6ai3\" data-id=\"profile-preview-avatar-trigger\"><div class=\"MuiAvatar-root MuiAvatar-circleTiny css-14n2uyv\"><img alt=\"Antonio Perez\" src=\"https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=192&amp;h=192&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\" class=\"MuiAvatar-img css-45do71\"></div></div><div class=\"MuiStack-root css-j7qwjs\"><div class=\"MuiStack-root css-2nqau9\"><div><div class=\"MuiBox-root css-i6bazn\"><a title=\"Antonio Perez\" class=\"mighty-attribution-name text-color-title-link navigate\" href=\"https://training.lidr.co/members/36030888\" data-id=\"mighty-link\"><span class=\"MuiTypography-root MuiTypography-labelLargeBold MuiTypography-noWrap css-1vlsy68\">Antonio Perez</span></a></div></div><div class=\"MuiBox-root css-9w4vf0\" role=\"status\" aria-label=\"Host\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" fill=\"none\" class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeTiny css-qndboc\" focusable=\"false\" aria-hidden=\"true\" data-id=\"role-icon-host\"><path d=\"M7.99601 0.838063C7.80872 0.841426 7.59588 0.87403 7.38859 0.957204C7.2175 1.02591 6.97491 1.16003 6.79386 1.41326L6.72062 1.52947L6.61808 1.70134C6.36202 2.10055 5.99106 2.47782 5.45988 2.67009C4.66685 2.95701 3.99953 2.8625 3.58976 2.74138L3.43644 2.70427C3.07585 2.63462 2.69885 2.68785 2.37492 2.85857C1.99098 3.06096 1.65548 3.44964 1.59269 3.98748C1.49041 4.86596 1.41289 6.49177 1.70011 9.00408C1.94204 11.12 3.29599 12.5534 4.56437 13.4484C5.83565 14.3454 7.14428 14.794 7.57609 14.9279C7.85325 15.0138 8.14758 15.0138 8.42472 14.9279C8.8565 14.7941 10.1658 14.3456 11.4374 13.4484C12.706 12.5534 14.0599 11.1204 14.3007 9.00408C14.5935 6.42919 14.5056 4.78585 14.4003 3.924L14.3651 3.73259C14.155 2.87732 13.3015 2.5531 12.6513 2.63396L12.5155 2.6574L12.3456 2.6906C11.9186 2.76181 11.2816 2.77924 10.54 2.51092C9.93078 2.2905 9.54027 1.87006 9.29093 1.47088L9.21281 1.36052C9.02191 1.11869 8.77726 0.995137 8.60538 0.933767C8.39657 0.85921 8.18358 0.834731 7.99601 0.838063ZM8.04679 3.13689C8.46762 3.62136 9.05327 4.09907 9.85929 4.3908C10.8779 4.75935 11.7862 4.77552 12.4638 4.6906C12.5208 5.50386 12.5347 6.83991 12.3144 8.77752C12.164 10.0993 11.3148 11.0881 10.2851 11.8146C9.39191 12.4448 8.45392 12.8064 8.00089 12.9601C7.54821 12.8065 6.61007 12.445 5.71671 11.8146C4.68717 11.0881 3.83766 10.0996 3.68644 8.77752C3.47259 6.90716 3.47902 5.59739 3.53117 4.77752C4.21588 4.90179 5.12452 4.91855 6.14054 4.55095C7.01178 4.23562 7.62374 3.68319 8.04679 3.13689Z\" fill=\"currentColor\"></path><path d=\"M9.20373 5.90341C9.53907 5.46459 10.1665 5.38065 10.6053 5.71598C11.0441 6.0513 11.128 6.67872 10.7927 7.11754L8.25432 10.4392C8.08461 10.6613 7.8294 10.8025 7.55107 10.8281C7.27266 10.8537 6.99567 10.7618 6.78831 10.5743L5.32761 9.25297C4.91811 8.88261 4.88605 8.25008 5.25621 7.84046C5.62661 7.43092 6.2591 7.39879 6.66871 7.76906L7.32411 8.36229L9.20373 5.90341Z\" fill=\"currentColor\"></path></svg></div></div></div></div></div>\n</div></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\" style=\"text-align:center;\"><span dir=\"auto\" data-name=\"hourglass_flowing_sand\" data-type=\"emoji\">⏳</span><span style=\"color:rgb(114, 124, 139);\"> Tiempo estimado: 12 min<br dir=\"auto\"></span></p><h2 dir=\"auto\">Por qué los modelos de razonamiento son diferentes</h2><p dir=\"auto\">Los modelos de razonamiento (OpenAI GPT-5 series, o3, o4-mini; Anthropic Claude 4/4.5/4.6 con extended thinking) no generan respuestas en una sola pasada de muestreo. Internamente ejecutan un proceso de <strong>pensamiento multi-paso</strong>: generan cadenas de razonamiento, las evalúan, descartan algunas ramas, y solo entonces producen la respuesta final.</p><p dir=\"auto\">Este proceso está calibrado por el proveedor para maximizar calidad y seguridad. Exponer parámetros tradicionales como <code class=\"tiptap-code\">temperature</code> o <code class=\"tiptap-code\">top_p</code> rompería esa calibración — si el usuario fijase <code class=\"tiptap-code\">temperature=0</code>, todas las ramas de razonamiento colapsarían en una sola ruta greedy, anulando el beneficio del enfoque multi-paso. Por eso los proveedores han <strong>bloqueado</strong> varios parámetros de muestreo en estos modelos, y han introducido <strong>nuevos parámetros</strong> (como <code class=\"tiptap-code\">reasoning_effort</code>, <code class=\"tiptap-code\">verbosity</code>, <code class=\"tiptap-code\">thinking</code>) para dar al desarrollador otra vía de control.</p><p dir=\"auto\">Este documento resume qué parámetros han quedado obsoletos o restringidos en cada familia de modelos, y cuáles son los nuevos parámetros que los reemplazan.</p><hr dir=\"auto\"><h2 dir=\"auto\">OpenAI: modelos de razonamiento</h2><h3 dir=\"auto\">Modelos afectados</h3><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Familia <strong>o-series</strong>: <code class=\"tiptap-code\">o1</code>, <code class=\"tiptap-code\">o1-mini</code>, <code class=\"tiptap-code\">o3</code>, <code class=\"tiptap-code\">o3-mini</code>, <code class=\"tiptap-code\">o3-pro</code>, <code class=\"tiptap-code\">o4-mini</code></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Familia <strong>GPT-5</strong>: <code class=\"tiptap-code\">gpt-5</code>, <code class=\"tiptap-code\">gpt-5-mini</code>, <code class=\"tiptap-code\">gpt-5-nano</code>, <code class=\"tiptap-code\">gpt-5.1</code>, <code class=\"tiptap-code\">gpt-5.2</code>, <code class=\"tiptap-code\">gpt-5.3</code>, <code class=\"tiptap-code\">gpt-5.4</code> y sus variantes</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Familia <strong>Codex</strong>: <code class=\"tiptap-code\">gpt-5-codex</code>, <code class=\"tiptap-code\">gpt-5.2-codex</code>, <code class=\"tiptap-code\">gpt-5.3-codex</code></p></li>\n</ul><h3 dir=\"auto\">Parámetros bloqueados o restringidos</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/567933c1-c77a-46ff-b31e-37dc70617a20/f05f75689e842d9d.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154081674\"></div><h3 dir=\"auto\">Nuevos parámetros introducidos</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/5b4218af-7f50-4154-82f5-751edc7c0a90/291a9f3030487374.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154081702\"></div><h3 dir=\"auto\">Cambio adicional: system messages → developer messages</h3><p dir=\"auto\">En modelos o-series, los mensajes con <code class=\"tiptap-code\">role: \"system\"</code> se tratan internamente como <code class=\"tiptap-code\">role: \"developer\"</code>. El SDK lo gestiona transparentemente, pero no debes usar ambos roles en la misma request.</p><h3 dir=\"auto\">Ejemplo de migración</h3><pre class=\"tiptap-code-block\" dir=\"auto\"><code>from openai import OpenAI\n\nclient = OpenAI()\n\n# ❌ ANTIGUO estilo — falla con modelos de razonamiento\nresponse = client.responses.create(\n    model=\"gpt-5-mini\",\n    instructions=\"You are a technical analyst.\",\n    input=\"Should we use microservices?\",\n    temperature=0.3,          # ❌ Not supported\n    top_p=0.9,                # ❌ Not supported\n    max_output_tokens=500\n)\n# Error: Unsupported parameter: 'temperature' is not supported with this model.\n\n# ✅ NUEVO estilo — correcto para modelos de razonamiento\nresponse = client.responses.create(\n    model=\"gpt-5-mini\",\n    instructions=\"You are a technical analyst.\",\n    input=\"Should we use microservices?\",\n    reasoning={\"effort\": \"medium\"},   # ✅ New: controls reasoning depth\n    text={\"verbosity\": \"low\"},        # ✅ New: controls answer length\n    max_output_tokens=500\n)\n</code></pre><hr dir=\"auto\"><h2 dir=\"auto\">Anthropic: modelos con extended thinking</h2><h3 dir=\"auto\">Modelos afectados</h3><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><strong>Claude Opus 4, 4.1, 4.5, 4.6</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Claude Sonnet 4, 4.5, 4.6</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Claude Haiku 4.5</strong></p></li>\n</ul><p dir=\"auto\">Las restricciones aplican <strong>cuando se activa </strong><code class=\"tiptap-code\">thinking</code> en la request. Sin thinking activado, estos modelos aceptan los parámetros tradicionales (con las excepciones que se indican abajo).</p><h3 dir=\"auto\">Parámetros bloqueados o restringidos con extended thinking</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/37ff3d83-28f2-4f1d-8a6d-de0919891bf9/9680ae524704ca7b.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154081710\"></div><h3 dir=\"auto\">Restricciones adicionales en modelos 4.5+ (incluso SIN thinking)</h3><p dir=\"auto\">Claude Sonnet 4.5 y Claude Haiku 4.5 (y posteriores) introdujeron una nueva regla que aplica <strong>siempre</strong>, no solo con thinking:</p><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/f001bc87-8bd8-4f0f-b869-46064953b846/b46bb249659214e4.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154081720\"></div><p dir=\"auto\">Esto significa que código que funcionaba con Claude 3.5 Sonnet puede romperse al migrar a Claude 4.5/4.6 si especificabas ambos parámetros simultáneamente.</p><h3 dir=\"auto\">Nuevos parámetros introducidos</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/785d1ac3-dc73-4330-be37-2c1d30900dad/17f99265b6160683.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154081725\"></div><h3 dir=\"auto\">Ejemplo de migración</h3><pre class=\"tiptap-code-block\" dir=\"auto\"><code>from anthropic import Anthropic\n\nclient = Anthropic()\n\n# ❌ ANTIGUO estilo — falla con Claude 4.5+\nresponse = client.messages.create(\n    model=\"claude-sonnet-4-6-20250514\",\n    messages=[{\"role\": \"user\", \"content\": \"Should we use microservices?\"}],\n    max_tokens=500,\n    temperature=0.3,\n    top_p=0.9                 # ❌ Cannot specify both temperature and top_p in 4.5+\n)\n# Error: temperature and top_p cannot both be specified for this model.\n\n# ✅ NUEVO estilo — pick one\nresponse = client.messages.create(\n    model=\"claude-sonnet-4-6-20250514\",\n    messages=[{\"role\": \"user\", \"content\": \"Should we use microservices?\"}],\n    max_tokens=500,\n    temperature=0.3           # ✅ Pick one of temperature or top_p\n)\n\n# ✅ Con extended thinking habilitado\nresponse = client.messages.create(\n    model=\"claude-sonnet-4-6-20250514\",\n    messages=[{\"role\": \"user\", \"content\": \"Design a distributed rate limiter.\"}],\n    max_tokens=16000,\n    thinking={\n        \"type\": \"enabled\",\n        \"budget_tokens\": 10000    # ✅ New: controls thinking depth\n    }\n    # Note: no temperature, no top_k, no pre-filling\n)\n</code></pre><hr dir=\"auto\"><h2 dir=\"auto\">Tabla resumen: ¿qué sigue funcionando y qué no?</h2><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/8ef7a354-ae55-4414-9aa6-c972f2b6b7c9/67f4c3eaa4030614.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154081742\"></div><p dir=\"auto\"><strong>Leyenda:</strong> <span dir=\"auto\" data-name=\"check_mark_button\" data-type=\"emoji\">✅</span> soportado · <span dir=\"auto\" data-name=\"cross_mark\" data-type=\"emoji\">❌</span> no soportado · <span dir=\"auto\" data-name=\"warning\" data-type=\"emoji\">⚠</span> con restricciones · — no aplicable a ese proveedor</p><hr dir=\"auto\"><h2 dir=\"auto\">Implicaciones prácticas para el programa</h2><h3 dir=\"auto\">1. Si estás construyendo sobre modelos no-razonamiento, sigue todo igual</h3><p dir=\"auto\">Para los ejercicios del programa usamos <code class=\"tiptap-code\">gpt-4o-mini</code> y <code class=\"tiptap-code\">claude-haiku-4-5-20251001</code>. El Haiku 4.5 sí tiene la restricción de no poder combinar <code class=\"tiptap-code\">temperature</code> y <code class=\"tiptap-code\">top_p</code>, pero como en el notebook solo usamos <code class=\"tiptap-code\">temperature</code>, no nos afecta. Todos los parámetros que aprendiste en el Bloque 3 del notebook funcionan con estos modelos.</p><h3 dir=\"auto\">2. Si migras a un modelo de razonamiento, revisa tu código</h3><p dir=\"auto\">Si en el futuro tu producto necesita la potencia de un modelo de razonamiento:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><strong>OpenAI (GPT-5, o3, o4-mini):</strong> elimina <code class=\"tiptap-code\">temperature</code>, <code class=\"tiptap-code\">top_p</code>, <code class=\"tiptap-code\">frequency_penalty</code>, <code class=\"tiptap-code\">presence_penalty</code>, <code class=\"tiptap-code\">logprobs</code>, <code class=\"tiptap-code\">logit_bias</code>. Sustitúyelos por <code class=\"tiptap-code\">reasoning_effort</code> y <code class=\"tiptap-code\">verbosity</code>.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Anthropic con thinking:</strong> elimina <code class=\"tiptap-code\">temperature</code> y <code class=\"tiptap-code\">top_k</code>. Si necesitas <code class=\"tiptap-code\">top_p</code>, úsalo solo en rango <code class=\"tiptap-code\">0.95-1.0</code>. No uses forced tool use ni pre-filling.</p></li>\n</ul><h3 dir=\"auto\">3. El \"coste del razonamiento\" se factura como tokens de salida</h3><p dir=\"auto\">Tanto los <code class=\"tiptap-code\">reasoning_tokens</code> de OpenAI como los <code class=\"tiptap-code\">thinking_tokens</code> de Anthropic se <strong>facturan al precio de tokens de salida</strong>, aunque no aparezcan en la respuesta visible. Un modelo de razonamiento con <code class=\"tiptap-code\">reasoning_effort: \"high\"</code> puede consumir 10x más tokens de salida que el mismo modelo con <code class=\"tiptap-code\">reasoning_effort: \"minimal\"</code> para la misma pregunta.</p><h3 dir=\"auto\">4. Regla mnemotécnica</h3><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\"><strong>Los modelos de razonamiento quitan el control del muestreo y te dan control sobre el razonamiento.</strong></p></blockquote><p dir=\"auto\">Pierdes <code class=\"tiptap-code\">temperature</code>, <code class=\"tiptap-code\">top_p</code>, <code class=\"tiptap-code\">presence_penalty</code>, etc. Ganas <code class=\"tiptap-code\">reasoning_effort</code> y <code class=\"tiptap-code\">verbosity</code> (OpenAI) o <code class=\"tiptap-code\">thinking.budget_tokens</code> (Anthropic). Es un intercambio deliberado: el proveedor se reserva el control fino del muestreo porque lo necesita para orquestar el proceso multi-paso, y a cambio te da palancas de más alto nivel.</p><hr dir=\"auto\"><h2 dir=\"auto\">Referencias</h2><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">OpenAI reasoning models documentation: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://platform.openai.com/docs/guides/reasoning\"><span style=\"color:var(--tt-color-text-blue);\">platform.openai.com/docs/guides/reasoning</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">OpenAI GPT-5 prompting guide: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide\"><span style=\"color:var(--tt-color-text-blue);\">cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Azure reasoning models compatibility: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/reasoning\"><span style=\"color:var(--tt-color-text-blue);\">learn.microsoft.com/en-us/azure/foundry/openai/how-to/reasoning</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Anthropic extended thinking docs: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://console.anthropic.com/docs/en/build-with-claude/extended-thinking\"><span style=\"color:var(--tt-color-text-blue);\">console.anthropic.com/docs/en/build-with-claude/extended-thinking</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Anthropic Messages API reference: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://docs.anthropic.com/en/api/messages\"><span style=\"color:var(--tt-color-text-blue);\">docs.anthropic.com/en/api/messages</span></a></p></li>\n</ul><p dir=\"auto\"></p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min</h1>\n",
+  "imgs": [
+    {
+      "alt": "Antonio Perez",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=192&h=192&fit=crop&crop=faces&impolicy=Avatar"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/567933c1-c77a-46ff-b31e-37dc70617a20/f05f75689e842d9d.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/5b4218af-7f50-4154-82f5-751edc7c0a90/291a9f3030487374.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/37ff3d83-28f2-4f1d-8a6d-de0919891bf9/9680ae524704ca7b.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/f001bc87-8bd8-4f0f-b869-46064953b846/b46bb249659214e4.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/785d1ac3-dc73-4330-be37-2c1d30900dad/17f99265b6160683.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/8ef7a354-ae55-4414-9aa6-c972f2b6b7c9/67f4c3eaa4030614.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min\nAntonio Perez\n\n⏳ Tiempo estimado: 12 min\n\n\nPor qué los modelos de razonamiento son diferentes\n\nLos modelos de razonamiento (OpenAI GPT-5 series, o3, o4-mini; Anthropic Claude 4/4.5/4.6 con extended thinking) no generan respuestas en una sola pasada de muestreo. Internamente ejecutan un proceso de pensamiento multi-paso: generan cadenas de razonamiento, las evalúan, descartan algunas ramas, y solo entonces producen la respuesta final.\n\nEste proceso está calibrado por el proveedor para maximizar calidad y seguridad. Exponer parámetros tradicionales como temperature o top_p rompería esa calibración — si el usuario fijase temperature=0, todas las ramas de razonamiento colapsarían en una sola ruta greedy, anulando el beneficio del enfoque multi-paso. Por eso los proveedores han bloqueado varios parámetros de muestreo en estos modelos, y han introducido nuevos parámetros (como reasoning_effort, verbosity, thinking) para dar al desarrollador otra vía de control.\n\nEste documento resume qué parámetros han quedado obsoletos o restringidos en cada familia de modelos, y cuáles son los nuevos parámetros que los reemplazan.\n\nOpenAI: modelos de razonamiento\nModelos afectados\n\nFamilia o-series: o1, o1-mini, o3, o3-mini, o3-pro, o4-mini\n\nFamilia GPT-5: gpt-5, gpt-5-mini, gpt-5-nano, gpt-5.1, gpt-5.2, gpt-5.3, gpt-5.4 y sus variantes\n\nFamilia Codex: gpt-5-codex, gpt-5.2-codex, gpt-5.3-codex\n\nParámetros bloqueados o restringidos\nNuevos parámetros introducidos\nCambio adicional: system messages → developer messages\n\nEn modelos o-series, los mensajes con role: \"system\" se tratan internamente como role: \"developer\". El SDK lo gestiona transparentemente, pero no debes usar ambos roles en la misma request.\n\nEjemplo de migración\nfrom openai import OpenAI\n\nclient = OpenAI()\n\n# ❌ ANTIGUO estilo — falla con modelos de razonamiento\nresponse = client.responses.create(\n    model=\"gpt-5-mini\",\n    instructions=\"You are a technical analyst.\",\n    input=\"Should we use microservices?\",\n    temperature=0.3,          # ❌ Not supported\n    top_p=0.9,                # ❌ Not supported\n    max_output_tokens=500\n)\n# Error: Unsupported parameter: 'temperature' is not supported with this model.\n\n# ✅ NUEVO estilo — correcto para modelos de razonamiento\nresponse = client.responses.create(\n    model=\"gpt-5-mini\",\n    instructions=\"You are a technical analyst.\",\n    input=\"Should we use microservices?\",\n    reasoning={\"effort\": \"medium\"},   # ✅ New: controls reasoning depth\n    text={\"verbosity\": \"low\"},        # ✅ New: controls answer length\n    max_output_tokens=500\n)\n\nAnthropic: modelos con extended thinking\nModelos afectados\n\nClaude Opus 4, 4.1, 4.5, 4.6\n\nClaude Sonnet 4, 4.5, 4.6\n\nClaude Haiku 4.5\n\nLas restricciones aplican cuando se activa thinking en la request. Sin thinking activado, estos modelos aceptan los parámetros tradicionales (con las excepciones que se indican abajo).\n\nParámetros bloqueados o restringidos con extended thinking\nRestricciones adicionales en modelos 4.5+ (incluso SIN thinking)\n\nClaude Sonnet 4.5 y Claude Haiku 4.5 (y posteriores) introdujeron una nueva regla que aplica siempre, no solo con thinking:\n\nEsto significa que código que funcionaba con Claude 3.5 Sonnet puede romperse al migrar a Claude 4.5/4.6 si especificabas ambos parámetros simultáneamente.\n\nNuevos parámetros introducidos\nEjemplo de migración\nfrom anthropic import Anthropic\n\nclient = Anthropic()\n\n# ❌ ANTIGUO estilo — falla con Claude 4.5+\nresponse = client.messages.create(\n    model=\"claude-sonnet-4-6-20250514\",\n    messages=[{\"role\": \"user\", \"content\": \"Should we use microservices?\"}],\n    max_tokens=500,\n    temperature=0.3,\n    top_p=0.9                 # ❌ Cannot specify both temperature and top_p in 4.5+\n)\n# Error: temperature and top_p cannot both be specified for this model.\n\n# ✅ NUEVO estilo — pick one\nresponse = client.messages.create(\n    model=\"claude-sonnet-4-6-20250514\",\n    messages=[{\"role\": \"user\", \"content\": \"Sh"
+}

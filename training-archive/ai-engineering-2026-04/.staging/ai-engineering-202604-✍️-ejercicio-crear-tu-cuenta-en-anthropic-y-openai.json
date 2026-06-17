@@ -1,0 +1,159 @@
+{
+  "slug": "ai-engineering-202604-✍️-ejercicio-crear-tu-cuenta-en-anthropic-y-openai",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-crear-tu-cuenta-en-anthropic-y-openai",
+  "title": "✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI",
+  "archived_at": "2026-06-12T09:20:59.817Z",
+  "group_hint": "01-session",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724136"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-crear-tu-cuenta-en-anthropic-y-openai"
+    },
+    {
+      "text": "✍️ Ejercicio - Respuesta de modelo via API",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-respuesta-de-modelo-via-api"
+    },
+    {
+      "text": "✍️ Ejercicio - Tener google colab inicializado con las claves de api de openAI o anthropic y una llamada",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-tener-google-colab-inicializado-con-las-claves-de-api-de-openai-o-anthropic-y-una-llamada"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de OpenAI 🔴 — 25 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-openai-%F0%9F%94%B4-25-min"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de Anthropic 🔴 — 25 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-anthropic-%F0%9F%94%B4-25-min"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de Gemini 🔴 — 24 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-gemini-%F0%9F%94%B4-24-min"
+    },
+    {
+      "text": "🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-parametros-en-modelos-de-razonamiento-%F0%9F%94%B4-12-min"
+    },
+    {
+      "text": "🗒️ Tokenización: conceptos avanzados 🔴 — 39 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-tokenizacion-conceptos-avanzados-%F0%9F%94%B4-39-min"
+    },
+    {
+      "text": "🗒️ Comparación de modelos 2026 🔴 — 17 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-comparacion-de-modelos-2026-%F0%9F%94%B4-17-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724179"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><div class=\"profile-attribution-link-container toggle-with-presence is-small has-centered-name is-profile-preview-on-name\" data-user-id=\"36030888\" data-space-id=\"7296662\"><div class=\"profile-preview-avatar-region mighty-attribution-avatar\"><div class=\"MuiStack-root css-8v90jo\"><div class=\"MuiBox-root css-4g6ai3\" data-id=\"profile-preview-avatar-trigger\"><div class=\"MuiAvatar-root MuiAvatar-circleTiny css-14n2uyv\"><img alt=\"Antonio Perez\" src=\"https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=192&amp;h=192&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\" class=\"MuiAvatar-img css-45do71\"></div></div><div class=\"MuiStack-root css-j7qwjs\"><div class=\"MuiStack-root css-2nqau9\"><div><div class=\"MuiBox-root css-i6bazn\"><a title=\"Antonio Perez\" class=\"mighty-attribution-name text-color-title-link navigate\" href=\"https://training.lidr.co/members/36030888\" data-id=\"mighty-link\"><span class=\"MuiTypography-root MuiTypography-labelLargeBold MuiTypography-noWrap css-1vlsy68\">Antonio Perez</span></a></div></div><div class=\"MuiBox-root css-9w4vf0\" role=\"status\" aria-label=\"Host\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" fill=\"none\" class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeTiny css-qndboc\" focusable=\"false\" aria-hidden=\"true\" data-id=\"role-icon-host\"><path d=\"M7.99601 0.838063C7.80872 0.841426 7.59588 0.87403 7.38859 0.957204C7.2175 1.02591 6.97491 1.16003 6.79386 1.41326L6.72062 1.52947L6.61808 1.70134C6.36202 2.10055 5.99106 2.47782 5.45988 2.67009C4.66685 2.95701 3.99953 2.8625 3.58976 2.74138L3.43644 2.70427C3.07585 2.63462 2.69885 2.68785 2.37492 2.85857C1.99098 3.06096 1.65548 3.44964 1.59269 3.98748C1.49041 4.86596 1.41289 6.49177 1.70011 9.00408C1.94204 11.12 3.29599 12.5534 4.56437 13.4484C5.83565 14.3454 7.14428 14.794 7.57609 14.9279C7.85325 15.0138 8.14758 15.0138 8.42472 14.9279C8.8565 14.7941 10.1658 14.3456 11.4374 13.4484C12.706 12.5534 14.0599 11.1204 14.3007 9.00408C14.5935 6.42919 14.5056 4.78585 14.4003 3.924L14.3651 3.73259C14.155 2.87732 13.3015 2.5531 12.6513 2.63396L12.5155 2.6574L12.3456 2.6906C11.9186 2.76181 11.2816 2.77924 10.54 2.51092C9.93078 2.2905 9.54027 1.87006 9.29093 1.47088L9.21281 1.36052C9.02191 1.11869 8.77726 0.995137 8.60538 0.933767C8.39657 0.85921 8.18358 0.834731 7.99601 0.838063ZM8.04679 3.13689C8.46762 3.62136 9.05327 4.09907 9.85929 4.3908C10.8779 4.75935 11.7862 4.77552 12.4638 4.6906C12.5208 5.50386 12.5347 6.83991 12.3144 8.77752C12.164 10.0993 11.3148 11.0881 10.2851 11.8146C9.39191 12.4448 8.45392 12.8064 8.00089 12.9601C7.54821 12.8065 6.61007 12.445 5.71671 11.8146C4.68717 11.0881 3.83766 10.0996 3.68644 8.77752C3.47259 6.90716 3.47902 5.59739 3.53117 4.77752C4.21588 4.90179 5.12452 4.91855 6.14054 4.55095C7.01178 4.23562 7.62374 3.68319 8.04679 3.13689Z\" fill=\"currentColor\"></path><path d=\"M9.20373 5.90341C9.53907 5.46459 10.1665 5.38065 10.6053 5.71598C11.0441 6.0513 11.128 6.67872 10.7927 7.11754L8.25432 10.4392C8.08461 10.6613 7.8294 10.8025 7.55107 10.8281C7.27266 10.8537 6.99567 10.7618 6.78831 10.5743L5.32761 9.25297C4.91811 8.88261 4.88605 8.25008 5.25621 7.84046C5.62661 7.43092 6.2591 7.39879 6.66871 7.76906L7.32411 8.36229L9.20373 5.90341Z\" fill=\"currentColor\"></path></svg></div></div></div></div></div>\n</div></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\"></p><h2 dir=\"auto\">Alta en las APIs de OpenAI y Anthropic</h2><p dir=\"auto\"><span dir=\"auto\" data-name=\"warning\" data-type=\"emoji\">⚠</span><strong> </strong>Completa este ejercicio antes de abordar el ejercicio de código (parte 2).</p><hr dir=\"auto\"><h2 dir=\"auto\">Objetivo</h2><p dir=\"auto\">Crear una cuenta de desarrollador en OpenAI y/o en Anthropic, configurar la facturación en al menos uno de los dos proveedores, y generar una API key funcional que utilizarás durante todo el programa.</p><h2 dir=\"auto\">Entregable</h2><p dir=\"auto\">No hay entrega formal. Al finalizar este ejercicio debes tener:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Cuenta activa en <strong>OpenAI Platform</strong> con una API key generada</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Cuenta activa en <strong>Anthropic Console</strong> con una API key generada</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Facturación configurada y crédito disponible en <strong>al menos uno</strong> de los dos proveedores (el que elijas como principal para el ejercicio de código)</p></li>\n</ul><hr dir=\"auto\"><h2 dir=\"auto\">Parte <span dir=\"auto\" data-name=\"a\" data-type=\"emoji\">🅰</span> — OpenAI</h2><h3 dir=\"auto\">1. Crear la cuenta</h3><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Ve a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"http://platform.openai.com\"><span style=\"color:var(--tt-color-text-blue);\">platform.openai.com</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span>— esta es la plataforma de API, separada de <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"http://chatgpt.com\"><span style=\"color:var(--tt-color-text-blue);\">chatgpt.com</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Haz clic en <strong>Sign up</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Regístrate con tu email, o usa tu cuenta de Google o Microsoft</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Verifica tu email y completa la verificación por SMS con tu número de teléfono</p></li>\n</ol><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\">Si ya tienes una cuenta de ChatGPT, puedes usar las mismas credenciales para acceder a la plataforma de API. Sin embargo, la facturación de la API es independiente de tu suscripción a ChatGPT.</p></blockquote><h3 dir=\"auto\">2. Configurar la facturación</h3><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Una vez dentro del dashboard, ve a <strong>Settings → Billing</strong> o accede directamente a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://platform.openai.com/settings/organization/billing/overview\"><span style=\"color:var(--tt-color-text-blue);\">platform.openai.com/settings/organization/billing</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Haz clic en <strong>Add credit</strong> e introduce los datos de tu tarjeta de crédito o débito</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Añade un mínimo de <strong>5 USD</strong> de crédito (suficiente para semanas de uso en el programa)</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Recomendado:</strong> Configura un límite de gasto mensual para evitar sorpresas. La sección de Usage Limits te permite definir un tope</p></li>\n</ol><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\">OpenAI funciona con un sistema de crédito prepago. Sin saldo, las llamadas a la API devuelven error.</p></blockquote><h3 dir=\"auto\">3. Generar la API key</h3><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Ve a <strong>API Keys</strong> en el menú lateral, o accede directamente a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://platform.openai.com/api-keys\"><span style=\"color:var(--tt-color-text-blue);\">platform.openai.com/api-keys</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Haz clic en <strong>Create new secret key</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Dale un nombre descriptivo (por ejemplo, <code class=\"tiptap-code\">master-ai-engineering</code>)</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Copia la key inmediatamente y guárdala en un lugar seguro</p></li>\n</ol><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\"><strong>La key solo se muestra una vez.</strong> Si cierras el diálogo sin copiarla, no podrás recuperarla y tendrás que generar una nueva. Usa un gestor de contraseñas o un archivo seguro.</p></blockquote><h3 dir=\"auto\">Verificación</h3><p dir=\"auto\">Confirma que tu setup es correcto revisando estos puntos:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">[ ] Tienes acceso al dashboard en<span style=\"color:var(--tt-color-text-blue);\"> </span><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"http://platform.openai.com\"><span style=\"color:var(--tt-color-text-blue);\">platform.openai.com</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">[ ] Tu saldo en Billing es superior a 0 USD</p></li>\n<li dir=\"auto\"><p dir=\"auto\">[ ] Tienes una API key copiada y guardada (empieza por <code class=\"tiptap-code\">sk-</code>)</p></li>\n</ul><hr dir=\"auto\"><h2 dir=\"auto\">Parte <span dir=\"auto\" data-name=\"b\" data-type=\"emoji\">🅱</span> — Anthropic</h2><h3 dir=\"auto\">1. Crear la cuenta</h3><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Ve a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"http://console.anthropic.com\"><span style=\"color:var(--tt-color-text-blue);\">console.anthropic.com</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Haz clic en <strong>Sign up</strong> o <strong>Continue with Google</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Completa el registro con tu email y verifica tu cuenta</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Es posible que Anthropic te pida verificación por SMS con tu número de teléfono</p></li>\n</ol><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\">Las cuentas nuevas pueden recibir una pequeña cantidad de créditos gratuitos para pruebas iniciales. Si los tienes disponibles, te pedirá verificar tu número de teléfono para reclamarlos.</p></blockquote><h3 dir=\"auto\">2. Configurar la facturación</h3><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">En el menú lateral del console, ve a <strong>Settings → Billing</strong> o accede directamente a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://console.anthropic.com/settings/billing\"><span style=\"color:var(--tt-color-text-blue);\">console.anthropic.com/settings/billing</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Selecciona el plan <strong>Build</strong> (pay-as-you-go) — es el adecuado para uso individual</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Introduce los datos de tu tarjeta y compra un mínimo de <strong>5 USD</strong> en créditos</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Recomendado:</strong> Configura un límite de gasto mensual en la misma sección de Billing</p></li>\n</ol><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\">Anthropic funciona con un sistema de crédito prepago similar al de OpenAI. Sin crédito, las llamadas devuelven error.</p></blockquote><h3 dir=\"auto\">3. Generar la API key</h3><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">En el menú lateral, haz clic en el icono de llave o navega a <strong>API Keys</strong>, o accede directamente a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://console.anthropic.com/settings/keys\"><span style=\"color:var(--tt-color-text-blue);\">console.anthropic.com/settings/keys</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Haz clic en <strong>Create Key</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Dale un nombre descriptivo (por ejemplo, <code class=\"tiptap-code\">master-ai-engineering</code>)</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Copia la key inmediatamente y guárdala en un lugar seguro</p></li>\n</ol><blockquote dir=\"auto\" class=\"tiptap-blockquote-standard\"><p dir=\"auto\">Igual que con OpenAI, <strong>la key solo se muestra una vez.</strong> Las keys de Anthropic empiezan por <code class=\"tiptap-code\">sk-ant-</code>.</p></blockquote><h3 dir=\"auto\">Verificación</h3><p dir=\"auto\">Confirma que tu setup es correcto revisando estos puntos:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">[ ] Tienes acceso al dashboard en <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"http://console.anthropic.com\"><span style=\"color:var(--tt-color-text-blue);\">console.anthropic.com</span></a></p></li>\n<li dir=\"auto\"><p dir=\"auto\">[ ] Tienes crédito disponible (gratuito o comprado)</p></li>\n<li dir=\"auto\"><p dir=\"auto\">[ ] Tienes una API key copiada y guardada (empieza por <code class=\"tiptap-code\">sk-ant-</code>)</p></li>\n</ul><hr dir=\"auto\"><h3 dir=\"auto\">\n<span dir=\"auto\" data-name=\"warning\" data-type=\"emoji\">⚠</span>Seguridad de las API keys</h3><p dir=\"auto\">Trata tus API keys como contraseñas. Cualquier persona con acceso a tu key puede hacer llamadas que se cargarán a tu cuenta. Tres reglas básicas:</p><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><strong>Nunca las escribas directamente en tu código.</strong> Usa variables de entorno o el gestor de Secrets de Google Colab (ver la guía de Colab del programa).</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Nunca las subas a un repositorio.</strong> Ni público ni privado. Añade <code class=\"tiptap-code\">.env</code> a tu <code class=\"tiptap-code\">.gitignore</code>.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Si sospechas que una key ha sido expuesta</strong>, revócala inmediatamente desde el dashboard del proveedor y genera una nueva.</p></li>\n</ol><p dir=\"auto\"></p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI</h1>\n",
+  "imgs": [
+    {
+      "alt": "Antonio Perez",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=192&h=192&fit=crop&crop=faces&impolicy=Avatar"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI\nAntonio Perez\n\nAlta en las APIs de OpenAI y Anthropic\n\n⚠ Completa este ejercicio antes de abordar el ejercicio de código (parte 2).\n\nObjetivo\n\nCrear una cuenta de desarrollador en OpenAI y/o en Anthropic, configurar la facturación en al menos uno de los dos proveedores, y generar una API key funcional que utilizarás durante todo el programa.\n\nEntregable\n\nNo hay entrega formal. Al finalizar este ejercicio debes tener:\n\nCuenta activa en OpenAI Platform con una API key generada\n\nCuenta activa en Anthropic Console con una API key generada\n\nFacturación configurada y crédito disponible en al menos uno de los dos proveedores (el que elijas como principal para el ejercicio de código)\n\nParte 🅰 — OpenAI\n1. Crear la cuenta\n\nVe a platform.openai.com — esta es la plataforma de API, separada de chatgpt.com\n\nHaz clic en Sign up\n\nRegístrate con tu email, o usa tu cuenta de Google o Microsoft\n\nVerifica tu email y completa la verificación por SMS con tu número de teléfono\n\nSi ya tienes una cuenta de ChatGPT, puedes usar las mismas credenciales para acceder a la plataforma de API. Sin embargo, la facturación de la API es independiente de tu suscripción a ChatGPT.\n\n2. Configurar la facturación\n\nUna vez dentro del dashboard, ve a Settings → Billing o accede directamente a platform.openai.com/settings/organization/billing\n\nHaz clic en Add credit e introduce los datos de tu tarjeta de crédito o débito\n\nAñade un mínimo de 5 USD de crédito (suficiente para semanas de uso en el programa)\n\nRecomendado: Configura un límite de gasto mensual para evitar sorpresas. La sección de Usage Limits te permite definir un tope\n\nOpenAI funciona con un sistema de crédito prepago. Sin saldo, las llamadas a la API devuelven error.\n\n3. Generar la API key\n\nVe a API Keys en el menú lateral, o accede directamente a platform.openai.com/api-keys\n\nHaz clic en Create new secret key\n\nDale un nombre descriptivo (por ejemplo, master-ai-engineering)\n\nCopia la key inmediatamente y guárdala en un lugar seguro\n\nLa key solo se muestra una vez. Si cierras el diálogo sin copiarla, no podrás recuperarla y tendrás que generar una nueva. Usa un gestor de contraseñas o un archivo seguro.\n\nVerificación\n\nConfirma que tu setup es correcto revisando estos puntos:\n\n[ ] Tienes acceso al dashboard en platform.openai.com\n\n[ ] Tu saldo en Billing es superior a 0 USD\n\n[ ] Tienes una API key copiada y guardada (empieza por sk-)\n\nParte 🅱 — Anthropic\n1. Crear la cuenta\n\nVe a console.anthropic.com\n\nHaz clic en Sign up o Continue with Google\n\nCompleta el registro con tu email y verifica tu cuenta\n\nEs posible que Anthropic te pida verificación por SMS con tu número de teléfono\n\nLas cuentas nuevas pueden recibir una pequeña cantidad de créditos gratuitos para pruebas iniciales. Si los tienes disponibles, te pedirá verificar tu número de teléfono para reclamarlos.\n\n2. Configurar la facturación\n\nEn el menú lateral del console, ve a Settings → Billing o accede directamente a console.anthropic.com/settings/billing\n\nSelecciona el plan Build (pay-as-you-go) — es el adecuado para uso individual\n\nIntroduce los datos de tu tarjeta y compra un mínimo de 5 USD en créditos\n\nRecomendado: Configura un límite de gasto mensual en la misma sección de Billing\n\nAnthropic funciona con un sistema de crédito prepago similar al de OpenAI. Sin crédito, las llamadas devuelven error.\n\n3. Generar la API key\n\nEn el menú lateral, haz clic en el icono de llave o navega a API Keys, o accede directamente a console.anthropic.com/settings/keys\n\nHaz clic en Create Key\n\nDale un nombre descriptivo (por ejemplo, master-ai-engineering)\n\nCopia la key inmediatamente y guárdala en un lugar seguro\n\nIgual que con OpenAI, la key solo se muestra una vez. Las keys de Anthropic empiezan por sk-ant-.\n\nVerificación\n\nConfirma que tu setup es correcto revisando estos puntos:\n\n[ ] Tienes acceso al dashboard en console.anthropic.com\n\n[ ] Tienes crédito disponible (gratuito o comprado)\n\n[ ] Tienes una API ke"
+}

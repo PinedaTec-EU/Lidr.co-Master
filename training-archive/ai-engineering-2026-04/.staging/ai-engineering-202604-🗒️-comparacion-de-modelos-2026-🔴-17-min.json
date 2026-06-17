@@ -1,0 +1,191 @@
+{
+  "slug": "ai-engineering-202604-🗒️-comparacion-de-modelos-2026-🔴-17-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-🗒️-comparacion-de-modelos-2026-🔴-17-min",
+  "title": "🗒️ Comparación de modelos 2026 🔴 — 17 min",
+  "archived_at": "2026-06-12T09:21:10.916Z",
+  "group_hint": "01-session",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724179"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "✍️ Ejercicio - Crear tu cuenta en Anthropic y OpenAI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-crear-tu-cuenta-en-anthropic-y-openai"
+    },
+    {
+      "text": "✍️ Ejercicio - Respuesta de modelo via API",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-respuesta-de-modelo-via-api"
+    },
+    {
+      "text": "✍️ Ejercicio - Tener google colab inicializado con las claves de api de openAI o anthropic y una llamada",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-tener-google-colab-inicializado-con-las-claves-de-api-de-openai-o-anthropic-y-una-llamada"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de OpenAI 🔴 — 25 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-openai-%F0%9F%94%B4-25-min"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de Anthropic 🔴 — 25 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-anthropic-%F0%9F%94%B4-25-min"
+    },
+    {
+      "text": "🗒️ Estructura de una llamada al API de Gemini 🔴 — 24 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-estructura-de-una-llamada-al-api-de-gemini-%F0%9F%94%B4-24-min"
+    },
+    {
+      "text": "🗒️ Parámetros en modelos de razonamiento 🔴 — 12 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-parametros-en-modelos-de-razonamiento-%F0%9F%94%B4-12-min"
+    },
+    {
+      "text": "🗒️ Tokenización: conceptos avanzados 🔴 — 39 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-tokenizacion-conceptos-avanzados-%F0%9F%94%B4-39-min"
+    },
+    {
+      "text": "🗒️ Comparación de modelos 2026 🔴 — 17 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%92%EF%B8%8F-comparacion-de-modelos-2026-%F0%9F%94%B4-17-min"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>🗒️ Comparación de modelos 2026 🔴 — 17 min</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><div class=\"profile-attribution-link-container toggle-with-presence is-small has-centered-name is-profile-preview-on-name\" data-user-id=\"36030888\" data-space-id=\"7296662\"><div class=\"profile-preview-avatar-region mighty-attribution-avatar\"><div class=\"MuiStack-root css-8v90jo\"><div class=\"MuiBox-root css-4g6ai3\" data-id=\"profile-preview-avatar-trigger\"><div class=\"MuiAvatar-root MuiAvatar-circleTiny css-14n2uyv\"><img alt=\"Antonio Perez\" src=\"https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=192&amp;h=192&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\" class=\"MuiAvatar-img css-45do71\"></div></div><div class=\"MuiStack-root css-j7qwjs\"><div class=\"MuiStack-root css-2nqau9\"><div><div class=\"MuiBox-root css-i6bazn\"><a title=\"Antonio Perez\" class=\"mighty-attribution-name text-color-title-link navigate\" href=\"https://training.lidr.co/members/36030888\" data-id=\"mighty-link\"><span class=\"MuiTypography-root MuiTypography-labelLargeBold MuiTypography-noWrap css-1vlsy68\">Antonio Perez</span></a></div></div><div class=\"MuiBox-root css-9w4vf0\" role=\"status\" aria-label=\"Host\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" fill=\"none\" class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeTiny css-qndboc\" focusable=\"false\" aria-hidden=\"true\" data-id=\"role-icon-host\"><path d=\"M7.99601 0.838063C7.80872 0.841426 7.59588 0.87403 7.38859 0.957204C7.2175 1.02591 6.97491 1.16003 6.79386 1.41326L6.72062 1.52947L6.61808 1.70134C6.36202 2.10055 5.99106 2.47782 5.45988 2.67009C4.66685 2.95701 3.99953 2.8625 3.58976 2.74138L3.43644 2.70427C3.07585 2.63462 2.69885 2.68785 2.37492 2.85857C1.99098 3.06096 1.65548 3.44964 1.59269 3.98748C1.49041 4.86596 1.41289 6.49177 1.70011 9.00408C1.94204 11.12 3.29599 12.5534 4.56437 13.4484C5.83565 14.3454 7.14428 14.794 7.57609 14.9279C7.85325 15.0138 8.14758 15.0138 8.42472 14.9279C8.8565 14.7941 10.1658 14.3456 11.4374 13.4484C12.706 12.5534 14.0599 11.1204 14.3007 9.00408C14.5935 6.42919 14.5056 4.78585 14.4003 3.924L14.3651 3.73259C14.155 2.87732 13.3015 2.5531 12.6513 2.63396L12.5155 2.6574L12.3456 2.6906C11.9186 2.76181 11.2816 2.77924 10.54 2.51092C9.93078 2.2905 9.54027 1.87006 9.29093 1.47088L9.21281 1.36052C9.02191 1.11869 8.77726 0.995137 8.60538 0.933767C8.39657 0.85921 8.18358 0.834731 7.99601 0.838063ZM8.04679 3.13689C8.46762 3.62136 9.05327 4.09907 9.85929 4.3908C10.8779 4.75935 11.7862 4.77552 12.4638 4.6906C12.5208 5.50386 12.5347 6.83991 12.3144 8.77752C12.164 10.0993 11.3148 11.0881 10.2851 11.8146C9.39191 12.4448 8.45392 12.8064 8.00089 12.9601C7.54821 12.8065 6.61007 12.445 5.71671 11.8146C4.68717 11.0881 3.83766 10.0996 3.68644 8.77752C3.47259 6.90716 3.47902 5.59739 3.53117 4.77752C4.21588 4.90179 5.12452 4.91855 6.14054 4.55095C7.01178 4.23562 7.62374 3.68319 8.04679 3.13689Z\" fill=\"currentColor\"></path><path d=\"M9.20373 5.90341C9.53907 5.46459 10.1665 5.38065 10.6053 5.71598C11.0441 6.0513 11.128 6.67872 10.7927 7.11754L8.25432 10.4392C8.08461 10.6613 7.8294 10.8025 7.55107 10.8281C7.27266 10.8537 6.99567 10.7618 6.78831 10.5743L5.32761 9.25297C4.91811 8.88261 4.88605 8.25008 5.25621 7.84046C5.62661 7.43092 6.2591 7.39879 6.66871 7.76906L7.32411 8.36229L9.20373 5.90341Z\" fill=\"currentColor\"></path></svg></div></div></div></div></div>\n</div></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\" style=\"text-align:center;\"><span dir=\"auto\" data-name=\"hourglass_flowing_sand\" data-type=\"emoji\">⏳</span><span style=\"color:rgb(114, 124, 139);\"> Tiempo estimado: 17 min</span></p><p dir=\"auto\">⚠️ Los precios y modelos en el mercado de LLMs cambian con frecuencia. Este documento refleja el estado del mercado a 1 de abril de 2026. Consulta siempre las páginas oficiales de precios antes de tomar decisiones que afecten a producción.</p><hr dir=\"auto\"><h2 dir=\"auto\">1. Panorama de proveedores</h2><p dir=\"auto\">El mercado de LLMs comerciales está dominado por cinco proveedores principales, cada uno con una estrategia diferenciada. Además, existe un ecosistema creciente de modelos open source y agregadores que permiten acceder a múltiples proveedores desde una sola interfaz.</p><h3 dir=\"auto\">Los cinco grandes</h3><p dir=\"auto\"><strong>OpenAI</strong> — El líder en amplitud de catálogo. Su familia GPT-5.4 (lanzada en marzo 2026) cubre desde modelos ultra-baratos (Nano) hasta modelos premium con razonamiento avanzado (Pro). Pionero en computer use y herramientas integradas (web search, code interpreter). La empresa con mayor ecosistema de desarrolladores y documentación.</p><p dir=\"auto\"><strong>Anthropic</strong> — Posicionado en calidad y seguridad. Su familia Claude (Haiku 4.5, Sonnet 4.6, Opus 4.6) ofrece tres tiers claros. Opus 4.6 lidera benchmarks de ingeniería de software (SWE-Bench Verified). Ventana de contexto de hasta 1M de tokens en Opus y Sonnet. Fuerte en prompt caching (hasta 90% de descuento en cache hits).</p><p dir=\"auto\"><strong>Google</strong> — Ventaja en integración con su ecosistema (Workspace, Cloud, Vertex AI). Su familia Gemini abarca desde Flash (ultra-barato) hasta Pro (competidor premium). Soporte nativo multimodal fuerte (texto, imagen, audio, vídeo). Precios agresivos en los tiers de entrada.</p><p dir=\"auto\"><strong>xAI (Grok)</strong> — La propuesta de Elon Musk. Grok 4 compite en el segmento premium y Grok 4.1 Fast ofrece la ventana de contexto más grande del mercado (2M tokens). Precios competitivos y acceso a datos en tiempo real de la plataforma X. Nicho más fuerte en razonamiento científico.</p><p dir=\"auto\"><strong>DeepSeek</strong> — El disruptor chino de precios. DeepSeek V3.2 ofrece calidad comparable a modelos que cuestan 50-100x más. Precios extremadamente bajos ($0.14-$0.28/MTok). Modelo open source disponible. La contrapartida: los datos pasan por servidores en China, lo que puede ser un problema para ciertos casos de uso por compliance.</p><h3 dir=\"auto\">Otros proveedores relevantes</h3><p dir=\"auto\"><strong>Mistral</strong> (Francia) — Modelos open source con licencia Apache 2.0. Mistral Small y Medium ofrecen excelente relación calidad/precio para deployments donde el control total de los datos es requisito.</p><p dir=\"auto\"><strong>Meta (Llama)</strong> — Modelos open source de referencia. Llama 4 Scout y Maverick disponibles gratuitamente. Requieren infraestructura propia para ejecutarlos, o acceso vía proveedores de hosting como Together AI, Fireworks, o Amazon Bedrock.</p><p dir=\"auto\"><strong>Cohere</strong> — Especializado en enterprise RAG y búsqueda semántica. Command R+ con soporte nativo para retrieval. Fuerte en multilingual.</p><hr dir=\"auto\"><h2 dir=\"auto\">2. Modelos principales por proveedor</h2><h3 dir=\"auto\">OpenAI</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/aa46400d-0aee-4274-8938-5e39c751dd40/1063ac64f374d544.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540349\"></div><p dir=\"auto\"><strong>Nota:</strong> Los precios se duplican para requests que superen 272K tokens de contexto en GPT-5.4 y GPT-5.4 Pro. Batch API disponible con 50% de descuento en todos los modelos. Cached inputs con hasta 90% de descuento.</p><p dir=\"auto\"><strong>API:</strong> Responses API (recomendada) + Chat Completions API (soportada indefinidamente).</p><h3 dir=\"auto\">Anthropic (Claude)</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/fe2cde81-b173-4a82-b26f-e8e9825e61fb/7ebc69c31919d6da.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540376\"></div><p dir=\"auto\"><strong>Nota:</strong> Prompt caching con descuento del 90% en cache reads (solo 10% del precio base de input). Cache writes cuestan 1.25x del precio base. Batch API disponible con 50% de descuento.</p><p dir=\"auto\"><strong>API:</strong> Messages API (única interfaz).</p><h3 dir=\"auto\">Google (Gemini)</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/93ce1b28-2c82-476d-94cb-0c7c25e3a5cb/605924bd7133be57.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540397\"></div><p dir=\"auto\"><strong>Nota:</strong> Google ofrece context caching con 90% de descuento en cache reads. Integración nativa con Google Cloud (Vertex AI), Workspace, y AI Studio. Tres superficies de producto diferentes (AI Studio, Vertex AI, Gemini API) que pueden generar confusión.</p><p dir=\"auto\"><strong>API:</strong> Gemini API (compatible con formato OpenAI vía adaptadores).</p><h3 dir=\"auto\">xAI (Grok)</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/97b99706-0ac5-4270-923f-53df2c596dd9/4151627967424e07.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540416\"></div><p dir=\"auto\"><strong>API:</strong> Compatible con formato OpenAI.</p><h3 dir=\"auto\">DeepSeek</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/5710f56f-8b09-40a3-a92f-2eb49ec8d513/de3259468a26ebc0.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540426\"></div><p dir=\"auto\"><strong>Nota:</strong> Precios extraordinariamente bajos. Modelo open source disponible para self-hosting. Consideraciones de compliance: datos procesados en servidores en China.</p><h3 dir=\"auto\">Mistral</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/43a178b9-519f-453c-932e-99dda426a30b/92bc52cb266e00d0.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540447\"></div><p dir=\"auto\"><strong>Nota:</strong> Modelos open source con licencia permisiva. Ideales para self-hosting con control total de datos. Empresa europea (Francia), relevante para cumplimiento GDPR.</p><h3 dir=\"auto\">Meta (Llama) — Open Source</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/ed72a18b-f0b2-4901-806e-7ffb06f74490/b33d55bc4dca27b7.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540466\"></div><ul dir=\"auto\"><li dir=\"auto\"><p dir=\"auto\">Los precios indicados son vía proveedores de hosting (Together AI, Fireworks, OpenRouter). Self-hosting es gratuito pero requiere infraestructura GPU.</p></li></ul><hr dir=\"auto\"><h2 dir=\"auto\">3. Comparativa por caso de uso</h2><h3 dir=\"auto\">¿Qué modelo elegir?</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/bf0a927a-281a-410d-a506-dabd30147332/1b3f944e5bad3ff5.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540479\"></div><hr dir=\"auto\"><h2 dir=\"auto\">4. Conceptos clave de pricing</h2><h3 dir=\"auto\">Tokens: la unidad de medida</h3><p dir=\"auto\">Los LLMs facturan por <strong>tokens</strong>, no por palabras ni caracteres. Un token equivale aproximadamente a 4 caracteres en inglés, o unas 0.75 palabras. En español, la proporción es ligeramente peor (más tokens por palabra) debido a las tildes, la ñ y las palabras más largas.</p><p dir=\"auto\">Regla práctica: 1.000 tokens ≈ 750 palabras en inglés ≈ 600 palabras en español.</p><h3 dir=\"auto\">Input vs. Output: la asimetría de precios</h3><p dir=\"auto\">Los tokens de <strong>salida</strong> (lo que genera el modelo) son siempre más caros que los de <strong>entrada</strong> (lo que tú envías), típicamente entre 3x y 10x más caros. Esto es porque cada token de salida requiere una pasada completa del modelo, mientras que los tokens de entrada se procesan en paralelo.</p><p dir=\"auto\">Implicación práctica: optimizar la longitud de las respuestas del modelo tiene un impacto mayor en coste que optimizar la longitud de tus prompts.</p><h3 dir=\"auto\">Prompt caching</h3><p dir=\"auto\">Todos los proveedores principales ofrecen alguna forma de caching. Cuando envías el mismo system prompt o contexto repetidamente, el proveedor puede reutilizar los cálculos internos de esos tokens y cobrarte mucho menos:</p><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/b969d07b-9099-4463-857b-5ee0194c5f80/e84b82dd16d2ac3d.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"153540518\"></div><p dir=\"auto\">El caching es especialmente relevante en arquitecturas CAG y RAG donde el system prompt y el contexto base se repiten en cada llamada.</p><h3 dir=\"auto\">Batch API</h3><p dir=\"auto\">Todos los proveedores principales ofrecen una <strong>Batch API</strong> que procesa requests de forma asíncrona (normalmente en menos de 24 horas) con un 50% de descuento. Ideal para procesamiento masivo que no requiere respuesta en tiempo real: análisis de documentos, generación de contenido, clasificación de datos.</p><hr dir=\"auto\"><h2 dir=\"auto\">5. Agregadores y routers</h2><p dir=\"auto\">Para proyectos que usen múltiples proveedores (como haremos en el programa), existen herramientas que unifican el acceso:</p><h3 dir=\"auto\">OpenRouter</h3><p dir=\"auto\">Plataforma SaaS que da acceso a 500+ modelos de todos los proveedores a través de una sola API y un solo sistema de billing. Cobra un 5.5% sobre los precios base. No requiere cuentas separadas en cada proveedor. Ideal para prototipado y proyectos que necesitan probar múltiples modelos rápidamente. Incluye modelos gratuitos (Llama 3.3, Gemma 3, DeepSeek R1).</p><h3 dir=\"auto\">LiteLLM</h3><p dir=\"auto\">Librería open source que unifica la interfaz de 100+ proveedores en un formato compatible con OpenAI. Se ejecuta en tu infraestructura (self-hosted). Sin markup de precio. Soporta load balancing, fallback automático, y tracking de costes por equipo. Más control pero más setup. Ideal para producción.</p><p dir=\"auto\">Ambas herramientas las exploraremos en el programa cuando construyamos la capa de abstracción de proveedores.</p><hr dir=\"auto\"><h2 dir=\"auto\">6. Tendencias del mercado</h2><p dir=\"auto\"><strong>Los precios caen rápidamente.</strong> El coste de los LLMs ha bajado aproximadamente un 80% entre principios de 2025 y principios de 2026. Lo que hoy cuesta $0.15/MTok hace un año costaba $0.60/MTok. Esta tendencia probablemente continuará.</p><p dir=\"auto\"><strong>Multi-modelo es el estándar.</strong> Las arquitecturas de producción cada vez más usan múltiples modelos: un modelo barato para tareas simples (clasificación, routing), un modelo mid-tier para la mayoría del trabajo, y un modelo premium para casos difíciles. Esto puede reducir costes entre un 60% y un 80% frente a usar siempre el modelo premium.</p><p dir=\"auto\"><strong>El contexto crece.</strong> Las ventanas de contexto han pasado de 4K tokens (GPT-3.5, 2023) a 1-2M tokens (GPT-5.4, Gemini, Grok 4.1 Fast en 2026). Esto habilita arquitecturas CAG más potentes y reduce la necesidad de chunking agresivo en RAG.</p><p dir=\"auto\"><strong>Open source cierra la brecha.</strong> Modelos como Llama 4, DeepSeek V3.2 y Qwen 3 compiten en calidad con modelos comerciales que cuestan 10-50x más. Para empresas con capacidad de infraestructura GPU, el self-hosting es cada vez más viable.</p><hr dir=\"auto\"><h2 dir=\"auto\">Referencias de precios oficiales</h2><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">OpenAI <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://openai.com/api/pricing/\"><span style=\"color:var(--tt-color-text-blue);\">openai.com/api/pricing</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Anthropic <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://docs.anthropic.com/en/docs/about-claude/models\"><span style=\"color:var(--tt-color-text-blue);\">docs.anthropic.com/en/docs/about-claude/models</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Google Gemini <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://ai.google.dev/gemini-api/docs/pricing\"><span style=\"color:var(--tt-color-text-blue);\">ai.google.dev/gemini-api/docs/pricing</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span></p></li>\n<li dir=\"auto\"><p dir=\"auto\">xAI (Grok) <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://docs.x.ai/docs/models\"><span style=\"color:var(--tt-color-text-blue);\">docs.x.ai/docs/models</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span></p></li>\n<li dir=\"auto\"><p dir=\"auto\">DeepSeek <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://platform.deepseek.com/api-docs/pricing\"><span style=\"color:var(--tt-color-text-blue);\">platform.deepseek.com/api-docs/pricing</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span></p></li>\n<li dir=\"auto\"><p dir=\"auto\">Mistral <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://docs.mistral.ai/getting-started/pricing/\"><span style=\"color:var(--tt-color-text-blue);\">docs.mistral.ai/getting-started/pricing</span></a><span style=\"color:var(--tt-color-text-blue);\"> </span></p></li>\n<li dir=\"auto\"><p dir=\"auto\">OpenRouter <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://openrouter.ai/models\"><span style=\"color:var(--tt-color-text-blue);\">openrouter.ai/models</span></a></p></li>\n</ul><p dir=\"auto\"></p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>🗒️ Comparación de modelos 2026 🔴 — 17 min</h1>\n",
+  "imgs": [
+    {
+      "alt": "Antonio Perez",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=192&h=192&fit=crop&crop=faces&impolicy=Avatar"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/aa46400d-0aee-4274-8938-5e39c751dd40/1063ac64f374d544.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/fe2cde81-b173-4a82-b26f-e8e9825e61fb/7ebc69c31919d6da.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/93ce1b28-2c82-476d-94cb-0c7c25e3a5cb/605924bd7133be57.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/97b99706-0ac5-4270-923f-53df2c596dd9/4151627967424e07.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/5710f56f-8b09-40a3-a92f-2eb49ec8d513/de3259468a26ebc0.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/43a178b9-519f-453c-932e-99dda426a30b/92bc52cb266e00d0.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/ed72a18b-f0b2-4901-806e-7ffb06f74490/b33d55bc4dca27b7.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/bf0a927a-281a-410d-a506-dabd30147332/1b3f944e5bad3ff5.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/b969d07b-9099-4463-857b-5ee0194c5f80/e84b82dd16d2ac3d.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "🗒️ Comparación de modelos 2026 🔴 — 17 min\nAntonio Perez\n\n⏳ Tiempo estimado: 17 min\n\n⚠️ Los precios y modelos en el mercado de LLMs cambian con frecuencia. Este documento refleja el estado del mercado a 1 de abril de 2026. Consulta siempre las páginas oficiales de precios antes de tomar decisiones que afecten a producción.\n\n1. Panorama de proveedores\n\nEl mercado de LLMs comerciales está dominado por cinco proveedores principales, cada uno con una estrategia diferenciada. Además, existe un ecosistema creciente de modelos open source y agregadores que permiten acceder a múltiples proveedores desde una sola interfaz.\n\nLos cinco grandes\n\nOpenAI — El líder en amplitud de catálogo. Su familia GPT-5.4 (lanzada en marzo 2026) cubre desde modelos ultra-baratos (Nano) hasta modelos premium con razonamiento avanzado (Pro). Pionero en computer use y herramientas integradas (web search, code interpreter). La empresa con mayor ecosistema de desarrolladores y documentación.\n\nAnthropic — Posicionado en calidad y seguridad. Su familia Claude (Haiku 4.5, Sonnet 4.6, Opus 4.6) ofrece tres tiers claros. Opus 4.6 lidera benchmarks de ingeniería de software (SWE-Bench Verified). Ventana de contexto de hasta 1M de tokens en Opus y Sonnet. Fuerte en prompt caching (hasta 90% de descuento en cache hits).\n\nGoogle — Ventaja en integración con su ecosistema (Workspace, Cloud, Vertex AI). Su familia Gemini abarca desde Flash (ultra-barato) hasta Pro (competidor premium). Soporte nativo multimodal fuerte (texto, imagen, audio, vídeo). Precios agresivos en los tiers de entrada.\n\nxAI (Grok) — La propuesta de Elon Musk. Grok 4 compite en el segmento premium y Grok 4.1 Fast ofrece la ventana de contexto más grande del mercado (2M tokens). Precios competitivos y acceso a datos en tiempo real de la plataforma X. Nicho más fuerte en razonamiento científico.\n\nDeepSeek — El disruptor chino de precios. DeepSeek V3.2 ofrece calidad comparable a modelos que cuestan 50-100x más. Precios extremadamente bajos ($0.14-$0.28/MTok). Modelo open source disponible. La contrapartida: los datos pasan por servidores en China, lo que puede ser un problema para ciertos casos de uso por compliance.\n\nOtros proveedores relevantes\n\nMistral (Francia) — Modelos open source con licencia Apache 2.0. Mistral Small y Medium ofrecen excelente relación calidad/precio para deployments donde el control total de los datos es requisito.\n\nMeta (Llama) — Modelos open source de referencia. Llama 4 Scout y Maverick disponibles gratuitamente. Requieren infraestructura propia para ejecutarlos, o acceso vía proveedores de hosting como Together AI, Fireworks, o Amazon Bedrock.\n\nCohere — Especializado en enterprise RAG y búsqueda semántica. Command R+ con soporte nativo para retrieval. Fuerte en multilingual.\n\n2. Modelos principales por proveedor\nOpenAI\n\nNota: Los precios se duplican para requests que superen 272K tokens de contexto en GPT-5.4 y GPT-5.4 Pro. Batch API disponible con 50% de descuento en todos los modelos. Cached inputs con hasta 90% de descuento.\n\nAPI: Responses API (recomendada) + Chat Completions API (soportada indefinidamente).\n\nAnthropic (Claude)\n\nNota: Prompt caching con descuento del 90% en cache reads (solo 10% del precio base de input). Cache writes cuestan 1.25x del precio base. Batch API disponible con 50% de descuento.\n\nAPI: Messages API (única interfaz).\n\nGoogle (Gemini)\n\nNota: Google ofrece context caching con 90% de descuento en cache reads. Integración nativa con Google Cloud (Vertex AI), Workspace, y AI Studio. Tres superficies de producto diferentes (AI Studio, Vertex AI, Gemini API) que pueden generar confusión.\n\nAPI: Gemini API (compatible con formato OpenAI vía adaptadores).\n\nxAI (Grok)\n\nAPI: Compatible con formato OpenAI.\n\nDeepSeek\n\nNota: Precios extraordinariamente bajos. Modelo open source disponible para self-hosting. Consideraciones de compliance: datos procesados en servidores en China.\n\nMistral\n\nNota: Modelos open source con licencia permisiva. Ideales para self-"
+}
