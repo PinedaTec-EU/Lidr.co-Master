@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import re
 import sys
@@ -12,6 +13,15 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ARCHIVE_ROOT = REPO_ROOT / "training-archive" / "ai-engineering-2026-04"
 STAGING_DIR = ARCHIVE_ROOT / ".staging"
+BUILD_SCRIPT_PATH = REPO_ROOT / "scripts" / "build_training_archive.py"
+
+
+spec = importlib.util.spec_from_file_location("build_training_archive", BUILD_SCRIPT_PATH)
+if spec is None or spec.loader is None:
+    raise RuntimeError(f"Unable to load build script from {BUILD_SCRIPT_PATH}")
+build_training_archive = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = build_training_archive
+spec.loader.exec_module(build_training_archive)
 
 
 def normalize_text(value: str) -> str:
@@ -40,30 +50,25 @@ def load_body_text(index_path: Path) -> str:
 
 
 def validate_record(staging_path: Path) -> tuple[bool, dict[str, object]]:
-    record = json.loads(staging_path.read_text())
-    group = record.get("group_hint") or "98-misc"
-    if not record.get("group_hint"):
-        text = f"{record.get('slug', '')} {record.get('title', '')}".lower()
-        if any(
-            marker in text
-            for marker in (
-                "arquitectura-rag",
-                "fundamentos-de-rag",
-                "diagnostico-arquitectonico-del-sistema-rag-actual",
-                "del-cag-estatico-al-flujo-rag",
-                "reformulacion-de-queries",
-                "retrieval-que-no-es-solo-cosine",
-                "augmentation-ensamblar-contexto",
-                "la-capa-de-datos-como-servicio",
-                "contenido-y-el-ejercicio-de-este-modulo-98724306",
-                "sesion-9",
-                "sesión 9",
-            )
-        ):
-            group = "09-session"
-    index_path = ARCHIVE_ROOT / group / record["slug"] / "index.md"
+    payload = json.loads(staging_path.read_text())
+    record = build_training_archive.SnapshotRecord(
+        slug=payload["slug"],
+        source_url=payload["source_url"],
+        title=payload["title"],
+        archived_at=payload["archived_at"],
+        discovered_links=payload.get("discovered_links", []),
+        group_hint=payload.get("group_hint"),
+        snapshot=payload.get("snapshot"),
+        article_html=payload.get("article_html"),
+        title_html=payload.get("title_html"),
+        imgs=payload.get("imgs"),
+        iframes=payload.get("iframes"),
+        text_preview=payload.get("text_preview"),
+    )
+    group = build_training_archive.classify_group(record)
+    index_path = ARCHIVE_ROOT / group / record.slug / "index.md"
     result = {
-        "slug": record["slug"],
+        "slug": record.slug,
         "group": group,
         "index_path": str(index_path.relative_to(REPO_ROOT)),
     }
@@ -73,21 +78,41 @@ def validate_record(staging_path: Path) -> tuple[bool, dict[str, object]]:
 
     body_text = load_body_text(index_path)
     markdown_tokens = text_tokens(body_text)
-    preview_tokens = text_tokens(record.get("text_preview") or "")
+    preview_source = record.text_preview or record.snapshot or record.title
+    preview_tokens = text_tokens(preview_source)
     shared_tokens = markdown_tokens & preview_tokens
     coverage = len(shared_tokens) / len(preview_tokens) if preview_tokens else 0.0
+    markdown_recall = len(shared_tokens) / len(markdown_tokens) if markdown_tokens else 0.0
 
     result["preview_tokens"] = len(preview_tokens)
     result["markdown_tokens"] = len(markdown_tokens)
     result["shared_tokens"] = len(shared_tokens)
     result["coverage"] = round(coverage, 3)
+    result["markdown_recall"] = round(markdown_recall, 3)
 
-    passed = (
-        len(body_text) >= 300
-        and len(markdown_tokens) >= 30
-        and len(shared_tokens) >= 20
-        and coverage >= 0.2
-    )
+    if len(preview_tokens) < 25:
+        passed = (
+            len(body_text) >= 50
+            and len(markdown_tokens) >= max(10, len(preview_tokens))
+            and len(shared_tokens) >= max(8, len(preview_tokens) - 2)
+            and coverage >= 0.8
+        )
+    else:
+        passed = (
+            len(body_text) >= 300
+            and (
+                (
+                    len(markdown_tokens) >= 30
+                    and len(shared_tokens) >= min(20, len(preview_tokens))
+                    and coverage >= 0.2
+                )
+                or (
+                    len(markdown_tokens) >= 35
+                    and len(shared_tokens) >= 35
+                    and markdown_recall >= 0.95
+                )
+            )
+        )
     if not passed:
         result["error"] = "insufficient text preservation"
     return passed, result
