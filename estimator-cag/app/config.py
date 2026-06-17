@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    database_url: str = ""
     openai_api_key: str = ""
     openai_base_url: str = ""
     anthropic_api_key: str = ""
@@ -20,6 +21,11 @@ class Settings(BaseSettings):
     vector_database_url: str = ""
     vector_db_initialize_on_start: bool = True
     embedding_context_model: str = "gpt-4o-mini"
+    chunking_default_strategy: str = "structural"
+    chunking_include_parent_context: bool = True
+    chunking_max_characters: int = 900
+    chunking_overlap_characters: int = 120
+    chunking_enable_llm_context: bool = False
     llm_provider: str = "openai"  # openai | anthropic
     llm_model: str = ""
     app_env: str = "development"

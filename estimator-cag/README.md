@@ -192,43 +192,43 @@ Este endpoint ayuda a SIH o a una UI a saber qué variantes de ejecución puede 
 
 ### `POST /api/v1/embeddings/ingest`
 
-Genera embeddings para una lista de presupuestos históricos estructurados.
+Ingiere un presupuesto histórico estructurado, genera sus chunks y embeddings, y persiste todo como `document` + `chunks` en una sola transacción.
 
 Decisiones de diseño relevantes:
 - se mantiene el namespace `/api/v1` para no romper la convención actual del servicio
 - el chunking es pluggable: `structural`, `fixed_window` y `hierarchical`
 - cada chunk puede incluir contexto del presupuesto padre y enriquecimiento opcional vía LLM
-- la persistencia en `pgvector` es opcional por request con `persist=true`
-- el retrieval y la evaluación salen por endpoints separados para no mezclar ingestión con búsqueda
+- la persistencia ya no es opcional en esta fase: la ingesta existe para poblar el corpus searchable
+- el endpoint devuelve métricas e identificadores, no los vectores completos
 
 **Request body:**
 
 ```json
 {
-  "budgets": [
-    {
-      "budget_id": "BUD-2024-001",
-      "client_metadata": {
-        "name": "FintechCorp",
-        "sector": "finance",
-        "country": "ES"
-      },
-      "project_summary": "Mobile banking API with OAuth 2.0 authentication and PSD2 compliance",
-      "main_technology": "ruby_on_rails",
-      "year": 2024,
-      "total_estimated_hours": 480,
-      "components": [
-        {
-          "component_id": "AUTH-001",
-          "name": "OAuth 2.0 authentication backend",
-          "description": "Implementation of authorization code, refresh token and session revocation flows.",
-          "tech_stack": ["ruby_on_rails", "postgresql", "redis"],
-          "complexity": "high",
-          "estimated_hours": 120
-        }
-      ]
-    }
-  ],
+  "source_path": "data/budgets/budget_2024_q1_fintech.json",
+  "document_type": "historical_budget",
+  "content": {
+    "budget_id": "BUD-2024-001",
+    "client_metadata": {
+      "name": "FintechCorp",
+      "sector": "finance",
+      "country": "ES"
+    },
+    "project_summary": "Mobile banking API with OAuth 2.0 authentication and PSD2 compliance",
+    "main_technology": "ruby_on_rails",
+    "year": 2024,
+    "total_estimated_hours": 480,
+    "components": [
+      {
+        "component_id": "AUTH-001",
+        "name": "OAuth 2.0 authentication backend",
+        "description": "Implementation of authorization code, refresh token and session revocation flows.",
+        "tech_stack": ["ruby_on_rails", "postgresql", "redis"],
+        "complexity": "high",
+        "estimated_hours": 120
+      }
+    ]
+  },
   "chunking": {
     "strategy": "structural",
     "include_parent_context": true,
@@ -236,8 +236,7 @@ Decisiones de diseño relevantes:
     "overlap_characters": 120,
     "llm_enrich_context": false
   },
-  "embedding_model": "text-embedding-3-small",
-  "persist": true
+  "embedding_model": "text-embedding-3-small"
 }
 ```
 
@@ -245,43 +244,23 @@ Decisiones de diseño relevantes:
 
 ```json
 {
-  "chunks": [
-    {
-      "chunk_id": "BUD-2024-001::AUTH-001",
-      "text": "[Project: Mobile banking API with OAuth 2.0 authentication and PSD2 compliance]\n[Client sector: finance | Year: 2024 | Main tech: ruby_on_rails]\n\nComponent: OAuth 2.0 authentication backend\nDescription: Implementation of authorization code, refresh token and session revocation flows.\nTech stack: ruby_on_rails, postgresql, redis\nComplexity: high\nEstimated hours: 120",
-      "metadata": {
-        "budget_id": "BUD-2024-001",
-        "component_id": "AUTH-001",
-        "client_sector": "finance",
-        "main_technology": "ruby_on_rails",
-        "year": 2024,
-        "complexity": "high",
-        "estimated_hours": 120
-      },
-      "token_count": 86,
-      "embedding": [0.0123, -0.0456, 0.0789]
-    }
-  ],
-  "stats": {
-    "total_budgets": 1,
-    "total_chunks": 1,
-    "total_tokens": 86,
-    "estimated_cost_usd": 0.00000172,
-    "processing_latency_ms": 142.37,
-    "persisted_chunks": 1
-  }
+  "document_id": 42,
+  "chunks_created": 17,
+  "embedding_dimension": 1536,
+  "ingestion_time_ms": 1240
 }
 ```
 
 **Errores:**
 | Código | Causa |
 |--------|-------|
+| `409`  | ya existe un documento con ese `source_path` |
 | `422`  | payload inválido |
-| `500`  | error al generar embeddings o falta de `OPENAI_API_KEY` |
+| `500`  | error al generar embeddings o al persistir la transacción |
 
-El dataset de ejemplo para pruebas manuales está en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json).
+El dataset de ejemplo sigue estando en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json), pero ahora la API espera un único documento por request. Ese dataset sirve como corpus fuente para construir requests individuales de ingesta.
 
-`stats.processing_latency_ms` mide el tiempo total del pipeline de ingest dentro del backend para esa petición: chunking, preparación y generación de embeddings. No representa únicamente la latencia remota de OpenAI.
+`ingestion_time_ms` mide el tiempo total de chunking, embedding, inserción del documento y persistencia de todos los chunks.
 
 ---
 
@@ -293,24 +272,65 @@ Devuelve las estrategias de chunking y modelos de embeddings soportados.
 
 ### `POST /api/v1/embeddings/search`
 
-Busca chunks persistidos en `pgvector` usando similitud coseno. El request incluye:
-- `query`
-- `top_k`
-- `embedding_model`
-- filtros opcionales por `client_sector`, `main_technology`, `year` y `complexity`
-
-La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos.
+Endpoint heredado del carril semántico anterior. La búsqueda alineada con la sesión 8 se expone en `POST /api/v1/search`.
 
 ---
 
-### `POST /api/v1/embeddings/evaluate`
+### `POST /api/v1/search`
 
-Evalúa retrieval sobre un conjunto de queries etiquetadas y devuelve:
-- resultados por caso
-- `recall@k`
-- `NDCG@k`
+Busca chunks persistidos en `chunks` usando `cosine_distance` sobre `pgvector`.
 
-Esto permite medir si el pipeline semántico recupera los chunks esperados más allá de un sanity check subjetivo.
+**Request body:**
+
+```json
+{
+  "query": "REST API with OAuth authentication for fintech sector",
+  "k": 5,
+  "embedding_model": "text-embedding-3-small"
+}
+```
+
+También admite filtros opcionales de metadata para acotar el retrieval antes de ordenar por distancia vectorial:
+
+```json
+{
+  "query": "REST API with OAuth authentication for fintech sector",
+  "k": 5,
+  "filters": {
+    "client_sector": "finance",
+    "main_technology": "ruby_on_rails",
+    "year": 2024,
+    "document_type": "historical_budget",
+    "chunk_type": "budget_component"
+  }
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "query": "REST API with OAuth authentication for fintech sector",
+  "k": 5,
+  "search_time_ms": 87,
+  "results": [
+    {
+      "chunk_id": 156,
+      "document_id": 12,
+      "chunk_type": "budget_component",
+      "content": "Backend service implementation with JWT-based authentication...",
+      "distance": 0.231,
+      "metadata": {
+        "scope": "backend",
+        "technologies": ["python", "fastapi"]
+      }
+    }
+  ]
+}
+```
+
+La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos y ordena por `cosine_distance` ascendente.
+Los filtros de metadata se aplican en la propia consulta SQL para reducir el corpus elegible antes del ranking semántico.
 
 ---
 
@@ -484,6 +504,38 @@ uv run uvicorn app.main:app --reload
 
 El servicio queda disponible en `http://localhost:8000`.
 
+### Preparación de PostgreSQL + pgvector para la sesión 8
+
+El carril semántico usa dos URLs distintas a propósito:
+
+- `DATABASE_URL`: conexión async de SQLAlchemy/Alembic sobre `asyncpg`
+- `VECTOR_DATABASE_URL`: conexión simple usada por el adapter actual de `pgvector`
+
+Arranque mínimo recomendado:
+
+```bash
+docker compose up -d pgvector
+docker compose exec pgvector psql -U estimator -d estimator -c "SELECT version();"
+```
+
+La base de migraciones queda preparada en:
+
+- [alembic.ini](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic.ini)
+- [alembic/env.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/env.py)
+- [0001_initial_schema.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0001_initial_schema.py)
+- [0002_add_hnsw_vector_index.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0002_add_hnsw_vector_index.py)
+- [0003_use_halfvec_hnsw_expression_index.py](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/alembic/versions/0003_use_halfvec_hnsw_expression_index.py)
+
+El schema base de la sesión 8 queda modelado con dos tablas:
+
+- `documents`: identidad y metadatos del documento ingestado
+- `chunks`: fragmentos persistidos con `content`, `embedding` y `metadata`
+
+La creación de schema deja de ocurrir en el arranque de FastAPI. A partir de aquí la fuente de verdad del DDL son las migraciones de Alembic, no el runtime.
+
+En la ampliación post-live de la sesión 8 el índice vectorial `HNSW` evoluciona a una expresión sobre `CAST(embedding AS HALFVEC(1536))` usando `halfvec_cosine_ops`.
+La columna persistida sigue siendo `vector(1536)`, pero el índice y la query se alinean con la optimización half-precision que reduce tamaño y deja preparado el terreno para el tuning posterior de `ef_search`.
+
 ### Arranque unificado del workspace
 
 Desde la raíz del repo puedes levantar Docling y los procesos locales con un único entrypoint:
@@ -581,8 +633,7 @@ Abre [http://localhost:8000/docs](http://localhost:8000/docs) y verifica que apa
 - `GET /api/v1/estimate/friendly-names`
 - `GET /api/v1/embeddings/options`
 - `POST /api/v1/embeddings/ingest`
-- `POST /api/v1/embeddings/search`
-- `POST /api/v1/embeddings/evaluate`
+- `POST /api/v1/search`
 - `GET /health`
 
 ### 4. Probar el endpoint principal
@@ -626,15 +677,30 @@ Respuesta esperada:
 
 ### 7. Probar búsqueda semántica
 
-Primero ingiere con `persist=true`. Después:
+Primero ingiere un documento histórico. Después:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/embeddings/search \
+curl -X POST http://localhost:8000/api/v1/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "JWT-based authorization service for a banking application",
-    "top_k": 3,
+    "k": 3,
     "embedding_model": "text-embedding-3-small"
+  }'
+```
+
+Si quieres restringir la búsqueda a un subconjunto del corpus, añade filtros:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "JWT-based authorization service for a banking application",
+    "k": 3,
+    "filters": {
+      "client_sector": "finance",
+      "document_type": "historical_budget"
+    }
   }'
 ```
 
@@ -645,9 +711,99 @@ cd estimator-cag
 python scripts/benchmark_embeddings.py
 ```
 
+### 9. Explorar retrieval con queries representativas
+
+La herramienta de esta sesión para inspeccionar el comportamiento del buscador no es `compare.py`, sino `query_examples.py`.
+
+Lanza cinco consultas pensadas para observar:
+- un match casi directo
+- una reformulación semántica
+- una consulta fuera de dominio
+- una consulta ambigua
+- una consulta muy específica
+
+```bash
+cd estimator-cag
+python scripts/query_examples.py
+```
+
+Opciones útiles:
+
+```bash
+python scripts/query_examples.py --base-url http://localhost:8000 --k 5 --model text-embedding-3-small
+```
+
+La salida imprime, para cada query, el top-k con:
+- `chunk_id`
+- `distance`
+- `chunk_type`
+- un extracto del `content`
+
+### 10. Generar el datasheet de conclusiones de la sesión 8
+
+Si quieres una lectura muy rápida para responder qué conclusiones deja el retrieval, genera el datasheet sessionado:
+
+```bash
+cd estimator-cag
+python -m evals.session_08_query_eval
+```
+
+Salida esperada:
+- [session-08-query-eval.md](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/evals/session-08-query-eval.md)
+
+Este artefacto está pensado para leerlo en dos capas:
+- resumen de 10 segundos con estado por query
+- gráfico de barras `expected rank vs observed rank`
+- detalle y conclusiones debajo
+
+### 11. Justificación de diseño de la sesión 8
+
+Esta es la justificación pedida por el ejercicio base, separando claramente la solución mínima y la ampliación post-live.
+
+**Por qué dos tablas y no una**
+
+- `documents` representa la unidad lógica de ingesta: identidad, tipo documental, ruta de origen y metadatos generales.
+- `chunks` representa la unidad física de retrieval: cada fragmento searchable con su embedding y metadata derivada.
+- Separarlas evita duplicar información de documento en cada fila chunk y permite:
+  - deduplicar por `source_path`
+  - borrar en cascada todos los chunks de un documento
+  - filtrar por propiedades documentales sin contaminar la granularidad del chunk
+
+**Por qué metadata en `JSONB` y no como columnas fijas**
+
+- El pipeline docente necesita flexibilidad para evolucionar chunking y enriquecer metadata sin una migración por cada nuevo campo.
+- `JSONB` permite guardar campos como `budget_id`, `component_id`, `client_sector`, `main_technology`, `complexity` o `llm_context` sin rigidizar el esquema demasiado pronto.
+- Para este corpus pequeño y cambiante, la combinación de:
+  - columnas fijas para identidad y joins
+  - `JSONB` para metadata variable
+  ofrece mejor equilibrio que convertir todo en columnas relacionales desde el principio.
+
+**Por qué `cosine_distance` y no `L2` ni `inner product`**
+
+- En embeddings de texto, el ángulo entre vectores suele ser más estable semánticamente que la magnitud absoluta.
+- `cosine_distance` funciona bien para comparar significado relativo entre chunks y queries aunque la longitud del vector no sea la señal relevante.
+- `L2` y `inner product` son válidos en otros contextos, pero aquí `cosine_distance` es la opción más didáctica y alineada con el material del máster.
+
+**Por qué deliberadamente no había índice vectorial en la versión base**
+
+- La sesión live quería partir de un baseline con `sequential scan` para poder observar después el impacto real del índice.
+- Con el volumen del corpus base del ejercicio, ese baseline sigue siendo perfectamente usable y mantiene el foco en:
+  - persistencia correcta
+  - contrato HTTP
+  - semántica del retrieval
+- En esta rama hemos ido más allá de ese entregable base y hemos añadido la ampliación post-live:
+  - índice `HNSW`
+  - optimización `HALFVEC`
+  - datasheet de evaluación de queries
+
+### 12. Artefactos de salida del ejercicio
+
+- [output_examples.txt](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/output_examples.txt): salida real de `query_examples.py` contra el corpus de ejemplo cargado en PostgreSQL/pgvector.
+- [session-08-query-eval.md](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/evals/session-08-query-eval.md): lectura rápida y visual del comportamiento del retrieval.
+
 ## Tests automatizados
 
-El proyecto incluye tests de contrato HTTP y tests unitarios de servicio para verificar lo básico sin consumir LLM real.
+El proyecto incluye tests de contrato HTTP, tests unitarios y tests de integración del carril semántico contra FastAPI + PostgreSQL/pgvector.
 
 ### Ejecutar tests
 
@@ -667,8 +823,16 @@ Cobertura actual de tests:
 - validación tipada del request de embeddings
 - chunking estructural de un componente por chunk
 - respuesta exitosa de `POST /api/v1/embeddings/ingest` con embedder mockeado
+- persistencia real de `POST /api/v1/embeddings/ingest` en `documents` y `chunks`
+- búsqueda real de `POST /api/v1/search` con filtros de metadata sobre pgvector
+- smoke test del formateo de `scripts/query_examples.py`
+- smoke test del datasheet `session-08-query-eval.md`
 - actualización de `project_metadata` en sesiones multi-turno
 - persistencia de configuración y contexto externo en sesiones
+
+Notas de ejecución:
+- los tests de integración del pipeline de embeddings requieren Docker operativo
+- si la imagen `pgvector` no puede descargarse o arrancar, esos tests se marcan como `skip`
 - inferencia base de términos para búsqueda en Notion
 - paso de `external_context` al servicio LLM
 - influencia de adjuntos `.docx` convertidos por Docling en el request efectivo al LLM
@@ -948,8 +1112,14 @@ curl -X POST http://localhost:8000/api/v1/estimate \
 | `NOTION_TIMEOUT_SECONDS` | timeout HTTP de Notion | `30` |
 | `NOTION_MAX_ITEMS` | máximo de páginas externas por turno | `3` |
 | `SESSION_STORE_PATH` | fichero JSON de sesiones persistidas | `.data/estimator-sessions.json` |
+| `DATABASE_URL` | DSN async de SQLAlchemy/Alembic | vacío |
 | `VECTOR_DATABASE_URL` | DSN PostgreSQL/pgvector | vacío |
 | `VECTOR_DB_INITIALIZE_ON_START` | `true` \| `false` | `true` |
 | `EMBEDDING_CONTEXT_MODEL` | modelo chat para enriquecer chunks | `gpt-4o-mini` |
+| `CHUNKING_DEFAULT_STRATEGY` | `structural` \| `fixed_window` \| `hierarchical` | `structural` |
+| `CHUNKING_INCLUDE_PARENT_CONTEXT` | `true` \| `false` | `true` |
+| `CHUNKING_MAX_CHARACTERS` | entero | `900` |
+| `CHUNKING_OVERLAP_CHARACTERS` | entero | `120` |
+| `CHUNKING_ENABLE_LLM_CONTEXT` | `true` \| `false` | `false` |
 | `APP_ENV` | `development` \| `production` | `development` |
 | `LOG_LEVEL` | `debug` \| `info` \| `warning` | `info` |
