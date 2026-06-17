@@ -1,0 +1,18 @@
+{
+  "slug": "ai-engineering-202604-✍️-ejercicio-pipeline-minimo-de-embeddings-y-chunking🔴",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-pipeline-minimo-de-embeddings-y-chunking🔴",
+  "title": "✍️ Ejercicio: Pipeline mínimo de embeddings y chunking🔴",
+  "archived_at": "2026-06-12T09:31:37.473Z",
+  "group_hint": "07-session",
+  "discovered_links": [],
+  "article_html": "<h1>✍️ Ejercicio: Pipeline mínimo de embeddings y chunking🔴</h1><p>ObjetivoConstruir dentro del servicio IA un pipeline funcional mínimo que reciba presupuestos históricos en formato JSON, los parta en chunks respetando la estructura del documento, genere embeddin...</p><p><img src=\"https://media1-production-mightynetworks.imgix.net/asset/8641f226-6ae8-44e1-886b-c738b1b7aabb/cover_quote.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=1200&h=630&fit=crop&crop=faces&impolicy=Avatar\" alt=\"cover\"></p><p>Nota: la lección devolvió un error de renderizado en la plataforma durante el archivado automático. Se conserva aquí la metadata pública disponible y el enlace original.</p><p><a href=\"https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-pipeline-minimo-de-embeddings-y-chunking🔴\">Abrir lección original</a></p>",
+  "title_html": "<h1>✍️ Ejercicio: Pipeline mínimo de embeddings y chunking🔴</h1>",
+  "imgs": [
+    {
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/8641f226-6ae8-44e1-886b-c738b1b7aabb/cover_quote.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=1200&h=630&fit=crop&crop=faces&impolicy=Avatar",
+      "alt": "cover"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "ObjetivoConstruir dentro del servicio IA un pipeline funcional mínimo que reciba presupuestos históricos en formato JSON, los parta en chunks respetando la estructura del documento, genere embeddin..."
+}

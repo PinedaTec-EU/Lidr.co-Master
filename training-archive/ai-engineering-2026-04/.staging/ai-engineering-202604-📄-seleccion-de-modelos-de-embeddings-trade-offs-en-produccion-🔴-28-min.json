@@ -1,0 +1,18 @@
+{
+  "slug": "ai-engineering-202604-📄-seleccion-de-modelos-de-embeddings-trade-offs-en-produccion-🔴-28-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-📄-seleccion-de-modelos-de-embeddings-trade-offs-en-produccion-🔴-28-min",
+  "title": "📄 Selección de modelos de embeddings: trade-offs en producción 🔴 — 28 min",
+  "archived_at": "2026-06-12T09:31:47.657Z",
+  "group_hint": "07-session",
+  "discovered_links": [],
+  "article_html": "<h1>📄 Selección de modelos de embeddings: trade-offs en producción 🔴 — 28 min</h1><p>⌛Tiempo estimado: 28 minutosEn el artículo anterior dejamos clavada la teoría: un embedding es un vector, la geometría inducida por el entrenamiento es lo que hace que vectores cercanos corresponda...</p><p><img src=\"https://media1-production-mightynetworks.imgix.net/asset/baef0366-2c85-4a58-87bc-9ea6c5637d21/sesion-07-articulo-02-figura-01-comparativa-modelos.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format\" alt=\"cover\"></p><p>Nota: la lección devolvió un error de renderizado en la plataforma durante el archivado automático. Se conserva aquí la metadata pública disponible y el enlace original.</p><p><a href=\"https://training.lidr.co/posts/ai-engineering-202604-📄-seleccion-de-modelos-de-embeddings-trade-offs-en-produccion-🔴-28-min\">Abrir lección original</a></p>",
+  "title_html": "<h1>📄 Selección de modelos de embeddings: trade-offs en producción 🔴 — 28 min</h1>",
+  "imgs": [
+    {
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/baef0366-2c85-4a58-87bc-9ea6c5637d21/sesion-07-articulo-02-figura-01-comparativa-modelos.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format",
+      "alt": "cover"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "⌛Tiempo estimado: 28 minutosEn el artículo anterior dejamos clavada la teoría: un embedding es un vector, la geometría inducida por el entrenamiento es lo que hace que vectores cercanos corresponda..."
+}

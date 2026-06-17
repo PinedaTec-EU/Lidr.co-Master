@@ -1,0 +1,18 @@
+{
+  "slug": "ai-engineering-202604-📄-estrategias-profesionales-de-chunking-🔴-32-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-📄-estrategias-profesionales-de-chunking-🔴-32-min",
+  "title": "📄 Estrategias profesionales de chunking 🔴 — 32 min",
+  "archived_at": "2026-06-12T09:31:45.171Z",
+  "group_hint": "07-session",
+  "discovered_links": [],
+  "article_html": "<h1>📄 Estrategias profesionales de chunking 🔴 — 32 min</h1><p>⌛Tiempo estimado: 32 minutosLa pregunta que aún nos falta es la que más impacto tiene en la calidad final de tu sistema RAG: ¿cómo partimos los documentos antes de generar los embeddings?No es una ...</p><p><img src=\"https://media1-production-mightynetworks.imgix.net/asset/776b157d-77dd-4ff4-80aa-12502a37d3f3/sesion-07-articulo-03-figura-01-cuatro-familias.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format\" alt=\"cover\"></p><p>Nota: la lección devolvió un error de renderizado en la plataforma durante el archivado automático. Se conserva aquí la metadata pública disponible y el enlace original.</p><p><a href=\"https://training.lidr.co/posts/ai-engineering-202604-📄-estrategias-profesionales-de-chunking-🔴-32-min\">Abrir lección original</a></p>",
+  "title_html": "<h1>📄 Estrategias profesionales de chunking 🔴 — 32 min</h1>",
+  "imgs": [
+    {
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/776b157d-77dd-4ff4-80aa-12502a37d3f3/sesion-07-articulo-03-figura-01-cuatro-familias.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format",
+      "alt": "cover"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "⌛Tiempo estimado: 32 minutosLa pregunta que aún nos falta es la que más impacto tiene en la calidad final de tu sistema RAG: ¿cómo partimos los documentos antes de generar los embeddings?No es una ..."
+}
