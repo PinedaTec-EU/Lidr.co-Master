@@ -1,0 +1,155 @@
+{
+  "slug": "ai-engineering-202604-como-usar-la-plataforma-19-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min",
+  "title": "¿Cómo usar la plataforma? — 19 min",
+  "archived_at": "2026-06-12T09:08:14.174Z",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    },
+    {
+      "text": "7 Mentors",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min/instructors"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>¿Cómo usar la plataforma? — 19 min</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><a class=\"mighty-avatar-stack-container navigate\" href=\"https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min/instructors\"><div class=\"avatar-stack-region\"><div class=\"mighty-avatar-stack mighty-avatar-horizontal-stack mighty-avatar-stack-medium-spacing mighty-avatar-stack-small\"><div rel=\"tooltip\" class=\"mighty-avatar-stack-item mighty-circle-border-white mighty-avatar-user-small\" data-original-title=\"\" title=\"\"><img alt=\"\" src=\"https://media1-production-mightynetworks.imgix.net/asset/c4baebb9-21f8-49b9-bafb-30e415b46eac/alvaro_moya_face_2022_circle.png?ixlib=rails-4.3.1&amp;auto=format&amp;w=80&amp;h=80&amp;fit=crop&amp;impolicy=Avatar&amp;crop=faces\">\n</div><div rel=\"tooltip\" class=\"mighty-avatar-stack-item mighty-circle-border-white mighty-avatar-user-small\" data-original-title=\"\" title=\"\"><img alt=\"\" src=\"https://media1-production-mightynetworks.imgix.net/asset/2fdafb9c-5c3b-43c2-944e-ce28cb453288/1671457558270.jpeg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=80&amp;h=80&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\">\n</div><div rel=\"tooltip\" class=\"mighty-avatar-stack-item mighty-circle-border-white mighty-avatar-user-small\" data-original-title=\"\" title=\"\"><img alt=\"\" src=\"https://media1-production-mightynetworks.imgix.net/asset/2a23c3ba-30b4-41ba-8030-b16d2ae6ccb9/DSC00119__1_.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=80&amp;h=80&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\">\n</div></div></div><span class=\"attribution-label text-color-title\">7 Mentors</span></a></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\" style=\"text-align:center;\"><span dir=\"auto\" data-name=\"hourglass_flowing_sand\" data-type=\"emoji\">⏳</span> Tiempo estimado 19 min</p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"party\" data-type=\"emoji\">🎉</span><strong> </strong>Bienvenido/a AI Engineering</h2><p dir=\"auto\">Estás a punto de empezar un programa técnico donde aprenderás a diseñar, construir y desplegar productos de inteligencia artificial en entornos reales.</p><p dir=\"auto\">Antes de empezar, es importante que entiendas cómo funciona la plataforma, cómo se organiza el contenido y cómo debes seguir el programa para aprovecharlo al máximo.</p><p dir=\"auto\">Este no es un curso para ver vídeos sin más. El programa está diseñado para que construyas proyectos, tomes decisiones técnicas y entiendas cómo se desarrollan productos de IA en entornos reales.</p><div class=\"mighty-hero-content\"><span contenteditable=\"false\" draggable=\"false\" class=\"fr-video\"><iframe src=\"https://player.vimeo.com/video/1120750410?h=db5c249346\" class=\"vimeo-embed\" width=\"640\" height=\"360\" frameborder=\"no\" scrolling=\"no\" sandbox=\"allow-forms allow-orientation-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin\" allow=\"fullscreen\"></iframe></span></div><p dir=\"auto\"></p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"necktie\" data-type=\"emoji\">👔</span> Crea tu perfil</h2><div class=\"mighty-hero-content\"><span contenteditable=\"false\" draggable=\"false\" class=\"fr-video\"><iframe src=\"https://player.vimeo.com/video/1120751489?h=df4f2872e5\" class=\"vimeo-embed\" width=\"640\" height=\"360\" frameborder=\"no\" scrolling=\"no\" sandbox=\"allow-forms allow-orientation-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin\" allow=\"fullscreen\"></iframe></span></div><h4 dir=\"auto\">\n<span dir=\"auto\" data-name=\"camera_with_flash\" data-type=\"emoji\">📸</span> Añade tu foto</h4><p dir=\"auto\">Añade una foto de perfil. En programas online es importante poner cara a las personas con las que vas a trabajar durante las próximas semanas.</p><p dir=\"auto\">Puedes hacerlo en la sección <strong>Your Profile → Edit</strong>.</p><h4 dir=\"auto\">\n<span dir=\"auto\" data-name=\"speaking_head\" data-type=\"emoji\">🗣</span> Compártenos tu historia</h4><p dir=\"auto\">Añade tu perfil de LinkedIn y escribe una breve descripción sobre ti, tu experiencia y por qué te interesa AI Engineering.</p><p dir=\"auto\">Esto ayudará a mentores, TAs y compañeros a conocerte mejor.<br dir=\"auto\"></p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"handshake\" data-type=\"emoji\">🤝</span> Conoce a otros alumnos y mentores</h2><div class=\"mighty-hero-content\"><span contenteditable=\"false\" draggable=\"false\" class=\"fr-video\"><iframe src=\"https://player.vimeo.com/video/1120753643?h=f8b4cc9ff9\" class=\"vimeo-embed\" width=\"640\" height=\"360\" frameborder=\"no\" scrolling=\"no\" sandbox=\"allow-forms allow-orientation-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin\" allow=\"fullscreen\"></iframe></span></div><p dir=\"auto\">Durante el programa trabajarás con otras personas que están en situaciones similares a la tuya. Te recomendamos revisar la sección de participantes para conocer:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Mentores</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Equipo</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Otros alumnos</p></li>\n</ul><p dir=\"auto\">Gran parte del aprendizaje también ocurre hablando con otras personas que están construyendo cosas parecidas a las tuyas.</p><p dir=\"auto\"></p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"ship\" data-type=\"emoji\">🚢</span> Navega por el material del curso</h2><div class=\"mighty-hero-content\"><span contenteditable=\"false\" draggable=\"false\" class=\"fr-video\"><iframe src=\"https://player.vimeo.com/video/1120754444?h=6bbb99fad6\" class=\"vimeo-embed\" width=\"640\" height=\"360\" frameborder=\"no\" scrolling=\"no\" sandbox=\"allow-forms allow-orientation-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin\" allow=\"fullscreen\"></iframe></span></div><p dir=\"auto\">En la sección <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://training.lidr.co/spaces/22984593/content\"><span style=\"color:var(--tt-color-text-blue);\"><strong>Contenido</strong></span></a> encontrarás todo el material del programa organizado por módulos y lecciones.</p><p dir=\"auto\">Dentro de cada lección podrás encontrar:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Vídeos</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Texto</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Ejercicios</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Recursos adicionales</p></li>\n</ul><p dir=\"auto\">Es importante que sigas el orden del contenido, ya que los módulos están pensados para construir conocimiento de forma progresiva.</p><p dir=\"auto\">Cuando completes una lección, marca <strong>Mark as completed</strong> para llevar seguimiento de tu progreso.</p><p dir=\"auto\"></p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"rotating_light\" data-type=\"emoji\">🚨</span> Mantente actualizado de las novedades del curso.&nbsp;</h2><div class=\"mighty-hero-content\"><span contenteditable=\"false\" draggable=\"false\" class=\"fr-video\"><iframe src=\"https://player.vimeo.com/video/1120755759?h=a431e50db3\" class=\"vimeo-embed\" width=\"640\" height=\"360\" frameborder=\"no\" scrolling=\"no\" sandbox=\"allow-forms allow-orientation-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin\" allow=\"fullscreen\"></iframe></span></div><p dir=\"auto\">En la sección <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://training.lidr.co/spaces/22984593/feed\"><span style=\"color:var(--tt-color-text-blue);\"><strong>Novedades</strong> </span></a>se publicará información importante durante el programa:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Avisos</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Indicaciones para ejercicios</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Recursos adicionales</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Cambios</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Recordatorios de sesiones</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Información sobre proyectos</p></li>\n</ul><p dir=\"auto\">Te recomendamos revisar esta sección con frecuencia.</p><p dir=\"auto\"></p><h3 dir=\"auto\">\n<span dir=\"auto\" data-name=\"writing_hand\" data-type=\"emoji\">✍</span> Participa en la comunidad</h3><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/39886123/1653276333238.png?ixlib=rails-0.3.0&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" data-asset-id=\"151342399\"></div><p dir=\"auto\">Puedes publicar:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Preguntas</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Avances</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Artículos</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Recursos</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Encuestas</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Problemas técnicos</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Ideas</p></li>\n</ul><p dir=\"auto\">Pero tan importante como publicar es <strong>comentar y responder a otros</strong>.<br dir=\"auto\">Muchas dudas que tendrás probablemente ya las haya tenido otra persona.</p><p dir=\"auto\"></p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"calling\" data-type=\"emoji\">📲</span> Descarga la aplicación en tu móvil</h2><div class=\"mighty-hero-content\"><span contenteditable=\"false\" draggable=\"false\" class=\"fr-video\"><iframe src=\"https://player.vimeo.com/video/715018173?h=ffb08b8389\" class=\"vimeo-embed\" width=\"640\" height=\"360\" frameborder=\"no\" scrolling=\"no\" sandbox=\"allow-forms allow-orientation-lock allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin\" allow=\"fullscreen\"></iframe></span></div><p dir=\"auto\">Descarga la aplicación <strong>Mighty Networks app</strong> desde la la Apple App o Google Play Stores. Una vez ahí, busca por <em>Lidr | Training great tech leaders</em>, y loggeate de nuevo para acceder al contenido.&nbsp;<br dir=\"auto\">&nbsp;</p><hr dir=\"auto\"><p dir=\"auto\">Ya has completado todos los pasos para crear tu perfil, y sabes dónde está la información. <strong>Ahora sólo tienes que decir ¡Hola! a tus compañeros en WhatsApp.&nbsp;</strong>Cuéntanos lo que te motiva a seguir aprendiendo con LIDR, e inicia la conversación con los otros para hacerles sentir como en casa.</p><h2 dir=\"auto\">\n<span dir=\"auto\" data-name=\"hammer_and_wrench\" data-type=\"emoji\">🛠</span> Soporte técnico</h2><p dir=\"auto\">¿Comentarios, dudas o problemas técnicos?</p><p dir=\"auto\"><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://chat.whatsapp.com/CaxetE6S9FN2OrzAHb2euX\"><span style=\"color:var(--tt-color-text-blue);\"><strong><u>Contáctanos por chat </u></strong></span></a>en horario de 9:00 AM a 18:00 PM CET y te ayudaremos, o si lo prefieres, escribe a tu TA a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"mailto:lia@lidr.co\"><span style=\"color:var(--tt-color-text-blue);\"><strong><u>lia@lidr.co</u></strong></span></a><span style=\"color:var(--tt-color-text-blue);\">&nbsp;</span></p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>¿Cómo usar la plataforma? — 19 min</h1>\n",
+  "imgs": [
+    {
+      "alt": "",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/c4baebb9-21f8-49b9-bafb-30e415b46eac/alvaro_moya_face_2022_circle.png?ixlib=rails-4.3.1&auto=format&w=80&h=80&fit=crop&impolicy=Avatar&crop=faces"
+    },
+    {
+      "alt": "",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/2fdafb9c-5c3b-43c2-944e-ce28cb453288/1671457558270.jpeg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=80&h=80&fit=crop&crop=faces&impolicy=Avatar"
+    },
+    {
+      "alt": "",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/2a23c3ba-30b4-41ba-8030-b16d2ae6ccb9/DSC00119__1_.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=80&h=80&fit=crop&crop=faces&impolicy=Avatar"
+    },
+    {
+      "alt": "",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/39886123/1653276333238.png?ixlib=rails-0.3.0&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    }
+  ],
+  "iframes": [
+    {
+      "src": "https://player.vimeo.com/video/1120750410?h=db5c249346",
+      "title": ""
+    },
+    {
+      "src": "https://player.vimeo.com/video/1120751489?h=df4f2872e5",
+      "title": ""
+    },
+    {
+      "src": "https://player.vimeo.com/video/1120753643?h=f8b4cc9ff9",
+      "title": ""
+    },
+    {
+      "src": "https://player.vimeo.com/video/1120754444?h=6bbb99fad6",
+      "title": ""
+    },
+    {
+      "src": "https://player.vimeo.com/video/1120755759?h=a431e50db3",
+      "title": ""
+    },
+    {
+      "src": "https://player.vimeo.com/video/715018173?h=ffb08b8389",
+      "title": ""
+    }
+  ],
+  "text_preview": "¿Cómo usar la plataforma? — 19 min\n7 Mentors\n\n⏳ Tiempo estimado 19 min\n\n🎉 Bienvenido/a AI Engineering\n\nEstás a punto de empezar un programa técnico donde aprenderás a diseñar, construir y desplegar productos de inteligencia artificial en entornos reales.\n\nAntes de empezar, es importante que entiendas cómo funciona la plataforma, cómo se organiza el contenido y cómo debes seguir el programa para aprovecharlo al máximo.\n\nEste no es un curso para ver vídeos sin más. El programa está diseñado para que construyas proyectos, tomes decisiones técnicas y entiendas cómo se desarrollan productos de IA en entornos reales.\n\n👔 Crea tu perfil\n📸 Añade tu foto\n\nAñade una foto de perfil. En programas online es importante poner cara a las personas con las que vas a trabajar durante las próximas semanas.\n\nPuedes hacerlo en la sección Your Profile → Edit.\n\n🗣 Compártenos tu historia\n\nAñade tu perfil de LinkedIn y escribe una breve descripción sobre ti, tu experiencia y por qué te interesa AI Engineering.\n\nEsto ayudará a mentores, TAs y compañeros a conocerte mejor.\n\n\n🤝 Conoce a otros alumnos y mentores\n\nDurante el programa trabajarás con otras personas que están en situaciones similares a la tuya. Te recomendamos revisar la sección de participantes para conocer:\n\nMentores\n\nEquipo\n\nOtros alumnos\n\nGran parte del aprendizaje también ocurre hablando con otras personas que están construyendo cosas parecidas a las tuyas.\n\n🚢 Navega por el material del curso\n\nEn la sección Contenido encontrarás todo el material del programa organizado por módulos y lecciones.\n\nDentro de cada lección podrás encontrar:\n\nVídeos\n\nTexto\n\nEjercicios\n\nRecursos adicionales\n\nEs importante que sigas el orden del contenido, ya que los módulos están pensados para construir conocimiento de forma progresiva.\n\nCuando completes una lección, marca Mark as completed para llevar seguimiento de tu progreso.\n\n🚨 Mantente actualizado de las novedades del curso. \n\nEn la sección Novedades se publicará información importante durante el programa:\n\nAvisos\n\nIndicaciones para ejercicios\n\nRecursos adicionales\n\nCambios\n\nRecordatorios de sesiones\n\nInformación sobre proyectos\n\nTe recomendamos revisar esta sección con frecuencia.\n\n✍ Participa en la comunidad\n\nPuedes publicar:\n\nPreguntas\n\nAvances\n\nArtículos\n\nRecursos\n\nEncuestas\n\nProblemas técnicos\n\nIdeas\n\nPero tan importante como publicar es comentar y responder a otros.\nMuchas dudas que tendrás probablemente ya las haya tenido otra persona.\n\n📲 Descarga la aplicación en tu móvil\n\nDescarga la aplicación Mighty Networks app desde la la Apple App o Google Play Stores. Una vez ahí, busca por Lidr | Training great tech leaders, y loggeate de nuevo para acceder al contenido. \n \n\nYa has completado todos los pasos para crear tu perfil, y sabes dónde está la información. Ahora sólo tienes que decir ¡Hola! a tus compañeros en WhatsApp. Cuéntanos lo que te motiva a seguir aprendiendo con LIDR, e inicia la conversación con los otros para hacerles sentir como en casa.\n\n🛠 Soporte técnico\n\n¿Comentarios, dudas o problemas técnicos?\n\nContáctanos por chat en horario de 9:00 AM a 18:00 PM CET y te ayudaremos, o si lo prefieres, escribe a tu TA a lia@lidr.co "
+}

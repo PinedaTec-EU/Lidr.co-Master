@@ -1,0 +1,147 @@
+{
+  "slug": "ai-engineering-202604-🗓️-agenda-3-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-🗓️-agenda-3-min",
+  "title": "🗓️ Agenda — 3 min",
+  "archived_at": "2026-06-12T09:20:20.064Z",
+  "group_hint": "00-intro",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724277"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "💬 Expectativas — 9 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%92%AC-expectativas-9-min"
+    },
+    {
+      "text": "🎥 Presentación del programa 🤖 — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%8E%A5-presentacion-del-programa-%F0%9F%A4%96-13-min"
+    },
+    {
+      "text": "🚦 Sistema de Emojis — 1 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%9A%A6-sistema-de-emojis-1-min"
+    },
+    {
+      "text": "🗓️ Agenda — 3 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%97%93%EF%B8%8F-agenda-3-min"
+    },
+    {
+      "text": "⚒️ Enlaces útiles y soporte — 1 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9A%92%EF%B8%8F-enlaces-utiles-y-soporte-1-min"
+    },
+    {
+      "text": "📜 Política de Gestión de Repositorios",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%9C-politica-de-gestion-de-repositorios"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>🗓️ Agenda — 3 min</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><div class=\"profile-attribution-link-container toggle-with-presence is-small has-centered-name is-profile-preview-on-name\" data-user-id=\"36030888\" data-space-id=\"7296662\"><div class=\"profile-preview-avatar-region mighty-attribution-avatar\"><div class=\"MuiStack-root css-8v90jo\"><div class=\"MuiBox-root css-4g6ai3\" data-id=\"profile-preview-avatar-trigger\"><div class=\"MuiAvatar-root MuiAvatar-circleTiny css-14n2uyv\"><img alt=\"Antonio Perez\" src=\"https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=192&amp;h=192&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\" class=\"MuiAvatar-img css-45do71\"></div></div><div class=\"MuiStack-root css-j7qwjs\"><div class=\"MuiStack-root css-2nqau9\"><div><div class=\"MuiBox-root css-i6bazn\"><a title=\"Antonio Perez\" class=\"mighty-attribution-name text-color-title-link navigate\" href=\"https://training.lidr.co/members/36030888\" data-id=\"mighty-link\"><span class=\"MuiTypography-root MuiTypography-labelLargeBold MuiTypography-noWrap css-1vlsy68\">Antonio Perez</span></a></div></div><div class=\"MuiBox-root css-9w4vf0\" role=\"status\" aria-label=\"Host\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" fill=\"none\" class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeTiny css-qndboc\" focusable=\"false\" aria-hidden=\"true\" data-id=\"role-icon-host\"><path d=\"M7.99601 0.838063C7.80872 0.841426 7.59588 0.87403 7.38859 0.957204C7.2175 1.02591 6.97491 1.16003 6.79386 1.41326L6.72062 1.52947L6.61808 1.70134C6.36202 2.10055 5.99106 2.47782 5.45988 2.67009C4.66685 2.95701 3.99953 2.8625 3.58976 2.74138L3.43644 2.70427C3.07585 2.63462 2.69885 2.68785 2.37492 2.85857C1.99098 3.06096 1.65548 3.44964 1.59269 3.98748C1.49041 4.86596 1.41289 6.49177 1.70011 9.00408C1.94204 11.12 3.29599 12.5534 4.56437 13.4484C5.83565 14.3454 7.14428 14.794 7.57609 14.9279C7.85325 15.0138 8.14758 15.0138 8.42472 14.9279C8.8565 14.7941 10.1658 14.3456 11.4374 13.4484C12.706 12.5534 14.0599 11.1204 14.3007 9.00408C14.5935 6.42919 14.5056 4.78585 14.4003 3.924L14.3651 3.73259C14.155 2.87732 13.3015 2.5531 12.6513 2.63396L12.5155 2.6574L12.3456 2.6906C11.9186 2.76181 11.2816 2.77924 10.54 2.51092C9.93078 2.2905 9.54027 1.87006 9.29093 1.47088L9.21281 1.36052C9.02191 1.11869 8.77726 0.995137 8.60538 0.933767C8.39657 0.85921 8.18358 0.834731 7.99601 0.838063ZM8.04679 3.13689C8.46762 3.62136 9.05327 4.09907 9.85929 4.3908C10.8779 4.75935 11.7862 4.77552 12.4638 4.6906C12.5208 5.50386 12.5347 6.83991 12.3144 8.77752C12.164 10.0993 11.3148 11.0881 10.2851 11.8146C9.39191 12.4448 8.45392 12.8064 8.00089 12.9601C7.54821 12.8065 6.61007 12.445 5.71671 11.8146C4.68717 11.0881 3.83766 10.0996 3.68644 8.77752C3.47259 6.90716 3.47902 5.59739 3.53117 4.77752C4.21588 4.90179 5.12452 4.91855 6.14054 4.55095C7.01178 4.23562 7.62374 3.68319 8.04679 3.13689Z\" fill=\"currentColor\"></path><path d=\"M9.20373 5.90341C9.53907 5.46459 10.1665 5.38065 10.6053 5.71598C11.0441 6.0513 11.128 6.67872 10.7927 7.11754L8.25432 10.4392C8.08461 10.6613 7.8294 10.8025 7.55107 10.8281C7.27266 10.8537 6.99567 10.7618 6.78831 10.5743L5.32761 9.25297C4.91811 8.88261 4.88605 8.25008 5.25621 7.84046C5.62661 7.43092 6.2591 7.39879 6.66871 7.76906L7.32411 8.36229L9.20373 5.90341Z\" fill=\"currentColor\"></path></svg></div></div></div></div></div>\n</div></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\">En este espacio encontrarás el calendario del programa, con las fechas y temática de cada una de las sesiones en vivo.</p><p dir=\"auto\">Las sesiones en vivo son una parte fundamental del programa, ya que en ellas trabajaremos sobre ejercicios, proyectos, decisiones de arquitectura y resolución de dudas.</p><p dir=\"auto\"><span dir=\"auto\" data-name=\"calendar_spiral\" data-type=\"emoji\">🗓</span> Puedes añadir todas las sesiones a tu calendario <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://calendar.google.com/calendar/u/0?cid=Y18yNTBjYjY1OTZiOGQwZmNmODI0N2ZlN2UyMjU5ODQ3M2RlZDg3N2Q0NTI3OTRhYjk2ZWJjYjRjZjcyNzVkNzdlQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20\"><span style=\"color:var(--tt-color-text-blue);\">aquí</span></a></p><p dir=\"auto\"></p><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/a2af3d2f-101d-4b7e-bd90-a406ce121a39/ChatGPT_Image_27_mar_2026__17_19_15.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"ChatGPT Image 27 mar 2026, 17_19_15.png\" title=\"ChatGPT Image 27 mar 2026, 17_19_15.png\" data-asset-id=\"152947869\"></div><hr dir=\"auto\"><h3 dir=\"auto\">Importante</h3><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Todos los horarios están en hora de España (CET / CEST).</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Si vives en otro país, revisa la conversión horaria.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Si no tienes acceso al calendario o a alguna invitación, contacta con el equipo de LIDR.</p></li>\n</ul><hr dir=\"auto\"><h3 dir=\"auto\">Recomendación</h3><p dir=\"auto\">Te recomendamos bloquear en tu agenda no solo las sesiones en vivo, sino también tiempo adicional durante la semana para:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Revisar contenido</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Trabajar en ejercicios</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Avanzar en el proyecto</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Repasar conceptos</p></li>\n</ul><p dir=\"auto\">Este programa requiere trabajo continuo durante varias semanas, por lo que organizar tu tiempo desde el principio es muy importante.</p><p dir=\"auto\"></p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>🗓️ Agenda — 3 min</h1>\n",
+  "imgs": [
+    {
+      "alt": "Antonio Perez",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=192&h=192&fit=crop&crop=faces&impolicy=Avatar"
+    },
+    {
+      "alt": "ChatGPT Image 27 mar 2026, 17_19_15.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/a2af3d2f-101d-4b7e-bd90-a406ce121a39/ChatGPT_Image_27_mar_2026__17_19_15.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "🗓️ Agenda — 3 min\nAntonio Perez\n\nEn este espacio encontrarás el calendario del programa, con las fechas y temática de cada una de las sesiones en vivo.\n\nLas sesiones en vivo son una parte fundamental del programa, ya que en ellas trabajaremos sobre ejercicios, proyectos, decisiones de arquitectura y resolución de dudas.\n\n🗓 Puedes añadir todas las sesiones a tu calendario aquí\n\nImportante\n\nTodos los horarios están en hora de España (CET / CEST).\n\nSi vives en otro país, revisa la conversión horaria.\n\nSi no tienes acceso al calendario o a alguna invitación, contacta con el equipo de LIDR.\n\nRecomendación\n\nTe recomendamos bloquear en tu agenda no solo las sesiones en vivo, sino también tiempo adicional durante la semana para:\n\nRevisar contenido\n\nTrabajar en ejercicios\n\nAvanzar en el proyecto\n\nRepasar conceptos\n\nEste programa requiere trabajo continuo durante varias semanas, por lo que organizar tu tiempo desde el principio es muy importante."
+}
