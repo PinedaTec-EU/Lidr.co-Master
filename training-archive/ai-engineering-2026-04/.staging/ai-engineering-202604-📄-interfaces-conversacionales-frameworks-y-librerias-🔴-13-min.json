@@ -1,0 +1,151 @@
+{
+  "slug": "ai-engineering-202604-📄-interfaces-conversacionales-frameworks-y-librerias-🔴-13-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-📄-interfaces-conversacionales-frameworks-y-librerias-🔴-13-min",
+  "title": "📄 Interfaces conversacionales, frameworks y librerías 🔴— 13 min",
+  "archived_at": "2026-06-12T09:22:28.375Z",
+  "group_hint": "03-session",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724212"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "🎥 Introducción: De prototipo a producto: wrappers, streaming y trazabilidad 🔴 — 3 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%8E%A5-introduccion-de-prototipo-a-producto-wrappers-streaming-y-trazabilidad-%F0%9F%94%B4-3-min"
+    },
+    {
+      "text": "✍️ Ejercicio - Wrapper de interfaz conversacional 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-wrapper-de-interfaz-conversacional-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Interfaces conversacionales, frameworks y librerías 🔴— 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-interfaces-conversacionales-frameworks-y-librerias-%F0%9F%94%B4-13-min"
+    },
+    {
+      "text": "📄 Abstracción de proveedores y estrategias de fallback 🔴 — 20 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-abstraccion-de-proveedores-y-estrategias-de-fallback-%F0%9F%94%B4-20-min"
+    },
+    {
+      "text": "📄 Cacheo inteligente de respuestas de LLMs 🔴 — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-cacheo-inteligente-de-respuestas-de-llms-%F0%9F%94%B4-19-min"
+    },
+    {
+      "text": "📄 Streaming y manejo de respuestas largas 🔴 — 18 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-streaming-y-manejo-de-respuestas-largas-%F0%9F%94%B4-18-min"
+    },
+    {
+      "text": "📄 Observabilidad, logging y trazabilidad 🔴 — 16 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-observabilidad-logging-y-trazabilidad-%F0%9F%94%B4-16-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>📄 Interfaces conversacionales, frameworks y librerías 🔴— 13 min</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><div class=\"profile-attribution-link-container toggle-with-presence is-small has-centered-name is-profile-preview-on-name\" data-user-id=\"36030888\" data-space-id=\"7296662\"><div class=\"profile-preview-avatar-region mighty-attribution-avatar\"><div class=\"MuiStack-root css-8v90jo\"><div class=\"MuiBox-root css-4g6ai3\" data-id=\"profile-preview-avatar-trigger\"><div class=\"MuiAvatar-root MuiAvatar-circleTiny css-14n2uyv\"><img alt=\"Antonio Perez\" src=\"https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=192&amp;h=192&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\" class=\"MuiAvatar-img css-45do71\"></div></div><div class=\"MuiStack-root css-j7qwjs\"><div class=\"MuiStack-root css-2nqau9\"><div><div class=\"MuiBox-root css-i6bazn\"><a title=\"Antonio Perez\" class=\"mighty-attribution-name text-color-title-link navigate\" href=\"https://training.lidr.co/members/36030888\" data-id=\"mighty-link\"><span class=\"MuiTypography-root MuiTypography-labelLargeBold MuiTypography-noWrap css-1vlsy68\">Antonio Perez</span></a></div></div><div class=\"MuiBox-root css-9w4vf0\" role=\"status\" aria-label=\"Host\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" fill=\"none\" class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeTiny css-qndboc\" focusable=\"false\" aria-hidden=\"true\" data-id=\"role-icon-host\"><path d=\"M7.99601 0.838063C7.80872 0.841426 7.59588 0.87403 7.38859 0.957204C7.2175 1.02591 6.97491 1.16003 6.79386 1.41326L6.72062 1.52947L6.61808 1.70134C6.36202 2.10055 5.99106 2.47782 5.45988 2.67009C4.66685 2.95701 3.99953 2.8625 3.58976 2.74138L3.43644 2.70427C3.07585 2.63462 2.69885 2.68785 2.37492 2.85857C1.99098 3.06096 1.65548 3.44964 1.59269 3.98748C1.49041 4.86596 1.41289 6.49177 1.70011 9.00408C1.94204 11.12 3.29599 12.5534 4.56437 13.4484C5.83565 14.3454 7.14428 14.794 7.57609 14.9279C7.85325 15.0138 8.14758 15.0138 8.42472 14.9279C8.8565 14.7941 10.1658 14.3456 11.4374 13.4484C12.706 12.5534 14.0599 11.1204 14.3007 9.00408C14.5935 6.42919 14.5056 4.78585 14.4003 3.924L14.3651 3.73259C14.155 2.87732 13.3015 2.5531 12.6513 2.63396L12.5155 2.6574L12.3456 2.6906C11.9186 2.76181 11.2816 2.77924 10.54 2.51092C9.93078 2.2905 9.54027 1.87006 9.29093 1.47088L9.21281 1.36052C9.02191 1.11869 8.77726 0.995137 8.60538 0.933767C8.39657 0.85921 8.18358 0.834731 7.99601 0.838063ZM8.04679 3.13689C8.46762 3.62136 9.05327 4.09907 9.85929 4.3908C10.8779 4.75935 11.7862 4.77552 12.4638 4.6906C12.5208 5.50386 12.5347 6.83991 12.3144 8.77752C12.164 10.0993 11.3148 11.0881 10.2851 11.8146C9.39191 12.4448 8.45392 12.8064 8.00089 12.9601C7.54821 12.8065 6.61007 12.445 5.71671 11.8146C4.68717 11.0881 3.83766 10.0996 3.68644 8.77752C3.47259 6.90716 3.47902 5.59739 3.53117 4.77752C4.21588 4.90179 5.12452 4.91855 6.14054 4.55095C7.01178 4.23562 7.62374 3.68319 8.04679 3.13689Z\" fill=\"currentColor\"></path><path d=\"M9.20373 5.90341C9.53907 5.46459 10.1665 5.38065 10.6053 5.71598C11.0441 6.0513 11.128 6.67872 10.7927 7.11754L8.25432 10.4392C8.08461 10.6613 7.8294 10.8025 7.55107 10.8281C7.27266 10.8537 6.99567 10.7618 6.78831 10.5743L5.32761 9.25297C4.91811 8.88261 4.88605 8.25008 5.25621 7.84046C5.62661 7.43092 6.2591 7.39879 6.66871 7.76906L7.32411 8.36229L9.20373 5.90341Z\" fill=\"currentColor\"></path></svg></div></div></div></div></div>\n</div></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\" style=\"text-align:center;\"><span dir=\"auto\" data-name=\"hourglass_flowing_sand\" data-type=\"emoji\">⏳</span><span style=\"color:rgb(114, 124, 139);\"> Tiempo estimado: 13 min</span></p><h2 dir=\"auto\"></h2><h2 dir=\"auto\">El problema que resuelven estos frameworks</h2><p dir=\"auto\">Tienes un endpoint que recibe texto y devuelve una respuesta de un LLM. Funciona. Pero la única forma de probarlo es con curl, Postman o Swagger. Si quieres que alguien no técnico lo use — o simplemente tener una experiencia de chat decente durante el desarrollo — necesitas una interfaz web.</p><p dir=\"auto\">Construirla desde cero con HTML, CSS y JavaScript es perfectamente viable, pero tiene un coste: manejar el estado de la conversación, implementar streaming visual, gestionar la entrada de texto, mostrar indicadores de carga… todo eso es fontanería que ya está resuelta.</p><p dir=\"auto\">Ahí es donde entran los frameworks de interfaz para aplicaciones de IA. Permiten crear una UI funcional en Python puro, sin escribir una línea de JavaScript, y en muchos casos con menos de 50 líneas de código.</p><h2 dir=\"auto\">Los tres frameworks principales</h2><p dir=\"auto\">En el ecosistema Python actual hay tres opciones dominantes para construir interfaces sobre LLMs: <strong>Streamlit</strong>, <strong>Gradio</strong> y <strong>Chainlit</strong>. Cada uno nació con un propósito diferente, y eso marca sus fortalezas y limitaciones.</p><h3 dir=\"auto\">Streamlit</h3><p dir=\"auto\">Streamlit es el más generalista de los tres. No fue diseñado específicamente para chatbots — nació como herramienta para crear dashboards y aplicaciones de datos. Con el tiempo incorporó elementos de chat (<code class=\"tiptap-code\">st.chat_message</code>, <code class=\"tiptap-code\">st.chat_input</code>) que lo hacen perfectamente capaz para interfaces conversacionales, pero su ADN sigue siendo el de una herramienta de propósito general.</p><p dir=\"auto\">Su modelo de ejecución es el concepto más importante que debéis entender: <strong>cada vez que el usuario interactúa con la aplicación, Streamlit re-ejecuta todo el script de arriba a abajo</strong>. Esto simplifica enormemente el desarrollo (el código se lee como un script secuencial), pero significa que necesitas <code class=\"tiptap-code\">st.session_state</code> para persistir cualquier dato entre interacciones — incluido el historial de la conversación.</p><p dir=\"auto\">Un chat funcional con streaming en Streamlit se reduce a este patrón:</p><p dir=\"auto\">python</p><pre class=\"tiptap-code-block\" dir=\"auto\"><code>import streamlit as st\nfrom openai import OpenAI\n\nclient = OpenAI(api_key=st.secrets[\"OPENAI_API_KEY\"])\n\n# Inicializar historial en session_state\nif \"messages\" not in st.session_state:\n    st.session_state.messages = []\n\n# Renderizar historial existente\nfor message in st.session_state.messages:\n    with st.chat_message(message[\"role\"]):\n        st.markdown(message[\"content\"])\n\n# Aceptar input del usuario\nif prompt := st.chat_input(\"Escribe tu mensaje\"):\n    # Mostrar mensaje del usuario\n    st.session_state.messages.append({\"role\": \"user\", \"content\": prompt})\n    with st.chat_message(\"user\"):\n        st.markdown(prompt)\n\n    # Generar y mostrar respuesta con streaming\n    with st.chat_message(\"assistant\"):\n        stream = client.chat.completions.create(\n            model=\"gpt-4o-mini\",\n            messages=st.session_state.messages,\n            stream=True,\n        )\n        response = st.write_stream(stream)\n    st.session_state.messages.append({\"role\": \"assistant\", \"content\": response})\n</code></pre><p dir=\"auto\">Son 25 líneas. Tienes chat con historial, streaming token a token, y gestión de estado. <code class=\"tiptap-code\">st.write_stream</code> se encarga de recibir el stream del SDK de OpenAI y renderizarlo progresivamente — no necesitas manipular chunks manualmente.</p><p dir=\"auto\"><strong>Puntos fuertes:</strong> la mayor comunidad de los tres, el ecosistema de componentes más rico (gráficos, tablas, mapas, file uploads, sidebars), soporte nativo para multipage, y deployment gratuito en Streamlit Community Cloud. Si tu aplicación necesita algo más que chat (mostrar métricas, formularios, visualizaciones), Streamlit es la opción más natural.</p><p dir=\"auto\"><strong>Limitaciones reales:</strong> el modelo de re-ejecución completa hace difícil implementar interacciones con estado complejo. No puedes tener procesos en background, conexiones websocket persistentes, ni actualizaciones en tiempo real sin workarounds. El diseño visual es funcional pero limitado — personalizar CSS es posible pero estás luchando contra el framework. Y para aplicaciones de chat en producción con autenticación, persistencia de conversaciones y gestión de hilos, se queda corto.</p><h3 dir=\"auto\">Gradio</h3><p dir=\"auto\">Gradio nació en el ecosistema de Hugging Face con un propósito muy específico: envolver cualquier función Python en una interfaz web para demos de modelos de ML. Su filosofía es input → función → output. Defines qué entra, qué sale, y Gradio genera la UI.</p><p dir=\"auto\">Para interfaces conversacionales, Gradio ofrece <code class=\"tiptap-code\">gr.ChatInterface</code>, que simplifica la creación de chatbots:</p><p dir=\"auto\">python</p><pre class=\"tiptap-code-block\" dir=\"auto\"><code>import gradio as gr\nfrom openai import OpenAI\n\nclient = OpenAI()\n\ndef respond(message, history):\n    messages = [{\"role\": \"system\", \"content\": \"Eres un asistente útil.\"}]\n    for human, assistant in history:\n        messages.append({\"role\": \"user\", \"content\": human})\n        messages.append({\"role\": \"assistant\", \"content\": assistant})\n    messages.append({\"role\": \"user\", \"content\": message})\n\n    response = client.chat.completions.create(\n        model=\"gpt-4o-mini\",\n        messages=messages,\n    )\n    return response.choices[0].message.content\n\ndemo = gr.ChatInterface(respond, title=\"Chat con LLM\")\ndemo.launch()\n</code></pre><p dir=\"auto\"><strong>Puntos fuertes:</strong> la ruta más rápida de \"tengo una función Python\" a \"tengo una demo web compartible\". El comando <code class=\"tiptap-code\">demo.launch(share=True)</code> genera una URL pública temporal (72 horas) sin necesidad de deployment — ideal para compartir prototipos con stakeholders. La integración con Hugging Face Spaces permite publicar demos permanentes con un push a un repositorio. Para modelos multimodales (imagen, audio, vídeo), tiene componentes nativos que los demás no ofrecen.</p><p dir=\"auto\"><strong>Limitaciones reales:</strong> la gestión de estado es más limitada que en Streamlit (<code class=\"tiptap-code\">gr.State()</code> funciona pero es menos intuitivo que <code class=\"tiptap-code\">st.session_state</code>). Los layouts multipágina no son nativos. Para aplicaciones de chat en producción con autenticación, persistencia de historial y gestión de hilos, Gradio se queda sin capacidades.</p><h3 dir=\"auto\">Chainlit</h3><p dir=\"auto\">Chainlit es el más joven y el más especializado. No fue diseñado como herramienta general de dashboards ni como plataforma de demos de ML — fue diseñado exclusivamente como la capa de UI para aplicaciones conversacionales con LLMs: chatbots, agentes, asistentes.</p><p dir=\"auto\">Esa especialización se nota. Chainlit ofrece de serie funcionalidades que en Streamlit y Gradio hay que implementar a mano o con librerías externas: streaming nativo, threading de mensajes, visualización paso a paso del razonamiento del agente, recolección de feedback del usuario, autenticación, y persistencia de historial de conversaciones.</p><p dir=\"auto\">python</p><pre class=\"tiptap-code-block\" dir=\"auto\"><code>import chainlit as cl\nfrom openai import OpenAI\n\nclient = OpenAI()\n\n@cl.on_message\nasync def main(message: cl.Message):\n    response = client.chat.completions.create(\n        model=\"gpt-4o-mini\",\n        messages=[\n            {\"role\": \"system\", \"content\": \"Eres un asistente útil.\"},\n            {\"role\": \"user\", \"content\": message.content}\n        ],\n    )\n    await cl.Message(\n        content=response.choices[0].message.content\n    ).send()\n</code></pre><p dir=\"auto\">Observad que Chainlit usa <code class=\"tiptap-code\">async def</code> — está construido sobre <code class=\"tiptap-code\">asyncio</code> de Python desde su base, lo que hace que el streaming y las operaciones concurrentes sean naturales y eficientes.</p><p dir=\"auto\"><strong>Puntos fuertes:</strong> la observabilidad integrada es su característica diferencial. Puedes ver la \"cadena de pensamiento\" del agente: qué prompt se envió, qué herramientas decidió usar, qué respuesta devolvió cada paso. Esto es indispensable para debuggear agentes complejos. Integración nativa con LangChain y LlamaIndex. Autenticación con Azure AD, Google y otros providers. Persistencia de conversaciones out-of-the-box.</p><p dir=\"auto\"><strong>Limitaciones reales:</strong> su foco exclusivo en chat hace que sea incómodo para cualquier UI que no sea conversacional (dashboards, comparativas de datos, formularios complejos). La librería de componentes es mucho más pequeña que la de Streamlit — no tiene gráficos, dataframes ni mapas nativos. La comunidad es más reducida, lo que significa menos ejemplos en Stack Overflow y GitHub Issues. La documentación aún tiene asperezas.</p><h2 dir=\"auto\">Cuándo usar cada uno</h2><p dir=\"auto\">La elección depende de qué estés construyendo:</p><p dir=\"auto\"><strong>Usa Streamlit</strong> cuando tu aplicación necesita más que chat. Si necesitas sidebars con controles, gráficos, tablas de datos, formularios, o cualquier combinación de elementos interactivos además de la conversación, Streamlit es la opción más natural. También es la mejor elección para prototipado rápido cuando no estás seguro de qué forma final tendrá tu aplicación. Es el framework que usaremos en el ejercicio pre-sesión de esta sesión.</p><p dir=\"auto\"><strong>Usa Gradio</strong> cuando necesitas demos rápidas de modelos, especialmente si trabajas con modelos multimodales (imagen, audio, vídeo) o si tu público objetivo está en el ecosistema de Hugging Face. El share link temporal es imbatible para mostrar un prototipo a un stakeholder en 5 minutos.</p><p dir=\"auto\"><strong>Usa Chainlit</strong> cuando estés construyendo una aplicación de chat seria con agentes. Si necesitas observabilidad del razonamiento del agente, autenticación, persistencia de conversaciones, y threading de mensajes, Chainlit te ahorra semanas de desarrollo. Lo revisaremos con más profundidad en los módulos 4 y 5 cuando trabajemos con agentes.</p><h2 dir=\"auto\">¿Y construirlo desde cero?</h2><p dir=\"auto\">Hay una cuarta opción: no usar ningún framework y construir la interfaz directamente con HTML/CSS/JavaScript conectado a tu backend FastAPI. Este enfoque tiene sentido cuando necesitas control total sobre la experiencia de usuario, cuando la interfaz de chat es solo un componente dentro de una aplicación web más grande, o cuando los requisitos de diseño son incompatibles con los frameworks disponibles.</p><p dir=\"auto\">La ventaja es obvia: control absoluto. La desventaja también: tienes que implementar tú mismo el estado de la conversación, el rendering de mensajes, el streaming visual (típicamente con Server-Sent Events o WebSockets), los indicadores de carga, y toda la fontanería que los frameworks te dan gratis.</p><p dir=\"auto\">Para un producto en producción con requisitos específicos de UX, esta suele ser la mejor opción a largo plazo. Para prototipado y validación rápida, los frameworks ahorran tiempo. La clave está en saber cuándo cada enfoque tiene sentido.</p><h2 dir=\"auto\">Resumen comparativo</h2><div class=\"tiptap-image\" data-align=\"center\"><img dir=\"auto\" src=\"https://media1-production-mightynetworks.imgix.net/asset/eecf7da6-fc1d-4178-838b-29757271ae6b/d53fca2c9d611a91.png?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=75&amp;auto=format&amp;w=1400&amp;h=1400&amp;fit=max&amp;impolicy=ResizeCrop&amp;constraint=downsize&amp;aspect=fit\" alt=\"image.png\" title=\"image.png\" data-asset-id=\"154964924\"></div><p dir=\"auto\"><em>Recursos de referencia para este artículo:</em></p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><em>ATNO for GenAI — \"Streamlit vs Gradio vs Chainlit: Building Quick UIs for Your AI Applications\" (Medium, marzo 2026)</em></p></li>\n<li dir=\"auto\"><p dir=\"auto\"><em>Streamlit Docs — \"Build a basic LLM chat app\" (documentación oficial)</em></p></li>\n</ul><p dir=\"auto\"></p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>📄 Interfaces conversacionales, frameworks y librerías 🔴— 13 min</h1>\n",
+  "imgs": [
+    {
+      "alt": "Antonio Perez",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=192&h=192&fit=crop&crop=faces&impolicy=Avatar"
+    },
+    {
+      "alt": "image.png",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/eecf7da6-fc1d-4178-838b-29757271ae6b/d53fca2c9d611a91.png?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=1400&h=1400&fit=max&impolicy=ResizeCrop&constraint=downsize&aspect=fit"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "📄 Interfaces conversacionales, frameworks y librerías 🔴— 13 min\nAntonio Perez\n\n⏳ Tiempo estimado: 13 min\n\nEl problema que resuelven estos frameworks\n\nTienes un endpoint que recibe texto y devuelve una respuesta de un LLM. Funciona. Pero la única forma de probarlo es con curl, Postman o Swagger. Si quieres que alguien no técnico lo use — o simplemente tener una experiencia de chat decente durante el desarrollo — necesitas una interfaz web.\n\nConstruirla desde cero con HTML, CSS y JavaScript es perfectamente viable, pero tiene un coste: manejar el estado de la conversación, implementar streaming visual, gestionar la entrada de texto, mostrar indicadores de carga… todo eso es fontanería que ya está resuelta.\n\nAhí es donde entran los frameworks de interfaz para aplicaciones de IA. Permiten crear una UI funcional en Python puro, sin escribir una línea de JavaScript, y en muchos casos con menos de 50 líneas de código.\n\nLos tres frameworks principales\n\nEn el ecosistema Python actual hay tres opciones dominantes para construir interfaces sobre LLMs: Streamlit, Gradio y Chainlit. Cada uno nació con un propósito diferente, y eso marca sus fortalezas y limitaciones.\n\nStreamlit\n\nStreamlit es el más generalista de los tres. No fue diseñado específicamente para chatbots — nació como herramienta para crear dashboards y aplicaciones de datos. Con el tiempo incorporó elementos de chat (st.chat_message, st.chat_input) que lo hacen perfectamente capaz para interfaces conversacionales, pero su ADN sigue siendo el de una herramienta de propósito general.\n\nSu modelo de ejecución es el concepto más importante que debéis entender: cada vez que el usuario interactúa con la aplicación, Streamlit re-ejecuta todo el script de arriba a abajo. Esto simplifica enormemente el desarrollo (el código se lee como un script secuencial), pero significa que necesitas st.session_state para persistir cualquier dato entre interacciones — incluido el historial de la conversación.\n\nUn chat funcional con streaming en Streamlit se reduce a este patrón:\n\npython\n\nimport streamlit as st\nfrom openai import OpenAI\n\nclient = OpenAI(api_key=st.secrets[\"OPENAI_API_KEY\"])\n\n# Inicializar historial en session_state\nif \"messages\" not in st.session_state:\n    st.session_state.messages = []\n\n# Renderizar historial existente\nfor message in st.session_state.messages:\n    with st.chat_message(message[\"role\"]):\n        st.markdown(message[\"content\"])\n\n# Aceptar input del usuario\nif prompt := st.chat_input(\"Escribe tu mensaje\"):\n    # Mostrar mensaje del usuario\n    st.session_state.messages.append({\"role\": \"user\", \"content\": prompt})\n    with st.chat_message(\"user\"):\n        st.markdown(prompt)\n\n    # Generar y mostrar respuesta con streaming\n    with st.chat_message(\"assistant\"):\n        stream = client.chat.completions.create(\n            model=\"gpt-4o-mini\",\n            messages=st.session_state.messages,\n            stream=True,\n        )\n        response = st.write_stream(stream)\n    st.session_state.messages.append({\"role\": \"assistant\", \"content\": response})\n\n\nSon 25 líneas. Tienes chat con historial, streaming token a token, y gestión de estado. st.write_stream se encarga de recibir el stream del SDK de OpenAI y renderizarlo progresivamente — no necesitas manipular chunks manualmente.\n\nPuntos fuertes: la mayor comunidad de los tres, el ecosistema de componentes más rico (gráficos, tablas, mapas, file uploads, sidebars), soporte nativo para multipage, y deployment gratuito en Streamlit Community Cloud. Si tu aplicación necesita algo más que chat (mostrar métricas, formularios, visualizaciones), Streamlit es la opción más natural.\n\nLimitaciones reales: el modelo de re-ejecución completa hace difícil implementar interacciones con estado complejo. No puedes tener procesos en background, conexiones websocket persistentes, ni actualizaciones en tiempo real sin workarounds. El diseño visual es funcional pero limitado — personalizar CSS es posible pero estás luchando contra el framework. Y"
+}
