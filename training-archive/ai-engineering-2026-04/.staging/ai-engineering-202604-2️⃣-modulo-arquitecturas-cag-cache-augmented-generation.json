@@ -1,0 +1,129 @@
+{
+  "slug": "ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation",
+  "title": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+  "archived_at": "2026-06-12T08:46:01.844Z",
+  "discovered_links": [
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724277",
+      "text": ")"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min",
+      "text": "Collapse All"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-👋-bienvenida-y-expectativas-55-min",
+      "text": "¿Cómo usar la plataforma? — 19 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min",
+      "text": "👋 Bienvenida y expectativas — 55 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min",
+      "text": "Módulo de bienvenida — 2 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min",
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia",
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min",
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation",
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min",
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min",
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min",
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min",
+      "text": "Sesión 4: Productos IA avanzados — 117 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3️⃣-modulo-data-driven-ai",
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min",
+      "text": "3️⃣ Módulo: Data-driven AI"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min",
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min",
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-migracion-a-pgvector-endpoint-de-busqueda-🔴",
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-🔴-31-min",
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-estado-del-mercado-de-bbdd-vectoriales-2026-🔴-40-min",
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann🔴-40-min",
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-diseno-del-esquema-y-busqueda-semantica🔴-32-min",
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-🔴-40-min",
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293",
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🧑💻-proyecto-final-master-ai-engineering-13-min",
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-2",
+      "text": "📼 Grabación y material sesión 2"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-3",
+      "text": "📼 Grabación y material sesión 3"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-4",
+      "text": "📼 Grabación y material sesión 4"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-5",
+      "text": "📼 Grabación y material sesión 5"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724179",
+      "text": "Previous 🆙 Evalúa el contenido de este Módulo"
+    }
+  ],
+  "snapshot": "- button:\n  - text: LIDR.co | AI-Powered Careers\n- textbox:\n  - /placeholder: Search\n- list:\n  - button:\n  - link:\n    - /url: \"#\"\n  - link:\n    - /url: \"#\"\n  - link:\n    - /url: \"#\"\n    - generic: \"22\"\n  - link:\n    - /url: \"#\"\n- link:\n  - /url: \"#\"\n  - generic: Create\n- link:\n  - /url: https://training.lidr.co/events\n  - generic: Events\n- link:\n  - /url: https://training.lidr.co/members\n  - generic: LIDRs\n- link:\n  - /url: https://training.lidr.co/members/37015285\n- link:\n  - /url: https://training.lidr.co/members/38873080\n- link:\n  - /url: https://training.lidr.co/members/39210355\n- link:\n  - /url: https://training.lidr.co/members/38473300\n- link:\n  - /url: https://training.lidr.co/members/34921063\n- link:\n  - /url: https://training.lidr.co/members/38887538\n- link:\n  - /url: https://training.lidr.co/members/38061276\n- link:\n  - /url: https://training.lidr.co/members/40116763\n- link:\n  - /url: https://training.lidr.co/members/37026952\n- link:\n  - /url: https://training.lidr.co/members/33395913\n- link:\n  - /url: https://training.lidr.co/members/38761607\n- link:\n  - /url: https://training.lidr.co/members/online\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/collections/38615\n    - generic: 👋 Start here\n  - button\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/9308822\n      - generic: Hall\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/10850685\n      - generic: Get your Leadership score\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/10895710\n      - generic: Discover LIDR Academy\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/collections/933419\n    - generic: 🎁 Free courses\n  - button\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/11133164\n      - generic: ¿Cuál es tu equipo como líder?\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/10887539\n      - generic: Leading tech teams in uncertain times\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/10505895\n      - generic: Barreras para ser un líder irremplazable\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/collections/952317\n    - generic: 🎤 Eventos pasados\n  - button\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/collections/952317\n      - generic: Explore\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/collections/950865\n    - generic: 👥 Tech Sherpas Comunidades\n  - button\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/11124268\n      - generic: 🇪🇸 Tech Sherpas España\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/collections/38619\n    - generic: 🎥 LIDR Power Skills\n  - button\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/7706523\n      - generic: Intro\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/collections/59707\n    - generic: 🙋🏻‍♀️ Live Bootcamps\n  - button\n  - menuitem:\n    - link:\n      - /url: https://training.lidr.co/spaces/22984593\n      - generic: AI Engineering 2026/04\n- menuitem:\n  - link:\n    - /url: https://training.lidr.co/chats/new?user_id=21261563\n    - generic: ❓ Support\n- menuitem:\n  - link:\n    - /url: https://www.lidr.co/tech-sherpas\n    - generic: ✉️ Newsletter\n- text: (\n- text: )\n- button\n- button:\n  - generic: AI Engineering 2026/04\n  - generic: · Diseña y lleva a producción sistemas inteligentes reales.\n- button: Create\n- button\n- link:\n  - /url: https://training.lidr.co/spaces/22984593/feed\n  - generic: Novedades\n- link:\n  - /url: https://training.lidr.co/spaces/22984593/content\n  - generic: Contenido\n- link:\n  - /url: https://training.lidr.co/spaces/22984593/members\n  - generic: AI Engineers\n- link:\n  - /url: https://training.lidr.co/spaces/22984593/events\n  - generic: Sesiones\n- link:\n  - /url: https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724277\n  - generic: Next up\n  - generic: 🆙 Evalúa el contenido de este Módulo\n- link:\n  - /url: \"#\"\n  - text: Collapse All\n- list:\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min\n    - text: ¿Cómo usar la plataforma? — 19 min\n  - generic: 75 Lessons | 10 Quizzes\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-👋-bienvenida-y-expectativas-55-min\n    - text: 👋 Bienvenida y expectativas — 55 min\n  - generic: 6 Lessons\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min\n    - text: Módulo de bienvenida — 2 min\n  - generic: 1 Lesson\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min\n    - text: \"Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min\"\n  - generic: 4 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min\n    - text: Pre curso. Metodología y detalles operativos del programa — 41 min\n  - generic: 4 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia\n    - text: \"1️⃣ Módulo: Fundamentos de productos con IA\"\n  - generic: 1 Lesson\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min\n    - text: \"Sesión 1: LLMs y setup de entorno de trabajo — 146 min\"\n  - generic: 9 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation\n    - text: \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\"\n  - generic: 4 Lessons\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min\n    - text: \"Sesión 2: Primeros pasos de arquitectura CAG — 95 min\"\n  - generic: 7 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min\n    - text: \"Sesión 3: Patrones de diseño para wrappers de modelos — 89 min\"\n  - generic: 7 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min\n    - text: \"Sesión 4: Productos IA avanzados — 117 min\"\n  - generic: 7 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min\n    - text: \"Sesión 5: Funcionalidades avanzadas — 125 min\"\n  - generic: 6 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-3️⃣-modulo-data-driven-ai\n    - text: \"3️⃣ Módulo: Data-driven AI\"\n  - generic: 2 Lessons\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min\n    - text: \"Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min\"\n  - generic: 6 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min\n    - text: \"Sesión 7: Embeddings y representación vectorial — 107 min\"\n  - generic: 5 Lessons | 1 Quiz\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min\n    - text: \"Sesión 8: Bases de datos vectoriales — 183 min\"\n  - generic: 6 Lessons | 1 Quiz\n  - list:\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-✍️-migracion-a-pgvector-endpoint-de-busqueda-🔴\n      - text: ✍️ Migración a pgvector + endpoint de búsqueda 🔴\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-🔴-31-min\n      - text: 📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-estado-del-mercado-de-bbdd-vectoriales-2026-🔴-40-min\n      - text: 📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann🔴-40-min\n      - text: \"📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min\"\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-diseno-del-esquema-y-busqueda-semantica🔴-32-min\n      - text: 📄 Diseño del esquema y búsqueda semántica🔴 — 32 min\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📄del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-🔴-40-min\n      - text: \"📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min\"\n    - link:\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293\n      - text: 🆙 Evalúa el contenido y el ejercicio de este Módulo\n  - link:\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-🧑💻-proyecto-final-master-ai-engineering-13-min\n    - text: 🧑‍💻 Proyecto Final Master AI Engineering — 13 min\n- dialog [active]:\n  - list:\n    - link \"¿Cómo usar la plataforma? — 19 min\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min\n    - link \"👋 Bienvenida y expectativas — 55 min\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-👋-bienvenida-y-expectativas-55-min\n    - link \"Módulo de bienvenida — 2 min\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min\n    - 'link \"Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min\n    - link \"Pre curso. Metodología y detalles operativos del programa — 41 min\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min\n    - 'link \"1️⃣ Módulo: Fundamentos de productos con IA\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia\n    - 'link \"Sesión 1: LLMs y setup de entorno de trabajo — 146 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min\n    - 'link \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation\n    - 'link \"Sesión 2: Primeros pasos de arquitectura CAG — 95 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min\n    - 'link \"Sesión 3: Patrones de diseño para wrappers de modelos — 89 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min\n    - 'link \"Sesión 4: Productos IA avanzados — 117 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min\n    - 'link \"Sesión 5: Funcionalidades avanzadas — 125 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min\n    - 'link \"3️⃣ Módulo: Data-driven AI\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-3️⃣-modulo-data-driven-ai\n    - 'link \"Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min\n    - 'link \"Sesión 7: Embeddings y representación vectorial — 107 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min\n    - 'link \"Sesión 8: Bases de datos vectoriales — 183 min\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min\n    - list:\n      - link \"✍️ Migración a pgvector + endpoint de búsqueda 🔴\":\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-✍️-migracion-a-pgvector-endpoint-de-busqueda-🔴\n      - link \"📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min\":\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-🔴-31-min\n      - link \"📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min\":\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-estado-del-mercado-de-bbdd-vectoriales-2026-🔴-40-min\n      - 'link \"📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min\"':\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann🔴-40-min\n      - link \"📄 Diseño del esquema y búsqueda semántica🔴 — 32 min\":\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-📄-diseno-del-esquema-y-busqueda-semantica🔴-32-min\n      - 'link \"📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min\"':\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-📄del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-🔴-40-min\n      - link \"🆙 Evalúa el contenido y el ejercicio de este Módulo\":\n        - /url: https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293\n    - link \"🧑‍💻 Proyecto Final Master AI Engineering — 13 min\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-🧑💻-proyecto-final-master-ai-engineering-13-min\n  - 'heading \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\" [level=1]'\n  - img \"Antonio Perez\"\n  - link \"Antonio Perez\":\n    - /url: https://training.lidr.co/members/36030888\n    - generic: Antonio Perez\n  - status \"Host\":\n  - paragraph\n  - paragraph: En este módulo empiezas a construir un sistema real de inteligencia artificial sobre el que trabajarás durante el resto del programa.\n  - paragraph: \"Hasta ahora has aprendido a interactuar con modelos de lenguaje y a integrarlos desde código. A partir de aquí, el foco cambia: ya no se trata de hacer llamadas aisladas, sino de diseñar arquitectura.\"\n  - paragraph: Aquí comienzas a desarrollar un proyecto completo basado en CAG (Cache Augmented Generation), entendiendo cómo estructurar un sistema que utiliza modelos de forma eficiente, controlada y orientada a un caso de uso real.\n  - paragraph: \"Esto implica entender que:\"\n  - list:\n    - paragraph: La arquitectura es lo que define el comportamiento del sistema, no el modelo\n    - paragraph: El contexto es un recurso limitado que debe gestionarse con criterio\n    - paragraph: La calidad depende de cómo organizas la información, no solo del modelo que eliges\n  - paragraph: \"A lo largo del módulo irás construyendo este sistema de forma incremental: desde una primera versión funcional hasta una solución más completa, incorporando interfaces, lógica de negocio, optimización y control.\"\n  - paragraph: \"👉 Al finalizar este módulo:\"\n  - list:\n    - paragraph: Habrás construido un sistema funcional basado en arquitectura CAG\n    - paragraph: Entenderás cómo diseñar la estructura de un proyecto con LLMs en producción\n    - paragraph: Sabrás gestionar contexto, costes y comportamiento del modelo con criterio\n    - paragraph: Tendrás una base sólida para evolucionar hacia arquitecturas más complejas (RAG, agentes, sistemas multi-componente)\n  - paragraph: \"Las sesiones de este módulo no son independientes: cada una añade una capa al sistema que estás construyendo, acercándote progresivamente a un producto real.\"\n  - list:\n    - link \"📼 Grabación y material sesión 2\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-2\n    - generic: ¡Muchas gracias por tu participación en esta gran cuarta sesión! Obtén la grabación a continuación 👇 Video...\n    - link \"📼 Grabación y material sesión 3\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-3\n    - generic: \"Obtén la grabación a continuación 👇 Video HERRAMIENTAS Y PLATAFORMAS Streamlit: https://streamlit.io/ - Framework...\"\n    - link \"📼 Grabación y material sesión 4\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-4\n    - generic: \"📽 Video 📄 Slides AIEngineering_-_Sesi_n_4.pdf HERRAMIENTAS Y PLATAFORMAS Jinja2 Uso: sistema de plantillas dinámicas...\"\n    - link \"📼 Grabación y material sesión 5\":\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-5\n    - generic: \"Video Slides Sesi_n_5.pdf INSIGHTS Buenas prácticas : Diseñar el patrón Actor-Critique mediante arquitecturas...\"\n  - link \"Previous 🆙 Evalúa el contenido de este Módulo\":\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724179\n    - generic: Previous\n    - generic: 🆙 Evalúa el contenido de este Módulo\n  - link \"Next 📼 Grabación y material sesión 2\":\n    - /url: https://training.lidr.co/posts/ai-engineering-202604-📼-grabacion-y-material-sesion-2\n    - generic: Next\n    - generic: 📼 Grabación y material sesión 2\n  - 'link \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\"':\n    - /url: https://training.lidr.co/spaces/22984593\n    - 'img \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\"'\n  - link:\n    - /url: https://training.lidr.co/spaces/22984593\n  - link:\n    - /url: https://training.lidr.co/spaces/22984593\n  - link \"AI Engineering 2026/04\":\n    - /url: https://training.lidr.co/spaces/22984593\n  - 'generic \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\"':\n    - 'link \"2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)\"':\n      - /url: https://training.lidr.co/posts/ai-engineering-202604-2️⃣-modulo-arquitecturas-cag-cache-augmented-generation\n  - link:\n    - /url: \"#\"\n  - link:\n    - /url: \"#\"\n- generic: Loading..."
+}
