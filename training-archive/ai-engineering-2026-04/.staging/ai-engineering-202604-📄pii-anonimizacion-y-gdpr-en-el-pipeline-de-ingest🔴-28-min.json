@@ -1,0 +1,18 @@
+{
+  "slug": "ai-engineering-202604-📄pii-anonimizacion-y-gdpr-en-el-pipeline-de-ingest🔴-28-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-📄pii-anonimizacion-y-gdpr-en-el-pipeline-de-ingest🔴-28-min",
+  "title": "📄PII, anonimización y GDPR en el pipeline de ingest🔴 — 28 min",
+  "archived_at": "2026-06-12T09:31:34.970Z",
+  "group_hint": "06-session",
+  "discovered_links": [],
+  "article_html": "<h1>📄PII, anonimización y GDPR en el pipeline de ingest🔴 — 28 min</h1><p>⏳ Tiempo estimado: 28 minEl corpus que tenemos ahora ya pasó por inventario, extracción y validación. Los registros son consistentes, están limpios y respetan los invariantes de negocio. Pero conti...</p><p><img src=\"https://media1-production-mightynetworks.imgix.net/asset/c9f950fd-9473-4ecd-96f0-035ec4473064/sesion_06_article_5_visual_1_pii_leakage_modes.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format\" alt=\"cover\"></p><p>Nota: la lección devolvió un error de renderizado en la plataforma durante el archivado automático. Se conserva aquí la metadata pública disponible y el enlace original.</p><p><a href=\"https://training.lidr.co/posts/ai-engineering-202604-📄pii-anonimizacion-y-gdpr-en-el-pipeline-de-ingest🔴-28-min\">Abrir lección original</a></p>",
+  "title_html": "<h1>📄PII, anonimización y GDPR en el pipeline de ingest🔴 — 28 min</h1>",
+  "imgs": [
+    {
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/c9f950fd-9473-4ecd-96f0-035ec4473064/sesion_06_article_5_visual_1_pii_leakage_modes.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format",
+      "alt": "cover"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "⏳ Tiempo estimado: 28 minEl corpus que tenemos ahora ya pasó por inventario, extracción y validación. Los registros son consistentes, están limpios y respetan los invariantes de negocio. Pero conti..."
+}

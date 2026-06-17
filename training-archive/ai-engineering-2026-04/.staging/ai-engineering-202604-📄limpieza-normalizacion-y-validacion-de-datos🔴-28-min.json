@@ -1,0 +1,18 @@
+{
+  "slug": "ai-engineering-202604-📄limpieza-normalizacion-y-validacion-de-datos🔴-28-min",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-📄limpieza-normalizacion-y-validacion-de-datos🔴-28-min",
+  "title": "📄Limpieza, normalización y validación de datos🔴 — 28 min",
+  "archived_at": "2026-06-12T09:31:32.441Z",
+  "group_hint": "06-session",
+  "discovered_links": [],
+  "article_html": "<h1>📄Limpieza, normalización y validación de datos🔴 — 28 min</h1><p>⏳ Tiempo estimado: 28 minEn el artículo anterior cerramos el subsistema ingest/ que produce Documents canónicos a partir de cualquier formato. Esos Documents cumplen el contrato Pydantic: tienen un...</p><p><img src=\"https://media1-production-mightynetworks.imgix.net/asset/d71cbf17-fd76-4bc6-9874-eab20b84cca0/sesion_06_article_4_visual_1_four_families.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format\" alt=\"cover\"></p><p>Nota: la lección devolvió un error de renderizado en la plataforma durante el archivado automático. Se conserva aquí la metadata pública disponible y el enlace original.</p><p><a href=\"https://training.lidr.co/posts/ai-engineering-202604-📄limpieza-normalizacion-y-validacion-de-datos🔴-28-min\">Abrir lección original</a></p>",
+  "title_html": "<h1>📄Limpieza, normalización y validación de datos🔴 — 28 min</h1>",
+  "imgs": [
+    {
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/d71cbf17-fd76-4bc6-9874-eab20b84cca0/sesion_06_article_4_visual_1_four_families.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format",
+      "alt": "cover"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "⏳ Tiempo estimado: 28 minEn el artículo anterior cerramos el subsistema ingest/ que produce Documents canónicos a partir de cualquier formato. Esos Documents cumplen el contrato Pydantic: tienen un..."
+}
