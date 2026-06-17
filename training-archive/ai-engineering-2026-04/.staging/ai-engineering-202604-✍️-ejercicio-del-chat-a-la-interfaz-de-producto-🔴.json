@@ -1,0 +1,151 @@
+{
+  "slug": "ai-engineering-202604-✍️-ejercicio-del-chat-a-la-interfaz-de-producto-🔴",
+  "source_url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-del-chat-a-la-interfaz-de-producto-🔴",
+  "title": "✍️ Ejercicio - del chat a la interfaz de producto 🔴",
+  "archived_at": "2026-06-12T09:22:36.851Z",
+  "group_hint": "04-session",
+  "discovered_links": [
+    {
+      "text": "Next up Get started here!Got it 🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724212"
+    },
+    {
+      "text": "¿Cómo usar la plataforma? — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-como-usar-la-plataforma-19-min"
+    },
+    {
+      "text": "👋 Bienvenida y expectativas — 55 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%91%8B-bienvenida-y-expectativas-55-min"
+    },
+    {
+      "text": "Módulo de bienvenida — 2 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-modulo-de-bienvenida-2-min"
+    },
+    {
+      "text": "Pre-curso: Introducción al rol de AI Engineer y panorama actual — 127 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-introduccion-al-rol-de-ai-engineer-y-panorama-actual-127-min"
+    },
+    {
+      "text": "Pre curso. Metodología y detalles operativos del programa — 41 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-pre-curso-metodologia-y-detalles-operativos-del-programa-41-min"
+    },
+    {
+      "text": "1️⃣ Módulo: Fundamentos de productos con IA",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-1%EF%B8%8F%E2%83%A3-modulo-fundamentos-de-productos-con-ia"
+    },
+    {
+      "text": "Sesión 1: LLMs y setup de entorno de trabajo — 146 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-1-llms-y-setup-de-entorno-de-trabajo-146-min"
+    },
+    {
+      "text": "2️⃣ Módulo: Arquitecturas CAG (Cache Augmented Generation)",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-2%EF%B8%8F%E2%83%A3-modulo-arquitecturas-cag-cache-augmented-generation"
+    },
+    {
+      "text": "Sesión 2: Primeros pasos de arquitectura CAG — 95 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-2-primeros-pasos-de-arquitectura-cag-95-min"
+    },
+    {
+      "text": "Sesión 3: Patrones de diseño para wrappers de modelos — 89 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-3-patrones-de-diseno-para-wrappers-de-modelos-89-min"
+    },
+    {
+      "text": "Sesión 4: Productos IA avanzados — 117 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-4-productos-ia-avanzados-117-min"
+    },
+    {
+      "text": "🎥 Introducción: Productos IA avanzados 🔴 — 3 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%8E%A5-introduccion-productos-ia-avanzados-%F0%9F%94%B4-3-min"
+    },
+    {
+      "text": "✍️ Ejercicio - del chat a la interfaz de producto 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-del-chat-a-la-interfaz-de-producto-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄De interfaz conversacional a interfaz de producto 🔴 — 19 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84de-interfaz-conversacional-a-interfaz-de-producto-%F0%9F%94%B4-19-min"
+    },
+    {
+      "text": "📄 Plantillas de prompts y prompting desde backend 🔴 — 22 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-plantillas-de-prompts-y-prompting-desde-backend-%F0%9F%94%B4-22-min"
+    },
+    {
+      "text": "📄 Extracción de datos estructurados 🔴 — 22 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-extraccion-de-datos-estructurados-%F0%9F%94%B4-22-min"
+    },
+    {
+      "text": "📄Guardrails y validación de outputs — 26 min🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84guardrails-y-validacion-de-outputs-26-min%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Cacheo semántico de respuestas— 25 min🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-cacheo-semantico-de-respuestas-25-min%F0%9F%94%B4"
+    },
+    {
+      "text": "🆙 Evalúa el contenido de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724234"
+    },
+    {
+      "text": "Sesión 5: Funcionalidades avanzadas — 125 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-5-funcionalidades-avanzadas-125-min"
+    },
+    {
+      "text": "3️⃣ Módulo: Data-driven AI",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-3%EF%B8%8F%E2%83%A3-modulo-data-driven-ai"
+    },
+    {
+      "text": "Sesión 6: Fundamentos de data driven AI - Análisis, formateo y normalización de datos existentes — 132 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-6-fundamentos-de-data-driven-ai-analisis-formateo-y-normalizacion-de-datos-existentes-132-min"
+    },
+    {
+      "text": "Sesión 7: Embeddings y representación vectorial — 107 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-7-embeddings-y-representacion-vectorial-107-min"
+    },
+    {
+      "text": "Sesión 8: Bases de datos vectoriales — 183 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-8-bases-de-datos-vectoriales-183-min"
+    },
+    {
+      "text": "✍️ Migración a pgvector + endpoint de búsqueda 🔴",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-migracion-a-pgvector-endpoint-de-busqueda-%F0%9F%94%B4"
+    },
+    {
+      "text": "📄 Por qué existen las BBDD vectoriales y cuando realmente las necesitas 🔴 — 31 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-por-que-existen-las-bbdd-vectoriales-y-cuando-realmente-las-necesitas-%F0%9F%94%B4-31-min"
+    },
+    {
+      "text": "📄 Estado del mercado de BBDD vectoriales 2026 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-del-mercado-de-bbdd-vectoriales-2026-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Anatomía de un índice vectorial: HNSW, IVFFlat y el horizonte de DiskANN🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-indice-vectorial-hnsw-ivfflat-y-el-horizonte-de-diskann%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "📄 Diseño del esquema y búsqueda semántica🔴 — 32 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-diseno-del-esquema-y-busqueda-semantica%F0%9F%94%B4-32-min"
+    },
+    {
+      "text": "📄Del prototipo a producción: tuning, monitorización y techo de pgvector 🔴 — 40 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84del-prototipo-a-produccion-tuning-monitorizacion-y-techo-de-pgvector-%F0%9F%94%B4-40-min"
+    },
+    {
+      "text": "🆙 Evalúa el contenido y el ejercicio de este Módulo",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-y-el-ejercicio-de-este-modulo-98724293"
+    },
+    {
+      "text": "🧑‍💻 Proyecto Final Master AI Engineering — 13 min",
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%A7%91%F0%9F%92%BB-proyecto-final-master-ai-engineering-13-min"
+    }
+  ],
+  "article_html": "\n<div class=\"mighty-max-content-width\" id=\"zoom-sync-conflict-alert-region\"></div>\n<div class=\"mighty-max-content-width\" id=\"reported-posts-banner-region\"></div>\n<div id=\"hero-media-region\"></div>\n<div class=\"detail-layout-title mighty-wysiwyg-content fr-view mighty-max-content-width\">\n<h1>✍️ Ejercicio - del chat a la interfaz de producto 🔴</h1>\n</div>\n<div class=\"attribution-header-spacing mighty-max-content-width\" id=\"detail-layout-attribution-region\"><div class=\"profile-attribution-link-container toggle-with-presence is-small has-centered-name is-profile-preview-on-name\" data-user-id=\"36030888\" data-space-id=\"7296662\"><div class=\"profile-preview-avatar-region mighty-attribution-avatar\"><div class=\"MuiStack-root css-8v90jo\"><div class=\"MuiBox-root css-4g6ai3\" data-id=\"profile-preview-avatar-trigger\"><div class=\"MuiAvatar-root MuiAvatar-circleTiny css-14n2uyv\"><img alt=\"Antonio Perez\" src=\"https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&amp;fm=jpg&amp;q=100&amp;auto=format&amp;w=192&amp;h=192&amp;fit=crop&amp;crop=faces&amp;impolicy=Avatar\" class=\"MuiAvatar-img css-45do71\"></div></div><div class=\"MuiStack-root css-j7qwjs\"><div class=\"MuiStack-root css-2nqau9\"><div><div class=\"MuiBox-root css-i6bazn\"><a title=\"Antonio Perez\" class=\"mighty-attribution-name text-color-title-link navigate\" href=\"https://training.lidr.co/members/36030888\" data-id=\"mighty-link\"><span class=\"MuiTypography-root MuiTypography-labelLargeBold MuiTypography-noWrap css-1vlsy68\">Antonio Perez</span></a></div></div><div class=\"MuiBox-root css-9w4vf0\" role=\"status\" aria-label=\"Host\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" fill=\"none\" class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeTiny css-qndboc\" focusable=\"false\" aria-hidden=\"true\" data-id=\"role-icon-host\"><path d=\"M7.99601 0.838063C7.80872 0.841426 7.59588 0.87403 7.38859 0.957204C7.2175 1.02591 6.97491 1.16003 6.79386 1.41326L6.72062 1.52947L6.61808 1.70134C6.36202 2.10055 5.99106 2.47782 5.45988 2.67009C4.66685 2.95701 3.99953 2.8625 3.58976 2.74138L3.43644 2.70427C3.07585 2.63462 2.69885 2.68785 2.37492 2.85857C1.99098 3.06096 1.65548 3.44964 1.59269 3.98748C1.49041 4.86596 1.41289 6.49177 1.70011 9.00408C1.94204 11.12 3.29599 12.5534 4.56437 13.4484C5.83565 14.3454 7.14428 14.794 7.57609 14.9279C7.85325 15.0138 8.14758 15.0138 8.42472 14.9279C8.8565 14.7941 10.1658 14.3456 11.4374 13.4484C12.706 12.5534 14.0599 11.1204 14.3007 9.00408C14.5935 6.42919 14.5056 4.78585 14.4003 3.924L14.3651 3.73259C14.155 2.87732 13.3015 2.5531 12.6513 2.63396L12.5155 2.6574L12.3456 2.6906C11.9186 2.76181 11.2816 2.77924 10.54 2.51092C9.93078 2.2905 9.54027 1.87006 9.29093 1.47088L9.21281 1.36052C9.02191 1.11869 8.77726 0.995137 8.60538 0.933767C8.39657 0.85921 8.18358 0.834731 7.99601 0.838063ZM8.04679 3.13689C8.46762 3.62136 9.05327 4.09907 9.85929 4.3908C10.8779 4.75935 11.7862 4.77552 12.4638 4.6906C12.5208 5.50386 12.5347 6.83991 12.3144 8.77752C12.164 10.0993 11.3148 11.0881 10.2851 11.8146C9.39191 12.4448 8.45392 12.8064 8.00089 12.9601C7.54821 12.8065 6.61007 12.445 5.71671 11.8146C4.68717 11.0881 3.83766 10.0996 3.68644 8.77752C3.47259 6.90716 3.47902 5.59739 3.53117 4.77752C4.21588 4.90179 5.12452 4.91855 6.14054 4.55095C7.01178 4.23562 7.62374 3.68319 8.04679 3.13689Z\" fill=\"currentColor\"></path><path d=\"M9.20373 5.90341C9.53907 5.46459 10.1665 5.38065 10.6053 5.71598C11.0441 6.0513 11.128 6.67872 10.7927 7.11754L8.25432 10.4392C8.08461 10.6613 7.8294 10.8025 7.55107 10.8281C7.27266 10.8537 6.99567 10.7618 6.78831 10.5743L5.32761 9.25297C4.91811 8.88261 4.88605 8.25008 5.25621 7.84046C5.62661 7.43092 6.2591 7.39879 6.66871 7.76906L7.32411 8.36229L9.20373 5.90341Z\" fill=\"currentColor\"></path></svg></div></div></div></div></div>\n</div></div>\n<div id=\"event-header-region\"></div>\n<div class=\"detail-layout-content-region-container\">\n<div id=\"detail-layout-content-region\"></div>\n</div>\n<div class=\"detail-layout-description mighty-wysiwyg-content mighty-max-content-width fr-view\">\n<p dir=\"auto\"></p><p dir=\"auto\">El <code class=\"tiptap-code\">estimator</code> que dejamos al final de la sesión 03 es funcional pero tiene dos problemas que nacen de la misma decisión: hemos dejado el prompting en manos del usuario y el prompt vive como un string dentro del código.</p><p dir=\"auto\">Antes del directo, vamos a corregir las dos cosas a la vez. Cuando llegues a la sesión, tu <code class=\"tiptap-code\">estimator</code> ya no será un chat: el frontend habrá pasado a ser un formulario que produce parámetros tipados, y el servicio IA habrá sacado el prompt del código a templates Jinja2 versionados. Sobre esa base trabajaremos en directo el resto del temario de la sesión.</p><p dir=\"auto\">El ejercicio es deliberadamente exigente. Si te quedas en la mitad, llega a la sesión con lo que tengas: el directo arranca con un breve repaso de soluciones y a partir de ahí seguimos juntos. Pero quien acabe completo va a poder concentrarse en lo nuevo en lugar de hacer ingeniería estándar mientras se intenta seguir el directo.</p><hr dir=\"auto\"><h2 dir=\"auto\">Punto de partida</h2><p dir=\"auto\">Lo que tienes al final de la sesión 03:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Servicio IA en FastAPI con un wrapper de proveedores que abstrae OpenAI y Anthropic.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Cliente Streamlit con interfaz de chat conversacional (textarea + botón \"Enviar\").</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Caching exact-match, streaming y observabilidad básica con structlog.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Prompt de estimación construido como f-string dentro del endpoint o del wrapper.</p></li>\n</ul><p dir=\"auto\">Si en sesión 03 elegiste un stack distinto a Streamlit para el cliente (te recordamos que frontend y backend de negocio son libres), traduce los pasos de cliente a tu stack: el patrón es idéntico, solo cambian las APIs.</p><hr dir=\"auto\"><h2 dir=\"auto\">Objetivos de aprendizaje</h2><p dir=\"auto\">Al terminar este ejercicio deberías poder defender en una conversación técnica:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Por qué un formulario tipado produce mejor producto que un textarea libre cuando el espacio de tareas es acotado.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Por qué un prompt en un archivo <code class=\"tiptap-code\">.j2</code> con un loader es más mantenible que un f-string en el endpoint.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Cómo se versiona un prompt y por qué la convención <code class=\"tiptap-code\">v1/</code>, <code class=\"tiptap-code\">v2/</code> no es opcional.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Qué cubre un test de template y qué no.</p></li>\n</ul><hr dir=\"auto\"><h2 dir=\"auto\">Tareas</h2><h3 dir=\"auto\">Parte 1 — Schemas y formulario en el cliente</h3><p dir=\"auto\">Define el contrato entre cliente y servicio IA con Pydantic v2 en el servicio, y el formulario equivalente en el cliente.</p><p dir=\"auto\">En el servicio IA, en <code class=\"tiptap-code\">app/schemas.py</code>:</p><p dir=\"auto\">python</p><pre class=\"tiptap-code-block\" dir=\"auto\"><code>from enum import Enum\nfrom pydantic import BaseModel, Field\n\nclass ProjectType(str, Enum):\n    MOBILE_APP = \"mobile_app\"\n    WEB_SAAS = \"web_saas\"\n    INTERNAL_TOOL = \"internal_tool\"\n    DATA_PIPELINE = \"data_pipeline\"\n\nclass DetailLevel(str, Enum):\n    SUMMARY = \"summary\"\n    MEDIUM = \"medium\"\n    DETAILED = \"detailed\"\n\nclass OutputFormat(str, Enum):\n    PHASES_TABLE = \"phases_table\"\n    LINE_ITEMS = \"line_items\"\n    NARRATIVE = \"narrative\"\n\nclass EstimationRequest(BaseModel):\n    description: str = Field(min_length=20, max_length=2000)\n    project_type: ProjectType\n    detail_level: DetailLevel\n    output_format: OutputFormat\n\nclass EstimationResponse(BaseModel):\n    text: str\n    prompt_version: str\n</code></pre><p dir=\"auto\">En el cliente Streamlit, sustituye el chat por un formulario con <code class=\"tiptap-code\">st.form</code>. La idea es que el envío produzca un <code class=\"tiptap-code\">EstimationRequest</code> y haga <code class=\"tiptap-code\">POST /estimate</code> al servicio IA con ese JSON. La respuesta sigue siendo texto libre por ahora; la estructuraremos en el directo.</p><p dir=\"auto\">Si quieres tipar también en el cliente, puedes reutilizar la clase Pydantic; o definir el equivalente en tu stack si has elegido otro. No es obligatorio, pero ayuda.</p><h3 dir=\"auto\">Parte 2 — Estructura de prompts y loader en el servicio IA</h3><p dir=\"auto\">Crea la siguiente estructura dentro del servicio IA:</p><pre class=\"tiptap-code-block\" dir=\"auto\"><code>app/\n├── prompts/\n│   ├── loader.py\n│   └── estimation/\n│       └── v1/\n│           ├── system.j2\n│           ├── user.j2\n│           └── examples.j2\n</code></pre><p dir=\"auto\">Los tres <code class=\"tiptap-code\">.j2</code> deben contener:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><code class=\"tiptap-code\">system.j2</code>: rol del modelo, instrucciones generales, bloque condicional según <code class=\"tiptap-code\">output_format</code> (cómo formatear la salida), bloque condicional según <code class=\"tiptap-code\">detail_level</code> (qué nivel de detalle dar). Incluye <code class=\"tiptap-code\">examples.j2</code> con <code class=\"tiptap-code\">{% include %}</code>.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><code class=\"tiptap-code\">user.j2</code>: el bloque que envuelve la descripción del proyecto del usuario.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><code class=\"tiptap-code\">examples.j2</code>: dos o tres ejemplos few-shot de estimaciones bien formadas. Inventa proyectos plausibles, no copies del enunciado.</p></li>\n</ul><p dir=\"auto\">El <code class=\"tiptap-code\">loader.py</code> debe exponer una función <code class=\"tiptap-code\">render_estimation_prompt(request, version=\"v1\") -&gt; tuple[str, str]</code> que devuelve <code class=\"tiptap-code\">(system, user)</code> listos para enviar al modelo. Usa <code class=\"tiptap-code\">Environment</code> de Jinja2 con <code class=\"tiptap-code\">StrictUndefined</code>, <code class=\"tiptap-code\">trim_blocks=True</code> y <code class=\"tiptap-code\">lstrip_blocks=True</code>. La firma debe permitir cambiar la versión sin tocar el resto del código.</p><p dir=\"auto\">Pista mínima sobre Jinja2 si no lo has usado: <code class=\"tiptap-code\">{{ var }}</code> interpola, <code class=\"tiptap-code\">{% if %}...{% endif %}</code> condiciona, <code class=\"tiptap-code\">{% include \"ruta\" %}</code> inserta otro template. La sintaxis se aprende en cinco minutos en la <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://jinja.palletsprojects.com/en/stable/templates/\">documentación oficial</a>.</p><h3 dir=\"auto\">Parte 3 — Refactor del endpoint</h3><p dir=\"auto\">Cambia el endpoint <code class=\"tiptap-code\">POST /estimate</code> para que:</p><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Acepte un body de tipo <code class=\"tiptap-code\">EstimationRequest</code>.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Llame a <code class=\"tiptap-code\">render_estimation_prompt(request)</code> para obtener <code class=\"tiptap-code\">(system, user)</code>.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Llame al modelo con <code class=\"tiptap-code\">role: \"system\"</code> y <code class=\"tiptap-code\">role: \"user\"</code> separados (no concatenados en un único mensaje).</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Devuelva un <code class=\"tiptap-code\">EstimationResponse</code> con el texto y <code class=\"tiptap-code\">prompt_version=\"v1\"</code>.</p></li>\n</ol><p dir=\"auto\">Mantén el wrapper de proveedor de la sesión 03. La llamada al LLM no debería cambiar más allá de pasar dos mensajes en lugar de uno.</p><p dir=\"auto\">Modelo por defecto sugerido: <code class=\"tiptap-code\">gpt-4o-mini</code> o <code class=\"tiptap-code\">claude-haiku-4-5-20251001</code>.</p><h3 dir=\"auto\">Parte 4 — Test del template</h3><p dir=\"auto\">En <code class=\"tiptap-code\">tests/prompts/test_estimation_v1.py</code> (o donde tengas tu suite), añade al menos tres tests que verifiquen:</p><ol dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Que el render incluye literalmente el contenido de <code class=\"tiptap-code\">description</code> dentro del bloque <code class=\"tiptap-code\">&lt;project_description&gt;</code> (o <code class=\"tiptap-code\">## Project description</code> si optas por Markdown).</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Que cuando <code class=\"tiptap-code\">output_format=phases_table</code> el system contiene la palabra clave del formato (por ejemplo, <code class=\"tiptap-code\">\"phases_table\"</code> o <code class=\"tiptap-code\">\"confidence_pct\"</code> si lo mencionas en las instrucciones), y que cuando es <code class=\"tiptap-code\">narrative</code> no la contiene.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Que cuando <code class=\"tiptap-code\">detail_level=detailed</code> el system incluye la instrucción extra de listar asunciones por fase, y que cuando es <code class=\"tiptap-code\">summary</code> esa instrucción no aparece.</p></li>\n</ol><p dir=\"auto\">Estos tests deben correr en milisegundos, sin tocar APIs externas. Son tests del template, no del modelo.</p><hr dir=\"auto\"><h2 dir=\"auto\">Bonus opcional (si acabas pronto)</h2><p dir=\"auto\">Para quien quiera ir más allá antes del directo, hay tres extensiones naturales que vamos a tocar igualmente, pero adelantarlas no estorba:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><strong>Versionado real:</strong> crea un <code class=\"tiptap-code\">v2/</code> al lado del <code class=\"tiptap-code\">v1/</code> con una variación deliberada del prompt (por ejemplo, un tono distinto, o un set de ejemplos diferente) y haz que el endpoint acepte <code class=\"tiptap-code\">?prompt_version=v2</code> como query param.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Contexto de proyectos similares:</strong> añade al schema un campo opcional <code class=\"tiptap-code\">reference_projects: list[ReferenceProject] | None</code> y haz que el template lo recorra con un <code class=\"tiptap-code\">{% for %}</code> cuando esté presente.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Logging del prompt renderizado:</strong> añade structlog al loader para que cada render emita un evento con la versión del prompt y un hash del contenido. Útil para depurar en producción.</p></li>\n</ul><hr dir=\"auto\"><h2 dir=\"auto\">Si te atascas</h2><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><strong>Jinja2:</strong> la <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://jinja.palletsprojects.com/en/stable/templates/\">documentación oficial</a> cubre el 95% de lo que vas a usar (variables, <code class=\"tiptap-code\">if</code>, <code class=\"tiptap-code\">for</code>, <code class=\"tiptap-code\">include</code>).</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Streamlit forms:</strong> <code class=\"tiptap-code\">st.form</code> y <code class=\"tiptap-code\">st.form_submit_button</code> son los dos componentes que necesitas.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Pydantic v2 con enums:</strong> los <code class=\"tiptap-code\">Enum</code> de Python se serializan automáticamente al string del valor cuando se hace <code class=\"tiptap-code\">.model_dump()</code>. Si tu cliente no es Python, recuerda que el JSON enviado debe tener los strings exactos (<code class=\"tiptap-code\">\"mobile_app\"</code>, no <code class=\"tiptap-code\">\"MOBILE_APP\"</code>).</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><code class=\"tiptap-code\">StrictUndefined</code><strong>:</strong> se importa desde <code class=\"tiptap-code\">jinja2</code>. Si te empieza a romper por una variable que sí pasas, revisa que no haya un typo entre el nombre en el template y el nombre en el contexto del render.</p></li>\n</ul><hr dir=\"auto\"><h2 dir=\"auto\">Lo que no entra en este ejercicio</h2><p dir=\"auto\">Tres temas que quedan reservados para el directo, no intentes adelantarlos:</p><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\"><strong>Forzar JSON estructurado en la salida del LLM.</strong> De momento la respuesta sigue siendo texto libre.</p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Validación del output con guardrails.</strong></p></li>\n<li dir=\"auto\"><p dir=\"auto\"><strong>Cacheo semántico de respuestas.</strong> El cache exact-match de la sesión 03 sigue funcionando.</p></li>\n</ul><p dir=\"auto\">Estos tres temas requieren contexto y APIs que se introducen en directo. Si te lanzas a implementarlos por tu cuenta, no es un problema, pero ten en cuenta que la solución que veremos en clase puede diferir y tendrás que reconciliar.</p><hr dir=\"auto\"><h2 dir=\"auto\">Entregable</h2><ul dir=\"auto\">\n<li dir=\"auto\"><p dir=\"auto\">Una rama <code class=\"tiptap-code\">pre-session-04</code> en tu repositorio con todos los cambios.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">README breve actualizando cómo se levanta y cómo se ejecutan los tests.</p></li>\n<li dir=\"auto\"><p dir=\"auto\">Captura o GIF de la nueva interfaz funcionando (opcional, pero ayuda en la review en directo).</p></li>\n</ul><p dir=\"auto\"><strong>Plazo de entrega.</strong> Envía el enlace a tu rama a Lia con al menos dos días de antelación a la sesión en vivo. Las entregas posteriores no se podrán incluir en la revisión grupal del inicio del directo.</p>\n<div id=\"floating-emoji-picker-region\"></div>\n</div>\n<div id=\"detail-layout-attachment-region\"></div>\n<div id=\"course-join-region\"></div>\n",
+  "title_html": "\n<h1>✍️ Ejercicio - del chat a la interfaz de producto 🔴</h1>\n",
+  "imgs": [
+    {
+      "alt": "Antonio Perez",
+      "src": "https://media1-production-mightynetworks.imgix.net/asset/4849c519-3006-4bfb-880a-96be73926c3f/c3eccac37426c36f.jpg?ixlib=rails-4.3.1&fm=jpg&q=100&auto=format&w=192&h=192&fit=crop&crop=faces&impolicy=Avatar"
+    }
+  ],
+  "iframes": [],
+  "text_preview": "✍️ Ejercicio - del chat a la interfaz de producto 🔴\nAntonio Perez\n\nEl estimator que dejamos al final de la sesión 03 es funcional pero tiene dos problemas que nacen de la misma decisión: hemos dejado el prompting en manos del usuario y el prompt vive como un string dentro del código.\n\nAntes del directo, vamos a corregir las dos cosas a la vez. Cuando llegues a la sesión, tu estimator ya no será un chat: el frontend habrá pasado a ser un formulario que produce parámetros tipados, y el servicio IA habrá sacado el prompt del código a templates Jinja2 versionados. Sobre esa base trabajaremos en directo el resto del temario de la sesión.\n\nEl ejercicio es deliberadamente exigente. Si te quedas en la mitad, llega a la sesión con lo que tengas: el directo arranca con un breve repaso de soluciones y a partir de ahí seguimos juntos. Pero quien acabe completo va a poder concentrarse en lo nuevo en lugar de hacer ingeniería estándar mientras se intenta seguir el directo.\n\nPunto de partida\n\nLo que tienes al final de la sesión 03:\n\nServicio IA en FastAPI con un wrapper de proveedores que abstrae OpenAI y Anthropic.\n\nCliente Streamlit con interfaz de chat conversacional (textarea + botón \"Enviar\").\n\nCaching exact-match, streaming y observabilidad básica con structlog.\n\nPrompt de estimación construido como f-string dentro del endpoint o del wrapper.\n\nSi en sesión 03 elegiste un stack distinto a Streamlit para el cliente (te recordamos que frontend y backend de negocio son libres), traduce los pasos de cliente a tu stack: el patrón es idéntico, solo cambian las APIs.\n\nObjetivos de aprendizaje\n\nAl terminar este ejercicio deberías poder defender en una conversación técnica:\n\nPor qué un formulario tipado produce mejor producto que un textarea libre cuando el espacio de tareas es acotado.\n\nPor qué un prompt en un archivo .j2 con un loader es más mantenible que un f-string en el endpoint.\n\nCómo se versiona un prompt y por qué la convención v1/, v2/ no es opcional.\n\nQué cubre un test de template y qué no.\n\nTareas\nParte 1 — Schemas y formulario en el cliente\n\nDefine el contrato entre cliente y servicio IA con Pydantic v2 en el servicio, y el formulario equivalente en el cliente.\n\nEn el servicio IA, en app/schemas.py:\n\npython\n\nfrom enum import Enum\nfrom pydantic import BaseModel, Field\n\nclass ProjectType(str, Enum):\n    MOBILE_APP = \"mobile_app\"\n    WEB_SAAS = \"web_saas\"\n    INTERNAL_TOOL = \"internal_tool\"\n    DATA_PIPELINE = \"data_pipeline\"\n\nclass DetailLevel(str, Enum):\n    SUMMARY = \"summary\"\n    MEDIUM = \"medium\"\n    DETAILED = \"detailed\"\n\nclass OutputFormat(str, Enum):\n    PHASES_TABLE = \"phases_table\"\n    LINE_ITEMS = \"line_items\"\n    NARRATIVE = \"narrative\"\n\nclass EstimationRequest(BaseModel):\n    description: str = Field(min_length=20, max_length=2000)\n    project_type: ProjectType\n    detail_level: DetailLevel\n    output_format: OutputFormat\n\nclass EstimationResponse(BaseModel):\n    text: str\n    prompt_version: str\n\n\nEn el cliente Streamlit, sustituye el chat por un formulario con st.form. La idea es que el envío produzca un EstimationRequest y haga POST /estimate al servicio IA con ese JSON. La respuesta sigue siendo texto libre por ahora; la estructuraremos en el directo.\n\nSi quieres tipar también en el cliente, puedes reutilizar la clase Pydantic; o definir el equivalente en tu stack si has elegido otro. No es obligatorio, pero ayuda.\n\nParte 2 — Estructura de prompts y loader en el servicio IA\n\nCrea la siguiente estructura dentro del servicio IA:\n\napp/\n├── prompts/\n│   ├── loader.py\n│   └── estimation/\n│       └── v1/\n│           ├── system.j2\n│           ├── user.j2\n│           └── examples.j2\n\n\nLos tres .j2 deben contener:\n\nsystem.j2: rol del modelo, instrucciones generales, bloque condicional según output_format (cómo formatear la salida), bloque condicional según detail_level (qué nivel de detalle dar). Incluye examples.j2 con {% include %}.\n\nuser.j2: el bloque que envuelve la descripción del proyecto del usuario.\n\nexamples.j2: dos o"
+}
