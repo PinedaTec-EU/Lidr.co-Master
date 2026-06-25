@@ -86,6 +86,7 @@ flowchart LR
 | [`sih-smart-analysis`](./sih-smart-analysis) | Proyecto secundario para ejecución y análisis de reports SIH. |
 | [`ClassRoom`](./ClassRoom) | Material de aula y ejercicios base. |
 | [`doc`](./doc) | Instrucciones y material auxiliar del máster. |
+| [`training-archive`](./training-archive) | Archivado local de contenidos del campus para repaso en Markdown. |
 
 ## Proyecto secundario
 
