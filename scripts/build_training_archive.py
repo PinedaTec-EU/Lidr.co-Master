@@ -96,10 +96,24 @@ def classify_group(record: SnapshotRecord) -> str:
         "la-capa-de-datos-como-servicio",
         "contenido-y-el-ejercicio-de-este-modulo-98724306",
     ]
+    session_10_markers = [
+        "sesion-10-tecnicas-de-recuperacion",
+        "tecnicas-de-recuperacion",
+        "ejercicio-tecnicas-avanzadas-de-recuperacion",
+        "reranking-cuando-el-top-k-vectorial-no-es-suficiente",
+        "como-saber-si-el-reranking-compensa",
+        "busqueda-hibrida",
+        "expansion-y-descomposicion-de-consultas",
+        "multi-indice-y-routing",
+        "filtrado-contextual-y-temporal",
+        "contenido-de-este-modulo-98724321",
+    ]
     if any(marker in text for marker in session_08_markers):
         return "08-session"
     if any(marker in text for marker in session_09_markers):
         return "09-session"
+    if any(marker in text for marker in session_10_markers):
+        return "10-session"
     if "sesion-1" in text or "sesión 1" in text:
         return "01-session"
     if "sesion-2" in text or "sesión 2" in text:
@@ -118,6 +132,8 @@ def classify_group(record: SnapshotRecord) -> str:
         return "08-session"
     if "sesion-9" in text or "sesión 9" in text:
         return "09-session"
+    if "sesion-10" in text or "sesión 10" in text:
+        return "10-session"
     if "pre-curso" in text or "pre curso" in text:
         return "00-pre-course"
     if "bienvenida" in text or "plataforma" in text or "modulo-de-bienvenida" in text:
