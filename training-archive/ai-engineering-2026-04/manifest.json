@@ -1,10 +1,10 @@
 {
   "course": "AI Engineering 2026/04",
-  "generated_at": "2026-06-17T17:38:21.527721+00:00",
+  "generated_at": "2026-06-25T17:24:14.920137+00:00",
   "root_dir": "training-archive/ai-engineering-2026-04",
   "summary": {
-    "discovered_posts": 104,
-    "archived_posts": 101,
+    "discovered_posts": 113,
+    "archived_posts": 110,
     "partial_posts": 3,
     "pending_posts": 0
   },
@@ -700,6 +700,69 @@
       "title": "📋 Retrieval que no es solo cosine: top-K, threshold y filtros sobre pgvector 🔴 — 30 min",
       "slug": "ai-engineering-202604-📋-retrieval-que-no-es-solo-cosine-top-k-threshold-y-filtros-sobre-pgvector-🔴-30-min",
       "group": "09-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-10-tecnicas-de-recuperacion-129-min",
+      "title": "Sesión 10: Técnicas de recuperación — 129 min",
+      "slug": "ai-engineering-202604-sesion-10-tecnicas-de-recuperacion-129-min",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-tecnicas-avanzadas-de-recuperacion-🔴",
+      "title": "✍️ Ejercicio: Técnicas avanzadas de recuperación 🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-tecnicas-avanzadas-de-recuperacion-🔴",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724321",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724321",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-busqueda-hibrida-🔴-23-min",
+      "title": "📄 Búsqueda híbrida 🔴— 23 min",
+      "slug": "ai-engineering-202604-📄-busqueda-hibrida-🔴-23-min",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-como-saber-si-el-reranking-compensa-medicion-artesanal-de-relevancia-🔴-23-min",
+      "title": "📄 Cómo saber si el reranking compensa: medición artesanal de relevancia 🔴— 23 min",
+      "slug": "ai-engineering-202604-📄-como-saber-si-el-reranking-compensa-medicion-artesanal-de-relevancia-🔴-23-min",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-expansion-y-descomposicion-de-consultas-🔴-22-min",
+      "title": "📄 Expansión y descomposición de consultas 🔴— 22 min",
+      "slug": "ai-engineering-202604-📄-expansion-y-descomposicion-de-consultas-🔴-22-min",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-filtrado-contextual-y-temporal-🔴-18-min",
+      "title": "📄 Filtrado contextual y temporal 🔴— 18 min",
+      "slug": "ai-engineering-202604-📄-filtrado-contextual-y-temporal-🔴-18-min",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-multi-indice-y-routing-🔴-19-min",
+      "title": "📄 Multi-indice y routing 🔴— 19 min",
+      "slug": "ai-engineering-202604-📄-multi-indice-y-routing-🔴-19-min",
+      "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-reranking-cuando-el-top-k-vectorial-no-es-suficiente-🔴-24-min",
+      "title": "📄 Reranking: cuando el top-k vectorial no es suficiente 🔴— 24 min",
+      "slug": "ai-engineering-202604-📄-reranking-cuando-el-top-k-vectorial-no-es-suficiente-🔴-24-min",
+      "group": "10-session",
       "status": "archived"
     },
     {
