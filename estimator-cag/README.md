@@ -26,6 +26,8 @@ Sobre esa base, la sesión 10 añade un primer refinamiento del retriever:
 - `python evals/session_10_retrieval_eval.py` genera una tabla artesanal con `precision@k`, `recall@k` y latencia mediana por variante
 - `search_strategy="hybrid"` combina recuperación vectorial y full-text en PostgreSQL
 - `rrf_smoothing_k` controla la fusión Reciprocal Rank Fusion sin mezclar scores incompatibles
+- `rewrite_strategy="expand"` genera variantes de la misma intención y fusiona por consenso
+- `rewrite_strategy="decompose"` separa consultas multi-tema y fusiona con cobertura round-robin
 
 ---
 

@@ -10,9 +10,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.embedding_pipeline.embedder import OpenAIEmbedder
 from app.embedding_pipeline.hybrid_fusion import reciprocal_rank_fusion
 from app.embedding_pipeline.models import ChunkRecord, DocumentRecord
+from app.embedding_pipeline.query_fusion import interleave_rankings
 from app.embedding_pipeline.query_rewrite import rewrite_query
 from app.embedding_pipeline.reranker import rerank_candidates
 from app.embedding_pipeline.schemas import (
+    QueryFusionStrategy,
     SearchFilters,
     SearchRequest,
     SearchResponse,
@@ -47,29 +49,28 @@ class SemanticSearchService:
     ) -> SearchResponse:
         started_at = time.perf_counter()
         rewrite = rewrite_query(query=request.query, strategy=request.rewrite_strategy)
+        effective_queries = rewrite.effective_queries[: request.max_rewrite_queries]
         candidate_pool_k = request.candidate_pool_k or request.k
 
-        semantic_candidates = await self._search_semantic_candidates(
-            session=session,
-            query=rewrite.effective_query,
-            request=request,
-            limit=candidate_pool_k,
-        )
-
-        if request.search_strategy == SearchStrategy.HYBRID:
-            lexical_candidates = await self._search_lexical_candidates(
+        per_query_candidates = [
+            await self._search_candidates_for_query(
                 session=session,
-                query=rewrite.effective_query,
+                query=effective_query,
                 request=request,
                 limit=candidate_pool_k,
             )
-            candidates = self._fuse_hybrid_candidates(
-                semantic_candidates=semantic_candidates,
-                lexical_candidates=lexical_candidates,
+            for effective_query in effective_queries
+        ]
+
+        if len(per_query_candidates) == 1:
+            candidates = per_query_candidates[0]
+        else:
+            candidates = self._fuse_rewritten_queries(
+                per_query_candidates=per_query_candidates,
+                fusion_strategy=rewrite.fusion_strategy,
+                top_k=candidate_pool_k,
                 smoothing_k=request.rrf_smoothing_k,
             )
-        else:
-            candidates = semantic_candidates
 
         reranked_scores: dict[int, float] = {}
         if request.rerank_strategy.value != "disabled" and candidates:
@@ -90,24 +91,30 @@ class SemanticSearchService:
                     candidate.final_score = reranked_scores[candidate.chunk_id]
 
         candidates.sort(key=lambda item: item.final_score, reverse=True)
+        total_candidates_considered = len(candidates)
         candidates = candidates[: request.k]
 
         return SearchResponse(
             query=request.query,
             effective_query=rewrite.effective_query,
+            effective_queries=effective_queries,
             k=request.k,
             candidate_pool_k=candidate_pool_k,
             score_threshold=request.score_threshold,
             rewrite_strategy=request.rewrite_strategy,
+            query_fusion_strategy=rewrite.fusion_strategy,
             search_strategy=request.search_strategy,
             rerank_strategy=request.rerank_strategy,
             rrf_smoothing_k=(
-                request.rrf_smoothing_k if request.search_strategy == SearchStrategy.HYBRID else None
+                request.rrf_smoothing_k
+                if request.search_strategy == SearchStrategy.HYBRID
+                or rewrite.fusion_strategy == QueryFusionStrategy.CONSENSUS
+                else None
             ),
             rewrite_notes=rewrite.notes,
             search_time_ms=round((time.perf_counter() - started_at) * 1000, 2),
             low_confidence=len(candidates) == 0,
-            total_candidates_considered=len(candidates),
+            total_candidates_considered=total_candidates_considered,
             results=[
                 SearchResult(
                     chunk_id=item.chunk_id,
@@ -130,6 +137,35 @@ class SemanticSearchService:
                 )
                 for item in candidates
             ],
+        )
+
+    async def _search_candidates_for_query(
+        self,
+        *,
+        session: AsyncSession,
+        query: str,
+        request: SearchRequest,
+        limit: int,
+    ) -> list[SearchCandidate]:
+        semantic_candidates = await self._search_semantic_candidates(
+            session=session,
+            query=query,
+            request=request,
+            limit=limit,
+        )
+        if request.search_strategy != SearchStrategy.HYBRID:
+            return semantic_candidates
+
+        lexical_candidates = await self._search_lexical_candidates(
+            session=session,
+            query=query,
+            request=request,
+            limit=limit,
+        )
+        return self._fuse_hybrid_candidates(
+            semantic_candidates=semantic_candidates,
+            lexical_candidates=lexical_candidates,
+            smoothing_k=request.rrf_smoothing_k,
         )
 
     async def _search_semantic_candidates(
@@ -160,7 +196,6 @@ class SemanticSearchService:
             .join(DocumentRecord, DocumentRecord.id == ChunkRecord.document_id)
             .where(ChunkRecord.embedding.is_not(None))
         )
-
         stmt = self._apply_filters(stmt, request.filters)
         if request.score_threshold is not None:
             stmt = stmt.where(semantic_score >= request.score_threshold)
@@ -234,7 +269,6 @@ class SemanticSearchService:
         merged: dict[int, SearchCandidate] = {
             candidate.chunk_id: candidate for candidate in semantic_candidates
         }
-
         for candidate in lexical_candidates:
             existing = merged.get(candidate.chunk_id)
             if existing is None:
@@ -249,11 +283,37 @@ class SemanticSearchService:
             ],
             smoothing_k=smoothing_k,
         )
-
         for chunk_id, score in fusion_scores.items():
             merged[chunk_id].fusion_score = score
             merged[chunk_id].final_score = score
+        return sorted(merged.values(), key=lambda item: item.final_score, reverse=True)
 
+    def _fuse_rewritten_queries(
+        self,
+        *,
+        per_query_candidates: list[list[SearchCandidate]],
+        fusion_strategy: QueryFusionStrategy | None,
+        top_k: int,
+        smoothing_k: int,
+    ) -> list[SearchCandidate]:
+        merged: dict[int, SearchCandidate] = {}
+        rankings: list[list[int]] = []
+
+        for candidates in per_query_candidates:
+            rankings.append([candidate.chunk_id for candidate in candidates])
+            for candidate in candidates:
+                existing = merged.get(candidate.chunk_id)
+                if existing is None or candidate.final_score > existing.final_score:
+                    merged[candidate.chunk_id] = candidate
+
+        if fusion_strategy == QueryFusionStrategy.COVERAGE:
+            ordered_ids = interleave_rankings(rankings, top_k=top_k)
+            return [merged[chunk_id] for chunk_id in ordered_ids if chunk_id in merged]
+
+        fusion_scores = reciprocal_rank_fusion(rankings, smoothing_k=smoothing_k)
+        for chunk_id, score in fusion_scores.items():
+            merged[chunk_id].fusion_score = score
+            merged[chunk_id].final_score = score
         return sorted(merged.values(), key=lambda item: item.final_score, reverse=True)
 
     def _apply_filters(self, stmt, filters: SearchFilters | None):

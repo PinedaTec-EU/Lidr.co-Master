@@ -25,6 +25,13 @@ class EmbeddingModelName(str, Enum):
 class QueryRewriteStrategy(str, Enum):
     DISABLED = "disabled"
     NORMALIZE = "normalize"
+    EXPAND = "expand"
+    DECOMPOSE = "decompose"
+
+
+class QueryFusionStrategy(str, Enum):
+    CONSENSUS = "consensus"
+    COVERAGE = "coverage"
 
 
 class SearchStrategy(str, Enum):
@@ -125,6 +132,7 @@ class SearchRequest(BaseModel):
     candidate_pool_k: int | None = Field(default=None, ge=1, le=100)
     score_threshold: float | None = Field(default=None, ge=0, le=1)
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    max_rewrite_queries: int = Field(default=4, ge=1, le=4)
     search_strategy: SearchStrategy = SearchStrategy.SEMANTIC
     rrf_smoothing_k: int = Field(default=60, ge=1, le=200)
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
@@ -150,10 +158,12 @@ class SearchResult(BaseModel):
 class SearchResponse(BaseModel):
     query: str
     effective_query: str
+    effective_queries: list[str] = Field(default_factory=list)
     k: int = Field(ge=1)
     candidate_pool_k: int = Field(default=0, ge=0)
     score_threshold: float | None = Field(default=None, ge=0, le=1)
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    query_fusion_strategy: QueryFusionStrategy | None = None
     search_strategy: SearchStrategy = SearchStrategy.SEMANTIC
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
     rrf_smoothing_k: int | None = Field(default=None, ge=1, le=200)
