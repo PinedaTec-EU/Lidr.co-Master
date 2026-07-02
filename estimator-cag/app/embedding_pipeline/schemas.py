@@ -39,6 +39,12 @@ class SearchStrategy(str, Enum):
     HYBRID = "hybrid"
 
 
+class SearchTarget(str, Enum):
+    BUDGETS = "budgets"
+    TRANSCRIPTS = "transcripts"
+    TECHNICAL_DOCS = "technical_docs"
+
+
 class RerankStrategy(str, Enum):
     DISABLED = "disabled"
     TOKEN_OVERLAP = "token_overlap"
@@ -134,6 +140,7 @@ class SearchRequest(BaseModel):
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
     max_rewrite_queries: int = Field(default=4, ge=1, le=4)
     search_strategy: SearchStrategy = SearchStrategy.SEMANTIC
+    target_collections: list[SearchTarget] | None = None
     rrf_smoothing_k: int = Field(default=60, ge=1, le=200)
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
     rerank_alpha: float = Field(default=0.7, ge=0, le=1)
@@ -165,6 +172,8 @@ class SearchResponse(BaseModel):
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
     query_fusion_strategy: QueryFusionStrategy | None = None
     search_strategy: SearchStrategy = SearchStrategy.SEMANTIC
+    resolved_target_collections: list[SearchTarget] = Field(default_factory=list)
+    routing_reason: str = ""
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
     rrf_smoothing_k: int | None = Field(default=None, ge=1, le=200)
     rewrite_notes: list[str] = Field(default_factory=list)

@@ -13,6 +13,7 @@ from app.embedding_pipeline.models import ChunkRecord, DocumentRecord
 from app.embedding_pipeline.query_fusion import interleave_rankings
 from app.embedding_pipeline.query_rewrite import rewrite_query
 from app.embedding_pipeline.reranker import rerank_candidates
+from app.embedding_pipeline.search_routing import DOCUMENT_TYPES_BY_TARGET, route_search_targets
 from app.embedding_pipeline.schemas import (
     QueryFusionStrategy,
     SearchFilters,
@@ -20,6 +21,7 @@ from app.embedding_pipeline.schemas import (
     SearchResponse,
     SearchResult,
     SearchStrategy,
+    SearchTarget,
 )
 
 EMBEDDING_DIMENSIONS = 1536
@@ -49,6 +51,10 @@ class SemanticSearchService:
     ) -> SearchResponse:
         started_at = time.perf_counter()
         rewrite = rewrite_query(query=request.query, strategy=request.rewrite_strategy)
+        routing = route_search_targets(
+            query=rewrite.effective_query,
+            explicit_targets=request.target_collections,
+        )
         effective_queries = rewrite.effective_queries[: request.max_rewrite_queries]
         candidate_pool_k = request.candidate_pool_k or request.k
 
@@ -58,6 +64,7 @@ class SemanticSearchService:
                 query=effective_query,
                 request=request,
                 limit=candidate_pool_k,
+                targets=routing.targets,
             )
             for effective_query in effective_queries
         ]
@@ -104,6 +111,8 @@ class SemanticSearchService:
             rewrite_strategy=request.rewrite_strategy,
             query_fusion_strategy=rewrite.fusion_strategy,
             search_strategy=request.search_strategy,
+            resolved_target_collections=routing.targets,
+            routing_reason=routing.reason,
             rerank_strategy=request.rerank_strategy,
             rrf_smoothing_k=(
                 request.rrf_smoothing_k
@@ -146,12 +155,32 @@ class SemanticSearchService:
         query: str,
         request: SearchRequest,
         limit: int,
+        targets: list[SearchTarget],
     ) -> list[SearchCandidate]:
+        if len(targets) > 1:
+            per_target = [
+                await self._search_candidates_for_query(
+                    session=session,
+                    query=query,
+                    request=request,
+                    limit=limit,
+                    targets=[target],
+                )
+                for target in targets
+            ]
+            return self._fuse_rewritten_queries(
+                per_query_candidates=per_target,
+                fusion_strategy=QueryFusionStrategy.COVERAGE,
+                top_k=limit,
+                smoothing_k=request.rrf_smoothing_k,
+            )
+
         semantic_candidates = await self._search_semantic_candidates(
             session=session,
             query=query,
             request=request,
             limit=limit,
+            target=targets[0],
         )
         if request.search_strategy != SearchStrategy.HYBRID:
             return semantic_candidates
@@ -161,6 +190,7 @@ class SemanticSearchService:
             query=query,
             request=request,
             limit=limit,
+            target=targets[0],
         )
         return self._fuse_hybrid_candidates(
             semantic_candidates=semantic_candidates,
@@ -175,6 +205,7 @@ class SemanticSearchService:
         query: str,
         request: SearchRequest,
         limit: int,
+        target: SearchTarget,
     ) -> list[SearchCandidate]:
         embedder = OpenAIEmbedder(model_name=request.embedding_model)
         query_vector = embedder.embed_one(query)
@@ -197,6 +228,7 @@ class SemanticSearchService:
             .where(ChunkRecord.embedding.is_not(None))
         )
         stmt = self._apply_filters(stmt, request.filters)
+        stmt = self._apply_target_filter(stmt, target)
         if request.score_threshold is not None:
             stmt = stmt.where(semantic_score >= request.score_threshold)
 
@@ -224,6 +256,7 @@ class SemanticSearchService:
         query: str,
         request: SearchRequest,
         limit: int,
+        target: SearchTarget,
     ) -> list[SearchCandidate]:
         ts_query = func.websearch_to_tsquery(TEXT_SEARCH_CONFIG, query)
         lexical_score = func.ts_rank(ChunkRecord.content_tsv, ts_query)
@@ -241,6 +274,7 @@ class SemanticSearchService:
             .where(ChunkRecord.content_tsv.op("@@")(ts_query))
         )
         stmt = self._apply_filters(stmt, request.filters)
+        stmt = self._apply_target_filter(stmt, target)
 
         rows = (await session.execute(stmt.order_by(lexical_score.desc()).limit(limit))).all()
         return [
@@ -339,3 +373,8 @@ class SemanticSearchService:
         if filters.document_type:
             stmt = stmt.where(DocumentRecord.document_type == filters.document_type)
         return stmt
+
+    def _apply_target_filter(self, stmt, target: SearchTarget):
+        return stmt.where(
+            DocumentRecord.document_type.in_(DOCUMENT_TYPES_BY_TARGET[target])
+        )

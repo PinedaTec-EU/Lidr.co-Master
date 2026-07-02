@@ -28,6 +28,8 @@ Sobre esa base, la sesión 10 añade un primer refinamiento del retriever:
 - `rrf_smoothing_k` controla la fusión Reciprocal Rank Fusion sin mezclar scores incompatibles
 - `rewrite_strategy="expand"` genera variantes de la misma intención y fusiona por consenso
 - `rewrite_strategy="decompose"` separa consultas multi-tema y fusiona con cobertura round-robin
+- `target_collections` permite routing explícito por familia documental
+- sin `target_collections`, el servicio enruta por heurística hacia `budgets`, `transcripts` o `technical_docs`
 
 ---
 
