@@ -1,7 +1,7 @@
 import pytest
 
 from app.prompts.loader import render_estimation_prompt
-from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType, RetrievalPromptContext
 from app.sessions import ExternalContextItem, ProjectMetadata
 
 
@@ -94,3 +94,21 @@ def test_render_injects_external_context_block() -> None:
     assert "<external_context>" in system
     assert 'source=notion title="Atlas kickoff"' in system
     assert "Roadmap inicial, restricciones y objetivos del cliente." in system
+
+
+def test_render_injects_retrieval_context_block() -> None:
+    request = _request()
+    retrieval_context = RetrievalPromptContext(
+        query="portal b2b reporting",
+        effective_query="portal b2b reporting",
+        context_text="[Chunk 11 | budget=BUD-2024-001] OAuth backend and reporting context.",
+        included_chunks_count=1,
+        retrieved_results_count=3,
+        truncated=False,
+    )
+
+    system, _user = render_estimation_prompt(request, retrieval_context=retrieval_context)
+
+    assert "<retrieval_context" in system
+    assert 'query="portal b2b reporting"' in system
+    assert "OAuth backend and reporting context." in system

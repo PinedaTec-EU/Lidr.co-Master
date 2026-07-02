@@ -2,8 +2,13 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
+from app import main as main_module
 from app.errors import UpstreamBadResponseError, UpstreamTimeoutError
+from app.embedding_pipeline.db import get_async_session
 from app.main import app
+from app import rate_limit as rate_limit_module
+from app.routers import estimate_runtime as estimate_runtime_router
+from app.routers import retrieval as retrieval_router
 from app.routers import estimations
 from app.schemas import UserTier
 from app.services import session_service
@@ -22,6 +27,136 @@ def test_health_endpoint() -> None:
         "service": "estimator-cag",
         "version": "0.1.0",
     }
+
+
+def test_estimate_from_transcript_endpoint_returns_request_headers(monkeypatch) -> None:
+    async def fake_estimate_from_transcript(**kwargs) -> tuple[dict, str]:
+        return (
+            {
+                "text": "Estimación RAG operativa.",
+                "prompt_version": "v1",
+                "model": "openai/gpt-4o-mini",
+                "provider": "openai",
+                "tokens_used": {"prompt": 20, "completion": 30, "total": 50},
+                "latency_ms": 321.0,
+                "cost_usd": 0.0002,
+                "request_id": "req-123",
+                "idempotency_cache_hit": True,
+                "retrieval_context_included": True,
+                "retrieved_results_count": 3,
+                "included_chunks_count": 2,
+            },
+            "req-123",
+        )
+
+    monkeypatch.setattr(estimate_runtime_router, "estimate_from_transcript", fake_estimate_from_transcript)
+    rate_limit_module.limiter._events.clear()
+
+    response = client.post(
+        "/api/v1/estimate/from-transcript",
+        json={
+            "transcript": (
+                "Necesitamos un portal B2B con autenticación, reporting, pagos, "
+                "panel de proveedores y automatización operativa para un contexto regulado."
+            ),
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["X-Request-ID"] == "req-123"
+    assert response.headers["X-Idempotency-Cache"] == "hit"
+    assert response.json()["retrieval_context_included"] is True
+
+
+def test_estimate_from_transcript_requires_api_key_when_configured(monkeypatch) -> None:
+    monkeypatch.setattr(estimate_runtime_router.settings, "estimate_api_key", "secret-estimate")
+    rate_limit_module.limiter._events.clear()
+
+    response = client.post(
+        "/api/v1/estimate/from-transcript",
+        json={
+            "transcript": (
+                "Necesitamos un portal B2B con autenticación, reporting, pagos, "
+                "panel de proveedores y automatización operativa para un contexto regulado."
+            ),
+        },
+    )
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Invalid API key"
+
+    monkeypatch.setattr(estimate_runtime_router.settings, "estimate_api_key", "")
+
+
+def test_retrieval_search_rate_limit_returns_429(monkeypatch) -> None:
+    async def fake_search(self, *, session, request):
+        from app.embedding_pipeline.schemas import SearchResponse
+
+        return SearchResponse(
+            query=request.query,
+            effective_query=request.query,
+            k=request.k,
+            score_threshold=request.score_threshold,
+            rewrite_strategy=request.rewrite_strategy,
+            rewrite_notes=[],
+            search_time_ms=1.0,
+            low_confidence=True,
+            total_candidates_considered=0,
+            results=[],
+        )
+
+    monkeypatch.setattr(retrieval_router.settings, "retrieval_rate_limit_per_minute", 1)
+    monkeypatch.setattr(retrieval_router.SemanticSearchService, "search", fake_search)
+    rate_limit_module.limiter._events.clear()
+
+    async def fake_get_async_session():
+        yield object()
+
+    app.dependency_overrides[get_async_session] = fake_get_async_session
+
+    payload = {"query": "oauth banking portal", "k": 3}
+    first = client.post("/api/v1/retrieval/search", json=payload)
+    second = client.post("/api/v1/retrieval/search", json=payload)
+
+    assert first.status_code == 200
+    assert second.status_code == 429
+    assert second.headers["Retry-After"]
+    assert second.json()["detail"]["error"] == "rate_limit_exceeded"
+
+    monkeypatch.setattr(retrieval_router.settings, "retrieval_rate_limit_per_minute", 120)
+    app.dependency_overrides.clear()
+
+
+def test_lifespan_reconciles_managed_metadata_indexes(monkeypatch) -> None:
+    calls: list[object] = []
+
+    async def fake_reconcile(engine) -> None:
+        calls.append(engine)
+
+    monkeypatch.setattr(main_module, "reconcile_managed_metadata_indexes", fake_reconcile)
+    monkeypatch.setattr(main_module.settings, "vector_db_initialize_on_start", True)
+    monkeypatch.setattr(main_module, "async_engine", object())
+
+    with TestClient(app):
+        pass
+
+    assert len(calls) == 1
+
+
+def test_lifespan_skips_index_reconciliation_without_engine(monkeypatch) -> None:
+    calls: list[object] = []
+
+    async def fake_reconcile(engine) -> None:
+        calls.append(engine)
+
+    monkeypatch.setattr(main_module, "reconcile_managed_metadata_indexes", fake_reconcile)
+    monkeypatch.setattr(main_module.settings, "vector_db_initialize_on_start", True)
+    monkeypatch.setattr(main_module, "async_engine", None)
+
+    with TestClient(app):
+        pass
+
+    assert calls == []
 
 
 def test_friendly_names_endpoint() -> None:
@@ -174,6 +309,46 @@ def test_estimate_passes_query_overrides_to_service(monkeypatch) -> None:
         "provider": "anthropic",
         "model": "claude-haiku-4-5-20251001",
     }
+
+
+def test_estimate_accepts_retrieval_config_in_request(monkeypatch) -> None:
+    captured: dict[str, object] = {}
+
+    async def fake_get_estimation(request, **kwargs: str | None) -> dict:
+        captured["request"] = request
+        return {
+            "text": "## Estimación con retrieval opcional",
+            "prompt_version": "v1",
+            "model": "openai/gpt-4o-mini",
+            "provider": "openai",
+            "tokens_used": {"prompt": 11, "completion": 22, "total": 33},
+        }
+
+    monkeypatch.setattr(estimations, "get_estimation", fake_get_estimation)
+
+    response = client.post(
+        "/api/v1/estimate",
+        json={
+            "description": "Necesitamos un portal B2B con autenticación, reporting y notificaciones automáticas por email.",
+            "project_type": "web_saas",
+            "detail_level": "medium",
+            "output_format": "narrative",
+            "retrieval": {
+                "enabled": True,
+                "k": 4,
+                "score_threshold": 0.72,
+                "rewrite_strategy": "normalize",
+                "max_chunks": 2,
+                "max_context_chars": 1200,
+                "include_scores": False,
+            },
+        },
+    )
+
+    assert response.status_code == 200
+    assert captured["request"].retrieval.enabled is True
+    assert captured["request"].retrieval.k == 4
+    assert captured["request"].retrieval.rewrite_strategy.value == "normalize"
 
 
 def test_estimate_rejects_unknown_friendly_name(monkeypatch) -> None:

@@ -30,6 +30,11 @@ class Settings(BaseSettings):
     llm_model: str = ""
     app_env: str = "development"
     log_level: str = "info"
+    retrieval_api_key: str = ""
+    estimate_api_key: str = ""
+    retrieval_rate_limit_per_minute: int = 120
+    estimate_rate_limit_per_minute: int = 10
+    idempotency_ttl_seconds: int = 86400
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

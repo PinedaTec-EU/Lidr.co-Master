@@ -22,6 +22,11 @@ class EmbeddingModelName(str, Enum):
     TEXT_EMBEDDING_3_LARGE = "text-embedding-3-large"
 
 
+class QueryRewriteStrategy(str, Enum):
+    DISABLED = "disabled"
+    NORMALIZE = "normalize"
+
+
 class ClientMetadata(BaseModel):
     name: str = Field(min_length=1)
     sector: str = Field(min_length=1)
@@ -107,6 +112,8 @@ class SearchFilters(BaseModel):
 class SearchRequest(BaseModel):
     query: str = Field(min_length=3)
     k: int = Field(default=5, ge=1, le=50)
+    score_threshold: float | None = Field(default=None, ge=0, le=1)
+    rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
     filters: SearchFilters | None = None
 
@@ -117,14 +124,43 @@ class SearchResult(BaseModel):
     chunk_type: str
     content: str
     distance: float = Field(ge=0)
+    score: float = Field(ge=0, le=1)
     metadata: dict
 
 
 class SearchResponse(BaseModel):
     query: str
+    effective_query: str
     k: int = Field(ge=1)
+    score_threshold: float | None = Field(default=None, ge=0, le=1)
+    rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    rewrite_notes: list[str] = Field(default_factory=list)
     search_time_ms: float = Field(ge=0)
+    low_confidence: bool = False
+    total_candidates_considered: int = Field(default=0, ge=0)
     results: list[SearchResult]
+
+
+class ContextAssemblyRequest(SearchRequest):
+    max_context_chars: int = Field(default=2400, ge=400, le=12000)
+    max_chunks: int = Field(default=4, ge=1, le=12)
+    include_scores: bool = True
+
+
+class ContextAssemblyItem(BaseModel):
+    chunk_id: int = Field(ge=1)
+    document_id: int = Field(ge=1)
+    chunk_type: str
+    score: float = Field(ge=0, le=1)
+    metadata: dict
+    excerpt: str
+
+
+class ContextAssemblyResponse(BaseModel):
+    search: SearchResponse
+    context_text: str
+    included_chunks: list[ContextAssemblyItem]
+    truncated: bool = False
 
 
 class RetrievalEvalCase(BaseModel):

@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.embedding_pipeline.db import get_async_session
+from app.embedding_pipeline.augmentation_service import RetrievalAugmentationService
 from app.embedding_pipeline.ingest_service import (
     DocumentAlreadyIngestedError,
     EmbeddingIngestService,
@@ -15,6 +16,8 @@ from app.embedding_pipeline.ingest_service import (
 from app.embedding_pipeline.search_service import SemanticSearchService
 from app.embedding_pipeline.schemas import (
     ChunkingStrategy,
+    ContextAssemblyRequest,
+    ContextAssemblyResponse,
     DocumentIngestRequest,
     DocumentIngestResponse,
     EmbeddingModelName,
@@ -68,4 +71,20 @@ async def search_embeddings(
         raise HTTPException(
             status_code=500,
             detail="Unexpected error while searching embeddings.",
+        ) from exc
+
+
+@router.post("/search/context", response_model=ContextAssemblyResponse)
+async def assemble_search_context(
+    request: ContextAssemblyRequest,
+    session: AsyncSession = Depends(get_async_session),
+) -> ContextAssemblyResponse:
+    service = RetrievalAugmentationService()
+    try:
+        return await service.assemble_context(session=session, request=request)
+    except Exception as exc:
+        logger.exception("embedding_context_assembly_failed", error_type=type(exc).__name__)
+        raise HTTPException(
+            status_code=500,
+            detail="Unexpected error while assembling retrieval context.",
         ) from exc

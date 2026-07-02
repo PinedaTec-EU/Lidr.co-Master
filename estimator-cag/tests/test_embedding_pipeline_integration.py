@@ -287,6 +287,7 @@ async def test_search_endpoint_respects_metadata_filters(
     body = response.json()
     assert body["results"]
     assert all(result["metadata"]["client_sector"] == "finance" for result in body["results"])
+    assert all(result["score"] >= 0 for result in body["results"])
 
     async with integration_session_factory() as session:
         documents = (await session.execute(select(DocumentRecord).order_by(DocumentRecord.id))).scalars().all()
@@ -299,6 +300,38 @@ async def test_search_endpoint_respects_metadata_filters(
         }
         assert len(chunks) == 3
         assert {chunk.metadata_json["client_sector"] for chunk in chunks} == {"finance", "ecommerce"}
+
+
+@pytest.mark.anyio
+async def test_search_endpoint_returns_empty_results_when_threshold_filters_everything(
+    monkeypatch: pytest.MonkeyPatch,
+    api_client: AsyncClient,
+) -> None:
+    class FakeQueryEmbedder:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def embed_one(self, text: str):
+            vector = [0.0] * 1536
+            vector[0] = 1.0
+            return vector
+
+    monkeypatch.setattr("app.embedding_pipeline.search_service.OpenAIEmbedder", FakeQueryEmbedder)
+
+    response = await api_client.post(
+        "/api/v1/search",
+        json={
+            "query": "strict threshold query",
+            "k": 5,
+            "score_threshold": 0.999999,
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["query"] == "strict threshold query"
+    assert body["score_threshold"] == 0.999999
+    assert body["results"] == []
 
 
 @pytest.mark.anyio

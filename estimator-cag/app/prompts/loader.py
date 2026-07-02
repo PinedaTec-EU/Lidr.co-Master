@@ -2,7 +2,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-from app.schemas import EstimationRequest, UserTier
+from app.schemas import EstimationRequest, RetrievalPromptContext, UserTier
 from app.sessions import ExternalContextItem, ProjectMetadata
 
 
@@ -23,6 +23,7 @@ def render_estimation_prompt(
     version: str = "v1",
     project_metadata: ProjectMetadata | None = None,
     external_context: list[ExternalContextItem] | None = None,
+    retrieval_context: RetrievalPromptContext | None = None,
     user_tier: UserTier = UserTier.DEVELOPER,
     user_display_name: str | None = None,
 ) -> tuple[str, str]:
@@ -38,6 +39,18 @@ def render_estimation_prompt(
             item.model_dump() if hasattr(item, "model_dump") else item
             for item in (external_context or [])
         ],
+        "retrieval_context": (
+            {
+                "query": retrieval_context.query,
+                "effective_query": retrieval_context.effective_query,
+                "context_text": retrieval_context.context_text,
+                "included_chunks_count": retrieval_context.included_chunks_count,
+                "retrieved_results_count": retrieval_context.retrieved_results_count,
+                "truncated": retrieval_context.truncated,
+            }
+            if retrieval_context is not None
+            else None
+        ),
     }
     system = environment.get_template(f"estimation/{version}/system.j2").render(context)
     user = environment.get_template(f"estimation/{version}/user.j2").render(context)

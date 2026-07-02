@@ -8,6 +8,7 @@ from app.embedding_pipeline.schemas import (
     ComplexityLevel,
     DocumentIngestRequest,
     DocumentIngestResponse,
+    QueryRewriteStrategy,
     SearchResponse,
 )
 from app.embedding_pipeline.db import get_async_session
@@ -175,7 +176,11 @@ def test_embeddings_search_endpoint_returns_matches(monkeypatch) -> None:
             assert isinstance(session, FakeSession)
             return SearchResponse(
                 query=request.query,
+                effective_query="OAuth authentication for banking",
                 k=request.k,
+                score_threshold=request.score_threshold,
+                rewrite_strategy=request.rewrite_strategy,
+                rewrite_notes=[],
                 search_time_ms=87.0,
                 results=[
                     {
@@ -184,6 +189,7 @@ def test_embeddings_search_endpoint_returns_matches(monkeypatch) -> None:
                         "chunk_type": "budget_component",
                         "content": "Backend service implementation with JWT-based authentication...",
                         "distance": 0.231,
+                        "score": 0.769,
                         "metadata": {
                             "scope": "backend",
                             "technologies": ["python", "fastapi"],
@@ -207,7 +213,11 @@ def test_embeddings_search_endpoint_returns_matches(monkeypatch) -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["query"] == "OAuth authentication for banking"
+    assert body["effective_query"] == "OAuth authentication for banking"
     assert body["k"] == 3
+    assert body["score_threshold"] is None
+    assert body["rewrite_strategy"] == QueryRewriteStrategy.DISABLED.value
     assert body["search_time_ms"] == 87.0
     assert body["results"][0]["chunk_id"] == 156
     assert body["results"][0]["document_id"] == 12
+    assert body["results"][0]["score"] == 0.769

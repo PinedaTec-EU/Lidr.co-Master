@@ -3,11 +3,13 @@ from typing import Annotated
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 
 from app.errors import AppError
+from app.embedding_pipeline.schemas import QueryRewriteStrategy
 from app.schemas import (
     DetailLevel,
     EstimationResponse,
     OutputFormat,
     ProjectType,
+    RetrievalContextConfig,
     SessionCreateResponse,
     SessionDetailResponse,
 )
@@ -63,6 +65,14 @@ async def estimate_session(
     output_format: Annotated[OutputFormat, Form(...)],
     attachments: Annotated[list[UploadFile] | None, File()] = None,
     document_paths: Annotated[list[str] | None, Form()] = None,
+    retrieval_enabled: Annotated[bool, Form()] = False,
+    retrieval_query_override: Annotated[str | None, Form()] = None,
+    retrieval_k: Annotated[int, Form()] = 5,
+    retrieval_score_threshold: Annotated[float | None, Form()] = None,
+    retrieval_rewrite_strategy: Annotated[QueryRewriteStrategy, Form()] = QueryRewriteStrategy.DISABLED,
+    retrieval_max_chunks: Annotated[int, Form()] = 3,
+    retrieval_max_context_chars: Annotated[int, Form()] = 1800,
+    retrieval_include_scores: Annotated[bool, Form()] = True,
     friendly_name: str | None = Query(default=None),
     provider: str | None = Query(default=None),
     model: str | None = Query(default=None),
@@ -79,6 +89,16 @@ async def estimate_session(
             output_format=output_format,
             attachments=attachments or [],
             document_paths=document_paths or [],
+            retrieval=RetrievalContextConfig(
+                enabled=retrieval_enabled,
+                query_override=retrieval_query_override,
+                k=retrieval_k,
+                score_threshold=retrieval_score_threshold,
+                rewrite_strategy=retrieval_rewrite_strategy,
+                max_chunks=retrieval_max_chunks,
+                max_context_chars=retrieval_max_context_chars,
+                include_scores=retrieval_include_scores,
+            ),
             friendly_name=friendly_name,
             provider=provider,
             model=model,

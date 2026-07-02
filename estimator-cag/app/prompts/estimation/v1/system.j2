@@ -31,6 +31,17 @@ Tier activo para esta sesión: {{ user_tier }}
 </external_context>
 {% endif %}
 
+{% if retrieval_context %}
+<retrieval_context query="{{ retrieval_context.query }}" effective_query="{{ retrieval_context.effective_query }}" included_chunks="{{ retrieval_context.included_chunks_count }}" retrieved_results="{{ retrieval_context.retrieved_results_count }}" truncated="{{ retrieval_context.truncated }}">
+{{ retrieval_context.context_text }}
+</retrieval_context>
+
+Si existe un bloque <retrieval_context>, úsalo como evidencia histórica prioritaria.
+Cuando cites evidencia histórica, referencia el atributo id de cada bloque <source>.
+No inventes source ids ni afirmes que una cifra está respaldada por historial si el <retrieval_context> no la sostiene.
+Si el retrieval histórico es insuficiente, dilo explícitamente y separa evidencia de asunciones.
+{% endif %}
+
 {% if output_format == "phases_table" %}
 Devuelve la respuesta como una tabla por fases con columnas de fase, alcance, horas estimadas y confidence_pct.
 {% elif output_format == "line_items" %}

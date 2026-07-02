@@ -5,13 +5,14 @@ import structlog
 
 from app.errors import NotFoundError
 from app.prompts.loader import render_estimation_prompt
-from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType, UserTier
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType, RetrievalContextConfig, UserTier
 from app.services.attachment_extraction import (
     extract_attachments_text,
     extract_document_paths_text,
 )
 from app.services.external_context_service import resolve_external_context
 from app.services.llm_service import get_estimation
+from app.services.retrieval_prompt_context_service import resolve_retrieval_prompt_context
 from app.sessions import ProjectMetadata, Session, SessionStore, TurnObservation
 
 
@@ -146,6 +147,7 @@ async def estimate_session_turn(
     output_format: OutputFormat,
     attachments,
     document_paths: list[str] | None = None,
+    retrieval: RetrievalContextConfig | None = None,
     display_user_message: str | None = None,
     friendly_name: str | None = None,
     provider: str | None = None,
@@ -165,8 +167,10 @@ async def estimate_session_turn(
         project_type=project_type,
         detail_level=detail_level,
         output_format=output_format,
+        retrieval=retrieval or RetrievalContextConfig(),
     )
     external_context = await resolve_external_context(session=session, transcript=transcript)
+    retrieval_context = await resolve_retrieval_prompt_context(request)
 
     result = await get_estimation(
         request,
@@ -176,6 +180,7 @@ async def estimate_session_turn(
         history_messages=session.history.to_turn_messages(),
         project_metadata=session.project_metadata,
         external_context=external_context,
+        retrieval_context=retrieval_context,
         user_tier=session.user_tier,
         user_display_name=session.user_display_name,
     )
@@ -185,6 +190,7 @@ async def estimate_session_turn(
         version=result["prompt_version"],
         project_metadata=session.project_metadata,
         external_context=external_context,
+        retrieval_context=retrieval_context,
         user_tier=session.user_tier,
         user_display_name=session.user_display_name,
     )

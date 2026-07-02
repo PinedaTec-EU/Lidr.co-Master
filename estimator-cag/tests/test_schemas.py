@@ -22,6 +22,16 @@ def test_estimation_request_accepts_valid_payload() -> None:
         "project_type": "mobile_app",
         "detail_level": "medium",
         "output_format": "narrative",
+        "retrieval": {
+            "enabled": False,
+            "query_override": None,
+            "k": 5,
+            "score_threshold": None,
+            "rewrite_strategy": "disabled",
+            "max_chunks": 3,
+            "max_context_chars": 1800,
+            "include_scores": True,
+        },
     }
 
 

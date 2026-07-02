@@ -13,8 +13,10 @@ from app.schemas import (
     EstimationRequest,
     OutputFormat,
     ProjectType,
+    RetrievalPromptContext,
     UserTier,
 )
+from app.services.retrieval_prompt_context_service import resolve_retrieval_prompt_context
 from app.sessions import ExternalContextItem, ProjectMetadata
 
 MAX_COMPLETION_TOKENS = 400
@@ -89,8 +91,9 @@ def get_system_prompt(
     user_tier: UserTier = UserTier.DEVELOPER,
     user_display_name: str | None = None,
 ) -> str:
+    effective_request = request or _default_prompt_request()
     system, _user = render_estimation_prompt(
-        request or _default_prompt_request(),
+        effective_request,
         version=version,
         project_metadata=project_metadata,
         external_context=external_context,
@@ -215,14 +218,17 @@ async def get_estimation(
     history_messages: list[dict[str, str]] | None = None,
     project_metadata: ProjectMetadata | None = None,
     external_context: list[ExternalContextItem] | None = None,
+    retrieval_context: RetrievalPromptContext | None = None,
     user_tier: UserTier = UserTier.DEVELOPER,
     user_display_name: str | None = None,
 ) -> dict:
+    effective_retrieval_context = retrieval_context or await resolve_retrieval_prompt_context(request)
     system_prompt, user_prompt = render_estimation_prompt(
         request,
         version=prompt_version,
         project_metadata=project_metadata,
         external_context=external_context,
+        retrieval_context=effective_retrieval_context,
         user_tier=user_tier,
         user_display_name=user_display_name,
     )
@@ -245,14 +251,17 @@ async def stream_estimation(
     history_messages: list[dict[str, str]] | None = None,
     project_metadata: ProjectMetadata | None = None,
     external_context: list[ExternalContextItem] | None = None,
+    retrieval_context: RetrievalPromptContext | None = None,
     user_tier: UserTier = UserTier.DEVELOPER,
     user_display_name: str | None = None,
 ) -> AsyncIterator[dict]:
+    effective_retrieval_context = retrieval_context or await resolve_retrieval_prompt_context(request)
     system_prompt, user_prompt = render_estimation_prompt(
         request,
         version=prompt_version,
         project_metadata=project_metadata,
         external_context=external_context,
+        retrieval_context=effective_retrieval_context,
         user_tier=user_tier,
         user_display_name=user_display_name,
     )

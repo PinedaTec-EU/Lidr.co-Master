@@ -2,9 +2,18 @@
 
 Servicio FastAPI de estimación de software basado en arquitectura **CAG** (Context Augmented Generation). Recibe contexto de proyecto, soporta sesiones conversacionales persistidas y puede enriquecer cada turno con adjuntos usando **Docling Serve**, referencias a documentos por ruta y contexto externo recuperado desde **Notion** antes de llamar al modelo.
 
-Además incluye un carril semántico separado para presupuestos históricos estructurados en JSON. Ese flujo soporta varias estrategias de chunking, generación de embeddings con OpenAI, persistencia opcional en **pgvector**, búsqueda semántica y evaluación básica de retrieval.
+Además incluye un carril semántico separado para presupuestos históricos estructurados en JSON. Ese flujo soporta varias estrategias de chunking, generación de embeddings con OpenAI, persistencia opcional en **pgvector**, búsqueda semántica, ensamblado de contexto y evaluación básica de retrieval.
 
 La ruta principal de estimación sigue siendo CAG: el contexto del estimador viaja en cada llamada al LLM. La persistencia vectorial solo aplica al módulo `embedding_pipeline`.
+
+De forma opcional, `POST /api/v1/estimate` y `POST /api/v1/sessions/{session_id}/estimate` pueden activar un bloque adicional de retrieval semántico sobre ese corpus para inyectarlo en el prompt como `<retrieval_context>`. Ese modo sigue siendo opt-in para no alterar el comportamiento base del estimador.
+
+Además, la sesión 9 deja un carril operativo explícito con:
+- `POST /api/v1/retrieval/search`
+- `POST /api/v1/retrieval/context`
+- `POST /api/v1/estimate/from-transcript`
+
+Ese carril añade autenticación por API key, rate limiting por consumidor, `X-Request-ID` por petición e idempotencia para estimaciones disparadas desde transcripción.
 
 ---
 
@@ -41,16 +50,12 @@ flowchart TD
     G --> H
 ```
 
-Este proyecto es deliberadamente CAG:
+El proyecto mantiene dos carriles complementarios:
 
-- No tiene ingesta documental persistida ni indexación.
-- No tiene vector store.
-- No hace retrieval.
-- El conocimiento de referencia principal está en `app/context/examples.py`.
+- un flujo principal de estimación que sigue siendo CAG por defecto y usa ejemplos estáticos, historial de sesión, adjuntos y contexto externo
+- un carril semántico persistido para presupuestos históricos, con retrieval, ensamblado de contexto y activación opcional dentro del estimador
 
-Los adjuntos de cada turno se convierten on-demand con Docling y se inyectan en la petición actual. La sesión persiste a disco el historial, las referencias documentales, la última telemetría y el último contexto enriquecido visible, pero no mantiene un índice documental ni hace retrieval vectorial.
-
-La transición a RAG no se implementa aquí. La evolución natural está en `sih-smart-analysis`, que consume los reports generados por SIH al ejecutar esta API.
+Eso significa que el estimador no se ha convertido en un RAG obligatorio para todos los casos, pero el repositorio ya dispone de las piezas necesarias para activar retrieval cuando el caso lo justifica.
 
 ---
 
@@ -60,7 +65,10 @@ La transición a RAG no se implementa aquí. La evolución natural está en `sih
 estimator-cag/
 ├── app/
 │   ├── config.py              # Settings desde variables de entorno
-│   ├── main.py                # Aplicación FastAPI + router + health
+│   ├── idempotency_store.py   # Cache temporal para idempotencia de estimaciones
+│   ├── main.py                # Aplicación FastAPI + routers + health
+│   ├── rate_limit.py          # Rate limiting in-memory por API key/IP
+│   ├── security.py            # Dependencias de autenticación por API key
 │   ├── context/
 │   │   └── examples.py        # 10 ejemplos de estimaciones (contexto CAG)
 │   ├── embedding_pipeline/
@@ -79,12 +87,17 @@ estimator-cag/
 │   ├── sessions.py            # Estado conversacional persistido, ULIDs y metadatos de proyecto
 │   ├── schemas.py             # Contrato tipado para la interfaz de producto
 │   ├── routers/
-│   │   └── estimations.py     # Endpoint POST /api/v1/estimate
+│   │   ├── estimate_runtime.py # Endpoint POST /api/v1/estimate/from-transcript
+│   │   ├── estimations.py      # Endpoint POST /api/v1/estimate
+│   │   ├── retrieval.py        # Endpoints operativos del retriever
+│   │   └── sessions.py         # Endpoints de sesión persistida
 │   └── services/
 │       ├── attachment_extraction.py
 │       ├── external_context_service.py
 │       ├── llm_service.py     # Lógica de llamada a proveedores LLM
 │       ├── notion_context_provider.py
+│       ├── rag_estimation_service.py      # Orquestación desde transcripción + idempotencia
+│       ├── retrieval_prompt_context_service.py # Activa retrieval opcional dentro del estimador
 │       └── session_service.py # Orquestación multi-turno, persistencia y adjuntos
 ├── data/
 │   └── budgets_sample.json    # Dataset de ejemplo para ingest y demos
@@ -110,7 +123,7 @@ estimator-cag/
 
 ## Endpoints
 
-Número de endpoints funcionales: **9** bajo `/api/v1`.
+Número de endpoints funcionales: **12** bajo `/api/v1`.
 
 Número de endpoints operativos: **1** fuera de `/api/v1`.
 
@@ -171,6 +184,59 @@ Parámetros de query opcionales:
 | `400`  | `friendly_name` o `provider` desconocido |
 | `422`  | body inválido o `description` demasiado corta |
 | `500`  | Error en la llamada al LLM |
+
+---
+
+### `POST /api/v1/estimate/from-transcript`
+
+Orquesta el flujo de sesión 9 desde una transcripción completa.
+
+Decisiones de diseño relevantes:
+- activa retrieval por defecto salvo que el caller envíe otra configuración en `retrieval`
+- admite `idempotency_key` para evitar recomputar estimaciones caras en reintentos
+- devuelve `X-Request-ID` en la respuesta para correlacionar logs
+- usa una API key distinta de la del carril de retrieval cuando `ESTIMATE_API_KEY` está configurada
+- aplica rate limiting por API key/IP
+
+**Request body:**
+
+```json
+{
+  "transcript": "Necesitamos un marketplace B2B con onboarding de proveedores, pagos, conciliación y reporting para un contexto regulado.",
+  "idempotency_key": "session-09-demo-001"
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "text": "## Estimación: ...",
+  "prompt_version": "v1",
+  "model": "openai/gpt-4o-mini",
+  "provider": "openai",
+  "tokens_used": {
+    "prompt": 1200,
+    "completion": 280,
+    "total": 1480
+  },
+  "latency_ms": 1842.17,
+  "cost_usd": 0.000348,
+  "request_id": "6ef50c28-8ca8-4f03-b8c7-d91f9356537b",
+  "idempotency_cache_hit": false,
+  "retrieval_context_included": true,
+  "retrieved_results_count": 4,
+  "included_chunks_count": 3
+}
+```
+
+**Errores:**
+| Código | Causa |
+|--------|-------|
+| `401`  | API key inválida cuando `ESTIMATE_API_KEY` está configurada |
+| `409`  | Reutilización de `idempotency_key` con otra transcripción |
+| `429`  | Rate limit excedido |
+| `500`  | Error inesperado en el flujo de estimación |
 
 ---
 
@@ -258,50 +324,32 @@ Decisiones de diseño relevantes:
 | `422`  | payload inválido |
 | `500`  | error al generar embeddings o al persistir la transacción |
 
-El dataset de ejemplo sigue estando en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json), pero ahora la API espera un único documento por request. Ese dataset sirve como corpus fuente para construir requests individuales de ingesta.
-
-`ingestion_time_ms` mide el tiempo total de chunking, embedding, inserción del documento y persistencia de todos los chunks.
-
----
-
-### `GET /api/v1/embeddings/options`
-
-Devuelve las estrategias de chunking y modelos de embeddings soportados.
-
----
-
-### `POST /api/v1/embeddings/search`
-
-Endpoint heredado del carril semántico anterior. La búsqueda alineada con la sesión 8 se expone en `POST /api/v1/search`.
-
 ---
 
 ### `POST /api/v1/search`
 
-Busca chunks persistidos en `chunks` usando `cosine_distance` sobre `pgvector`.
+Busca chunks semánticamente cercanos sobre el corpus persistido en pgvector.
+
+Decisiones de diseño relevantes:
+- `k` controla cuántos candidatos como máximo queremos inspeccionar
+- `score_threshold` permite devolver cero resultados cuando ningún chunk es suficientemente parecido
+- `rewrite_strategy` controla si la query se usa tal cual o si se normaliza antes de generar embeddings
+- la respuesta expone tanto `distance` como `score`
+- `distance` ayuda a depuración técnica; `score` hace más legible el tuning del threshold
+- los filtros de metadatos se aplican antes del ranking final
 
 **Request body:**
 
 ```json
 {
-  "query": "REST API with OAuth authentication for fintech sector",
+  "query": "OAuth authentication for banking",
   "k": 5,
-  "embedding_model": "text-embedding-3-small"
-}
-```
-
-También admite filtros opcionales de metadata para acotar el retrieval antes de ordenar por distancia vectorial:
-
-```json
-{
-  "query": "REST API with OAuth authentication for fintech sector",
-  "k": 5,
+  "score_threshold": 0.72,
+  "rewrite_strategy": "normalize",
+  "embedding_model": "text-embedding-3-small",
   "filters": {
     "client_sector": "finance",
-    "main_technology": "ruby_on_rails",
-    "year": 2024,
-    "document_type": "historical_budget",
-    "chunk_type": "budget_component"
+    "document_type": "historical_budget"
   }
 }
 ```
@@ -310,9 +358,13 @@ También admite filtros opcionales de metadata para acotar el retrieval antes de
 
 ```json
 {
-  "query": "REST API with OAuth authentication for fintech sector",
+  "query": "OAuth authentication for banking",
+  "effective_query": "OAuth authentication for banking",
   "k": 5,
-  "search_time_ms": 87,
+  "score_threshold": 0.72,
+  "rewrite_strategy": "normalize",
+  "rewrite_notes": ["removed conversational prefix"],
+  "search_time_ms": 48.31,
   "results": [
     {
       "chunk_id": 156,
@@ -320,17 +372,128 @@ También admite filtros opcionales de metadata para acotar el retrieval antes de
       "chunk_type": "budget_component",
       "content": "Backend service implementation with JWT-based authentication...",
       "distance": 0.231,
+      "score": 0.769,
       "metadata": {
-        "scope": "backend",
-        "technologies": ["python", "fastapi"]
+        "client_sector": "finance",
+        "main_technology": "python"
       }
     }
   ]
 }
 ```
 
-La búsqueda usa el mismo modelo de embeddings para la query que para los chunks persistidos y ordena por `cosine_distance` ascendente.
-Los filtros de metadata se aplican en la propia consulta SQL para reducir el corpus elegible antes del ranking semántico.
+Semántica importante:
+- si `score_threshold` no se envía, el endpoint devuelve el top-`k` aunque la similitud sea mediocre
+- si `score_threshold` se envía, el endpoint puede devolver `results: []`
+- `results: []` no es error: es una señal válida de rechazo del retrieval
+- `rewrite_strategy: "disabled"` preserva la query original
+- `rewrite_strategy: "normalize"` elimina prefijos conversacionales y ruido superficial antes de embedir
+- `low_confidence` sube a `true` cuando el retrieval no devuelve ningún chunk
+- `total_candidates_considered` expone cuántos chunks superaron filtros y threshold antes del `limit`
+
+---
+
+### `POST /api/v1/retrieval/search`
+
+Expone el mismo retrieval de sesión 9 como contrato operativo separado.
+
+Decisiones de diseño relevantes:
+- autentica con `RETRIEVAL_API_KEY` si está configurada
+- aplica rate limiting con un presupuesto distinto al del endpoint de estimate
+- mantiene el contrato completo de scores, notes de reformulación y señal `low_confidence`
+
+La carga útil es la misma que `POST /api/v1/search`. La diferencia es operativa: este endpoint existe para consumidores que solo necesitan retrieval y no deben compartir ni presupuesto ni credenciales con el carril de generación.
+
+### Índices de expresión para filtros sobre JSONB
+
+Para este MVP, el servicio reconcilia al arrancar un pequeño conjunto de índices de expresión sobre `chunks.metadata`:
+- `client_sector`
+- `main_technology`
+- `year`
+- `complexity`
+
+Decisiones de diseño:
+- solo se gestionan índices con prefijo reservado `ix_chunks_metadata_expr__`
+- si un índice esperado no existe, se crea
+- si existe con una definición distinta, se elimina y se recrea
+- si existen índices sobrantes bajo ese prefijo, se eliminan
+- no se tocan índices fuera de ese namespace gestionado
+
+Esto permite mantener filtros deterministas sobre `JSONB` sin depender únicamente del índice `GIN` genérico del documento inicial.
+
+### `POST /api/v1/search/context`
+
+Ensambla contexto listo para consumo por un LLM a partir de los resultados del retrieval.
+
+Decisiones de diseño:
+- no devuelve chunks crudos sin estructura
+- limita explícitamente cuántos chunks entran y cuántos caracteres ocupa el contexto final
+- preserva trazabilidad: devuelve tanto el `search` original como la lista de chunks realmente incluidos
+- marca `truncated=true` cuando el presupuesto de contexto obliga a recortar
+
+**Request body:**
+
+```json
+{
+  "query": "OAuth authentication for banking",
+  "k": 5,
+  "score_threshold": 0.72,
+  "rewrite_strategy": "normalize",
+  "max_chunks": 3,
+  "max_context_chars": 1800,
+  "include_scores": true
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "search": {
+    "query": "OAuth authentication for banking",
+    "effective_query": "OAuth authentication for banking",
+    "k": 5,
+    "score_threshold": 0.72,
+    "rewrite_strategy": "normalize",
+    "rewrite_notes": [],
+    "search_time_ms": 48.31,
+    "results": []
+  },
+  "context_text": "[Chunk 156 | budget=BUD-2024-001 | component=AUTH-001 | sector=finance | tech=ruby_on_rails | score=0.769]\nBackend service implementation with JWT-based authentication...",
+  "included_chunks": [
+    {
+      "chunk_id": 156,
+      "document_id": 12,
+      "chunk_type": "budget_component",
+      "score": 0.769,
+      "metadata": {
+        "budget_id": "BUD-2024-001",
+        "component_id": "AUTH-001"
+      },
+      "excerpt": "Backend service implementation with JWT-based authentication..."
+    }
+  ],
+  "truncated": false
+}
+```
+
+El dataset de ejemplo sigue estando en [budgets_sample.json](/Users/jmr.pineda/Projects/GitHub/PinedaTec.eu/Lidr.co-Master/estimator-cag/data/budgets_sample.json), pero ahora la API espera un único documento por request. Ese dataset sirve como corpus fuente para construir requests individuales de ingesta.
+
+`ingestion_time_ms` mide el tiempo total de chunking, embedding, inserción del documento y persistencia de todos los chunks.
+
+---
+
+### `POST /api/v1/retrieval/context`
+
+Versión operativa del ensamblado de contexto para consumidores que quieren inspeccionar o reutilizar el bloque `<source ...>` sin disparar una estimación completa.
+
+Usa el mismo contrato que `POST /api/v1/search/context`, con autenticación y rate limiting del carril de retrieval.
+
+---
+
+### `GET /api/v1/embeddings/options`
+
+Devuelve las estrategias de chunking y modelos de embeddings soportados.
 
 ---
 

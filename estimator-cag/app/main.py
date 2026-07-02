@@ -3,13 +3,20 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.config import settings
+from app.embedding_pipeline.db import async_engine
+from app.embedding_pipeline.index_maintenance import reconcile_managed_metadata_indexes
 from app.embedding_pipeline.router import router as embeddings_router
+from app.routers.estimate_runtime import router as estimate_runtime_router
 from app.routers.estimations import router as estimations_router
+from app.routers.retrieval import router as retrieval_router
 from app.routers.sessions import router as sessions_router
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    if settings.vector_db_initialize_on_start and async_engine is not None:
+        await reconcile_managed_metadata_indexes(async_engine)
     yield
 
 app = FastAPI(
@@ -28,6 +35,8 @@ app = FastAPI(
 app.include_router(estimations_router, prefix="/api/v1")
 app.include_router(sessions_router, prefix="/api/v1")
 app.include_router(embeddings_router, prefix="/api/v1")
+app.include_router(retrieval_router, prefix="/api/v1")
+app.include_router(estimate_runtime_router, prefix="/api/v1")
 
 
 @app.get("/health", tags=["health"])
