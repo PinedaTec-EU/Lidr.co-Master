@@ -1,10 +1,10 @@
 {
   "course": "AI Engineering 2026/04",
-  "generated_at": "2026-06-25T17:24:14.920137+00:00",
+  "generated_at": "2026-07-02T12:45:30.389998+00:00",
   "root_dir": "training-archive/ai-engineering-2026-04",
   "summary": {
-    "discovered_posts": 113,
-    "archived_posts": 110,
+    "discovered_posts": 122,
+    "archived_posts": 119,
     "partial_posts": 3,
     "pending_posts": 0
   },
@@ -763,6 +763,69 @@
       "title": "📄 Reranking: cuando el top-k vectorial no es suficiente 🔴— 24 min",
       "slug": "ai-engineering-202604-📄-reranking-cuando-el-top-k-vectorial-no-es-suficiente-🔴-24-min",
       "group": "10-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-11-rag-avanzado-generacion-y-calidad-114-min",
+      "title": "Sesión 11: RAG Avanzado - Generación y calidad — 114 min",
+      "slug": "ai-engineering-202604-sesion-11-rag-avanzado-generacion-y-calidad-114-min",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-✍️-ejercicio-rag-avanzado-generacion-y-calidad🔴",
+      "title": "✍️ Ejercicio: RAG avanzado: generación y calidad🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-rag-avanzado-generacion-y-calidad🔴",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724340",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724340",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-citacion-y-atribucion-verificable-🔴-19-min",
+      "title": "📄 Citación y atribución verificable 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄-citacion-y-atribucion-verificable-🔴-19-min",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-content-augmentation-preparar-el-contexto-recuperado-antes-de-generar-🔴-19-min",
+      "title": "📄 Content augmentation: preparar el contexto recuperado antes de generar 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄-content-augmentation-preparar-el-contexto-recuperado-antes-de-generar-🔴-19-min",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-deteccion-y-mitigacion-de-alucinaciones-🔴-21-min",
+      "title": "📄 Detección y mitigación de alucinaciones 🔴 — 21 min",
+      "slug": "ai-engineering-202604-📄-deteccion-y-mitigacion-de-alucinaciones-🔴-21-min",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-evaluacion-de-calidad-con-ragas🔴-19-min",
+      "title": "📄 Evaluación de calidad con RAGAS🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄-evaluacion-de-calidad-con-ragas🔴-19-min",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-reindexacion-y-versionado-de-embeddings🔴-17-min",
+      "title": "📄 Reindexación y versionado de embeddings🔴 — 17 min",
+      "slug": "ai-engineering-202604-📄-reindexacion-y-versionado-de-embeddings🔴-17-min",
+      "group": "11-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-📄-sintesis-de-multiples-presupuestos-combinar-fuentes-que-se-contradicen-🔴-19-min",
+      "title": "📄 Síntesis de múltiples presupuestos: combinar fuentes que se contradicen 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄-sintesis-de-multiples-presupuestos-combinar-fuentes-que-se-contradicen-🔴-19-min",
+      "group": "11-session",
       "status": "archived"
     },
     {
