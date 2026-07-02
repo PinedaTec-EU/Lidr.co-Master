@@ -15,6 +15,14 @@ Además, la sesión 9 deja un carril operativo explícito con:
 
 Ese carril añade autenticación por API key, rate limiting por consumidor, `X-Request-ID` por petición e idempotencia para estimaciones disparadas desde transcripción.
 
+Sobre esa base, la sesión 10 añade un primer refinamiento del retriever:
+
+- `candidate_pool_k` amplía el primer corte semántico antes del recorte final a `k`
+- `rerank_strategy="token_overlap"` permite una segunda pasada barata orientada a la señal conjunta query-documento
+- `score` pasa a representar el ranking final devuelto al caller
+- `semantic_score` conserva la puntuación vectorial original para depuración y evaluación
+- `rerank_score` solo aparece cuando la segunda pasada está activa
+
 ---
 
 ## Descripción

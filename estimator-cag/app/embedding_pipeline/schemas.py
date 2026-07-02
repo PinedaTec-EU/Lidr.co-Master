@@ -27,6 +27,11 @@ class QueryRewriteStrategy(str, Enum):
     NORMALIZE = "normalize"
 
 
+class RerankStrategy(str, Enum):
+    DISABLED = "disabled"
+    TOKEN_OVERLAP = "token_overlap"
+
+
 class ClientMetadata(BaseModel):
     name: str = Field(min_length=1)
     sector: str = Field(min_length=1)
@@ -112,8 +117,11 @@ class SearchFilters(BaseModel):
 class SearchRequest(BaseModel):
     query: str = Field(min_length=3)
     k: int = Field(default=5, ge=1, le=50)
+    candidate_pool_k: int | None = Field(default=None, ge=1, le=100)
     score_threshold: float | None = Field(default=None, ge=0, le=1)
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
+    rerank_alpha: float = Field(default=0.7, ge=0, le=1)
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
     filters: SearchFilters | None = None
 
@@ -125,6 +133,8 @@ class SearchResult(BaseModel):
     content: str
     distance: float = Field(ge=0)
     score: float = Field(ge=0, le=1)
+    semantic_score: float = Field(default=0, ge=0, le=1)
+    rerank_score: float | None = Field(default=None, ge=0, le=1)
     metadata: dict
 
 
@@ -132,8 +142,10 @@ class SearchResponse(BaseModel):
     query: str
     effective_query: str
     k: int = Field(ge=1)
+    candidate_pool_k: int = Field(default=0, ge=0)
     score_threshold: float | None = Field(default=None, ge=0, le=1)
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
     rewrite_notes: list[str] = Field(default_factory=list)
     search_time_ms: float = Field(ge=0)
     low_confidence: bool = False
