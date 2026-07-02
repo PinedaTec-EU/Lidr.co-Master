@@ -127,6 +127,8 @@ class SearchFilters(BaseModel):
     client_sector: str | None = None
     main_technology: str | None = None
     year: int | None = None
+    year_from: int | None = None
+    year_to: int | None = None
     complexity: ComplexityLevel | None = None
     document_type: str | None = None
     chunk_type: str | None = None
@@ -144,6 +146,9 @@ class SearchRequest(BaseModel):
     rrf_smoothing_k: int = Field(default=60, ge=1, le=200)
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
     rerank_alpha: float = Field(default=0.7, ge=0, le=1)
+    temporal_decay_enabled: bool = False
+    temporal_half_life_days: int = Field(default=730, ge=30, le=3650)
+    contextual_boost_enabled: bool = False
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
     filters: SearchFilters | None = None
 
@@ -159,6 +164,8 @@ class SearchResult(BaseModel):
     lexical_score: float | None = Field(default=None, ge=0)
     fusion_score: float | None = Field(default=None, ge=0, le=1)
     rerank_score: float | None = Field(default=None, ge=0, le=1)
+    temporal_weight: float | None = Field(default=None, ge=0)
+    contextual_boost: float | None = Field(default=None, ge=0)
     metadata: dict
 
 

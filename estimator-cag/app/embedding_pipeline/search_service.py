@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import time
+from datetime import date
 from dataclasses import dataclass
 
 from pgvector.sqlalchemy import HALFVEC
-from sqlalchemy import cast, func, select
+from sqlalchemy import Integer, cast, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.embedding_pipeline.embedder import OpenAIEmbedder
@@ -23,6 +24,7 @@ from app.embedding_pipeline.schemas import (
     SearchStrategy,
     SearchTarget,
 )
+from app.embedding_pipeline.temporal import contextual_boost, temporal_weight
 
 EMBEDDING_DIMENSIONS = 1536
 TEXT_SEARCH_CONFIG = "english"
@@ -40,6 +42,8 @@ class SearchCandidate:
     lexical_score: float | None
     fusion_score: float | None
     final_score: float
+    temporal_weight: float | None = None
+    contextual_boost: float | None = None
 
 
 class SemanticSearchService:
@@ -97,6 +101,12 @@ class SemanticSearchService:
                 if candidate.chunk_id in reranked_scores:
                     candidate.final_score = reranked_scores[candidate.chunk_id]
 
+        self._apply_soft_weights(
+            candidates=candidates,
+            query=rewrite.effective_query,
+            request=request,
+        )
+
         candidates.sort(key=lambda item: item.final_score, reverse=True)
         total_candidates_considered = len(candidates)
         candidates = candidates[: request.k]
@@ -141,6 +151,12 @@ class SemanticSearchService:
                         round(reranked_scores[item.chunk_id], 6)
                         if item.chunk_id in reranked_scores
                         else None
+                    ),
+                    temporal_weight=(
+                        round(item.temporal_weight, 6) if item.temporal_weight is not None else None
+                    ),
+                    contextual_boost=(
+                        round(item.contextual_boost, 6) if item.contextual_boost is not None else None
                     ),
                     metadata=item.metadata,
                 )
@@ -364,6 +380,14 @@ class SemanticSearchService:
             )
         if filters.year is not None:
             stmt = stmt.where(ChunkRecord.metadata_json["year"].astext == str(filters.year))
+        if filters.year_from is not None:
+            stmt = stmt.where(
+                ChunkRecord.metadata_json["year"].astext.cast(Integer) >= filters.year_from
+            )
+        if filters.year_to is not None:
+            stmt = stmt.where(
+                ChunkRecord.metadata_json["year"].astext.cast(Integer) <= filters.year_to
+            )
         if filters.complexity:
             stmt = stmt.where(
                 ChunkRecord.metadata_json["complexity"].astext == filters.complexity.value
@@ -378,3 +402,29 @@ class SemanticSearchService:
         return stmt.where(
             DocumentRecord.document_type.in_(DOCUMENT_TYPES_BY_TARGET[target])
         )
+
+    def _apply_soft_weights(
+        self,
+        *,
+        candidates: list[SearchCandidate],
+        query: str,
+        request: SearchRequest,
+    ) -> None:
+        for candidate in candidates:
+            boost = 1.0
+            weight = 1.0
+            if request.contextual_boost_enabled:
+                boost = contextual_boost(
+                    query=query,
+                    client_sector=candidate.metadata.get("client_sector"),
+                    main_technology=candidate.metadata.get("main_technology"),
+                )
+                candidate.contextual_boost = boost
+            if request.temporal_decay_enabled:
+                weight = temporal_weight(
+                    document_year=candidate.metadata.get("year"),
+                    now=date.today(),
+                    half_life_days=request.temporal_half_life_days,
+                )
+                candidate.temporal_weight = weight
+            candidate.final_score *= boost * weight

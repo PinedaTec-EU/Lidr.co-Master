@@ -30,6 +30,8 @@ Sobre esa base, la sesión 10 añade un primer refinamiento del retriever:
 - `rewrite_strategy="decompose"` separa consultas multi-tema y fusiona con cobertura round-robin
 - `target_collections` permite routing explícito por familia documental
 - sin `target_collections`, el servicio enruta por heurística hacia `budgets`, `transcripts` o `technical_docs`
+- `filters.year_from` y `filters.year_to` permiten ventanas temporales duras
+- `temporal_decay_enabled` y `contextual_boost_enabled` aplican ajuste blando final sobre antigüedad y coincidencia de contexto
 
 ---
 
