@@ -1,12 +1,10 @@
+from __future__ import annotations
+
 import pytest
 from pydantic import ValidationError
 
-from app.schemas import (
-    DetailLevel,
-    EstimationRequest,
-    OutputFormat,
-    ProjectType,
-)
+from app.embedding_pipeline.schemas import SearchRequest, SearchStrategy
+from app.schemas import DetailLevel, EstimationRequest, OutputFormat, ProjectType
 
 
 def test_estimation_request_accepts_valid_payload() -> None:
@@ -52,7 +50,6 @@ def test_estimation_request_accepts_max_length_description() -> None:
         detail_level=DetailLevel.DETAILED,
         output_format=OutputFormat.LINE_ITEMS,
     )
-
     assert len(request.description) == 2000
 
 
@@ -64,3 +61,10 @@ def test_estimation_request_rejects_description_above_max_length() -> None:
             detail_level=DetailLevel.DETAILED,
             output_format=OutputFormat.LINE_ITEMS,
         )
+
+
+def test_search_request_accepts_hybrid_strategy_defaults() -> None:
+    request = SearchRequest(query="stripe subscriptions and webhook billing")
+
+    assert request.search_strategy == SearchStrategy.SEMANTIC
+    assert request.rrf_smoothing_k == 60

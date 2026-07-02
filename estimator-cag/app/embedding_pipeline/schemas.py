@@ -27,6 +27,11 @@ class QueryRewriteStrategy(str, Enum):
     NORMALIZE = "normalize"
 
 
+class SearchStrategy(str, Enum):
+    SEMANTIC = "semantic"
+    HYBRID = "hybrid"
+
+
 class RerankStrategy(str, Enum):
     DISABLED = "disabled"
     TOKEN_OVERLAP = "token_overlap"
@@ -120,6 +125,8 @@ class SearchRequest(BaseModel):
     candidate_pool_k: int | None = Field(default=None, ge=1, le=100)
     score_threshold: float | None = Field(default=None, ge=0, le=1)
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    search_strategy: SearchStrategy = SearchStrategy.SEMANTIC
+    rrf_smoothing_k: int = Field(default=60, ge=1, le=200)
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
     rerank_alpha: float = Field(default=0.7, ge=0, le=1)
     embedding_model: EmbeddingModelName = EmbeddingModelName.TEXT_EMBEDDING_3_SMALL
@@ -134,6 +141,8 @@ class SearchResult(BaseModel):
     distance: float = Field(ge=0)
     score: float = Field(ge=0, le=1)
     semantic_score: float = Field(default=0, ge=0, le=1)
+    lexical_score: float | None = Field(default=None, ge=0)
+    fusion_score: float | None = Field(default=None, ge=0, le=1)
     rerank_score: float | None = Field(default=None, ge=0, le=1)
     metadata: dict
 
@@ -145,7 +154,9 @@ class SearchResponse(BaseModel):
     candidate_pool_k: int = Field(default=0, ge=0)
     score_threshold: float | None = Field(default=None, ge=0, le=1)
     rewrite_strategy: QueryRewriteStrategy = QueryRewriteStrategy.DISABLED
+    search_strategy: SearchStrategy = SearchStrategy.SEMANTIC
     rerank_strategy: RerankStrategy = RerankStrategy.DISABLED
+    rrf_smoothing_k: int | None = Field(default=None, ge=1, le=200)
     rewrite_notes: list[str] = Field(default_factory=list)
     search_time_ms: float = Field(ge=0)
     low_confidence: bool = False

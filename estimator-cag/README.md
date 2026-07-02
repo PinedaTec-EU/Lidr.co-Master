@@ -24,6 +24,8 @@ Sobre esa base, la sesión 10 añade un primer refinamiento del retriever:
 - `rerank_score` solo aparece cuando la segunda pasada está activa
 - `evals/session-10-golden-set.json` versiona el golden set mínimo usado para comparar variantes
 - `python evals/session_10_retrieval_eval.py` genera una tabla artesanal con `precision@k`, `recall@k` y latencia mediana por variante
+- `search_strategy="hybrid"` combina recuperación vectorial y full-text en PostgreSQL
+- `rrf_smoothing_k` controla la fusión Reciprocal Rank Fusion sin mezclar scores incompatibles
 
 ---
 
