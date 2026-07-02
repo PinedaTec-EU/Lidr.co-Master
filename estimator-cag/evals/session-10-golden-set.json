@@ -1,0 +1,22 @@
+{
+  "annotation_criterion": "Relevant if it would serve as a direct effort reference for estimating this project.",
+  "top_k": 5,
+  "runs_per_query": 3,
+  "queries": [
+    {
+      "id": "q01",
+      "query": "REST API development JWT authentication financial sector",
+      "relevant_chunk_ids": ["BUD-2024-001::AUTH-001"]
+    },
+    {
+      "id": "q02",
+      "query": "catalog pricing promotions ecommerce backend",
+      "relevant_chunk_ids": ["BUD-2024-002::CAT-001", "BUD-2024-002::ORD-002"]
+    },
+    {
+      "id": "q03",
+      "query": "telemedicine appointment scheduling doctor notes platform",
+      "relevant_chunk_ids": ["BUD-2024-003::VID-001", "BUD-2024-003::MED-002"]
+    }
+  ]
+}
