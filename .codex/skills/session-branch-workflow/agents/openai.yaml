@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session Branch Workflow"
+  short_description: "Create session branches only after prior integration."
+  default_prompt: "Prepare a new master session branch using the repository session workflow."
