@@ -807,6 +807,8 @@ curl -X POST http://localhost:8000/api/v1/agent-estimate \
 
 La respuesta incorpora `status`, `confidence`, `citations`, `trace` y `estimation_id`. Si el estado es `awaiting_human_review`, reanuda la misma ejecución con `approve`, `adjust` o `reject`.
 
+La extensión de competición de S14 queda disponible como síntesis explícita de estimaciones independientes: devuelve rango y mediana, pero no se activa en cada solicitud. Sólo debe usarse si los agentes realmente difieren en evidencia o criterio, no como una segunda opinión cosmética.
+
 Para S11, `evals/session-11-golden-set.json` define cinco casos con respuesta de referencia, incluidos abstención y fuentes contradictorias. Ejecuta `python evals/session_11_ragas_eval.py --observations observaciones.json --report evals/session-11-ragas-report.json` para calcular `faithfulness`, `answer_relevancy`, `context_precision` y `context_recall` con RAGAS.
 
 Estos pasos validan el entregable sin necesidad de conocer el repo:

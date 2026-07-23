@@ -1,4 +1,4 @@
-from app.agentic.tools import ToolPrivilegeError, build_citations, extract_requirements, require_tool_privilege, verify_citations
+from app.agentic.tools import ToolPrivilegeError, build_citations, extract_requirements, require_tool_privilege, synthesize_competing_estimates, verify_citations
 
 
 def test_citations_are_verified_only_against_retrieved_sources() -> None:
@@ -33,3 +33,9 @@ def test_requirement_extraction_keeps_meaningful_fragments() -> None:
     requirements = extract_requirements("Portal B2B con autenticación, pagos y reporting operativo para equipos de finanzas.")
 
     assert requirements
+
+
+def test_competitive_synthesis_returns_a_range_and_median() -> None:
+    synthesis = synthesize_competing_estimates([120, 180, 150])
+
+    assert synthesis == {"low_hours": 120, "high_hours": 180, "recommended_hours": 150.0}

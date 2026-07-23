@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from statistics import median
 
 from app.agentic.contracts import AGENT_PRIVILEGES, AgentName
 from app.schemas import CitationVerificationReport, EvidenceCitation
@@ -36,3 +37,13 @@ def verify_citations(citations: list[EvidenceCitation], source_refs: list[str]) 
         dangling_chunk_ids=dangling,
         abstained=not citations,
     )
+
+
+def synthesize_competing_estimates(hours: list[float], *, minimum: float | None = None, maximum: float | None = None) -> dict[str, float]:
+    if len(hours) < 2:
+        raise ValueError("Competitive synthesis requires at least two independent estimates.")
+    low = min(hours) if minimum is None else minimum
+    high = max(hours) if maximum is None else maximum
+    if low > high:
+        raise ValueError("The lower bound cannot exceed the upper bound.")
+    return {"low_hours": low, "high_hours": high, "recommended_hours": float(median(hours))}
