@@ -1,0 +1,10 @@
+{
+  "version": "session-11-v1",
+  "cases": [
+    {"id": "auth-platform", "question": "Estima autenticación y autorización para un portal B2B regulado.", "ground_truth": "Debe identificar autenticación, autorización por roles y auditoría; si no hay precedente, debe abstenerse.", "required_contexts": ["BUD-2024-001::AUTH-001"]},
+    {"id": "payments", "question": "Estima pagos recurrentes para una plataforma SaaS.", "ground_truth": "Debe separar integración de pagos, conciliación y manejo de errores.", "required_contexts": ["BUD-2024-001::PAY-001"]},
+    {"id": "mobile", "question": "Estima una app móvil para operaciones de reparto.", "ground_truth": "Debe contemplar aplicación móvil, sincronización y estados operativos.", "required_contexts": ["BUD-2024-003::MOB-001"]},
+    {"id": "ambiguous", "question": "Estima una integración ERP legacy sin más detalle.", "ground_truth": "No hay datos suficientes: debe declarar incertidumbre y solicitar contexto.", "required_contexts": []},
+    {"id": "contradictory", "question": "Estima reporting financiero con fuentes históricas contradictorias.", "ground_truth": "Debe devolver un rango razonado, citar los precedentes y explicar la discrepancia.", "required_contexts": ["BUD-2024-002::REP-001", "BUD-2024-004::REP-001"]}
+  ]
+}

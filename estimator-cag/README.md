@@ -784,6 +784,31 @@ uvicorn app.main:app --reload
 
 ## Validación rápida para una persona externa
 
+## Sesiones 11–14: calidad y orquestación agéntica
+
+El endpoint clásico de estimación se conserva. Como carril explícito para las sesiones 11–14 se añade `POST /api/v1/agent-estimate`:
+
+- **S11:** convierte los chunks realmente recuperados en citas estructuradas y rechaza citas que no pertenezcan al conjunto entregado al generador.
+- **S12:** mantiene tools separadas (`search_budgets`, `generate_estimate`, `validate_estimate`) y limita por agente cuáles se pueden invocar.
+- **S13:** expresa el flujo como un `StateGraph` con estado tipado, reducers acumuladores y una traza de cada decisión/nodo.
+- **S14:** usa un supervisor visible, mínimo privilegio y un gate de revisión humana cuando la confianza queda por debajo de `AGENT_CONFIDENCE_THRESHOLD`. La reanudación se hace con `POST /api/v1/agent-estimate/{estimation_id}/resume` y la misma clave de ejecución.
+
+El grafo exige `AGENT_CHECKPOINT_DATABASE_URL` y utiliza `AsyncPostgresSaver`; el lifecycle inicializa sus tablas antes de exponer la superficie agéntica. Sin ese valor, el endpoint devuelve `503` en vez de degradar a memoria: una pausa humana sin persistencia no es un workflow recuperable.
+
+El `docker-compose.yml` de desarrollo ya lo configura contra el mismo PostgreSQL del vector store, usando el DSN de `psycopg` (`postgresql://...`), no el de SQLAlchemy (`postgresql+asyncpg://...`).
+
+Ejemplo de inicio:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/agent-estimate \
+  -H "Content-Type: application/json" \
+  -d '{"transcript":"Necesitamos una plataforma B2B regulada con autenticación, pagos, reporting y operación interna.","project_type":"web_saas","detail_level":"medium","output_format":"narrative"}'
+```
+
+La respuesta incorpora `status`, `confidence`, `citations`, `trace` y `estimation_id`. Si el estado es `awaiting_human_review`, reanuda la misma ejecución con `approve`, `adjust` o `reject`.
+
+Para S11, `evals/session-11-golden-set.json` define cinco casos con respuesta de referencia, incluidos abstención y fuentes contradictorias. Ejecuta `python evals/session_11_ragas_eval.py --observations observaciones.json --report evals/session-11-ragas-report.json` para calcular `faithfulness`, `answer_relevancy`, `context_precision` y `context_recall` con RAGAS.
+
 Estos pasos validan el entregable sin necesidad de conocer el repo:
 
 ### 1. Arrancar la API

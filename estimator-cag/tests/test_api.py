@@ -88,6 +88,18 @@ def test_estimate_from_transcript_requires_api_key_when_configured(monkeypatch) 
     monkeypatch.setattr(estimate_runtime_router.settings, "estimate_api_key", "")
 
 
+def test_agent_estimate_requires_durable_checkpointer() -> None:
+    response = client.post(
+        "/api/v1/agent-estimate",
+        json={
+            "transcript": "Necesitamos un portal B2B regulado con autenticación, pagos, reporting, auditoría y operación interna para varios equipos de finanzas.",
+        },
+    )
+
+    assert response.status_code == 503
+    assert response.json()["detail"] == "Agent checkpoint persistence is not configured."
+
+
 def test_retrieval_search_rate_limit_returns_429(monkeypatch) -> None:
     async def fake_search(self, *, session, request):
         from app.embedding_pipeline.schemas import SearchResponse

@@ -23,6 +23,9 @@ dependencies = [
     "tiktoken>=0.7.0",
     "ulid-py>=1.1.0",
     "streamlit>=1.35.0",
+    "langgraph>=1.0.0",
+    "langgraph-checkpoint-postgres>=3.1.0",
+    "ragas>=0.4.0",
 ]
 
 [project.optional-dependencies]

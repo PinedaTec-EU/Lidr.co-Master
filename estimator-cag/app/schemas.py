@@ -48,6 +48,27 @@ class RetrievalPromptContext(BaseModel):
     included_chunks_count: int = Field(ge=0)
     retrieved_results_count: int = Field(ge=0)
     truncated: bool = False
+    source_refs: list[str] = Field(default_factory=list)
+
+
+class EvidenceCitation(BaseModel):
+    chunk_id: str
+    locator: str
+    excerpt: str
+
+
+class CitationVerificationReport(BaseModel):
+    verified: bool
+    verified_citations: list[EvidenceCitation] = Field(default_factory=list)
+    dangling_chunk_ids: list[str] = Field(default_factory=list)
+    abstained: bool = False
+
+
+class AgentTraceStep(BaseModel):
+    agent: str
+    action: str
+    outcome: str
+    tool_name: str | None = None
 
 
 class EstimationRequest(BaseModel):
@@ -83,6 +104,23 @@ class TranscriptEstimateResponse(EstimationResponse):
     retrieval_context_included: bool = False
     retrieved_results_count: int = Field(default=0, ge=0)
     included_chunks_count: int = Field(default=0, ge=0)
+
+
+class AgentEstimateRequest(TranscriptEstimateRequest):
+    estimation_id: str | None = Field(default=None, max_length=128)
+
+
+class AgentEstimateResponse(TranscriptEstimateResponse):
+    status: str
+    confidence: float = Field(ge=0, le=1)
+    citations: CitationVerificationReport
+    trace: list[AgentTraceStep]
+    estimation_id: str
+
+
+class HumanReviewDecision(BaseModel):
+    decision: str = Field(pattern="^(approve|adjust|reject)$")
+    notes: str | None = Field(default=None, max_length=2000)
 
 
 class SessionCreateResponse(BaseModel):

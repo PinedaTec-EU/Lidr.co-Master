@@ -41,4 +41,5 @@ async def resolve_retrieval_prompt_context(
         included_chunks_count=len(assembled.included_chunks),
         retrieved_results_count=len(assembled.search.results),
         truncated=assembled.truncated,
+        source_refs=[str(item.chunk_id) for item in assembled.included_chunks],
     )

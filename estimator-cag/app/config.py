@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     retrieval_rate_limit_per_minute: int = 120
     estimate_rate_limit_per_minute: int = 10
     idempotency_ttl_seconds: int = 86400
+    agent_confidence_threshold: float = 0.7
+    agent_max_steps: int = 8
+    agent_checkpoint_database_url: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
