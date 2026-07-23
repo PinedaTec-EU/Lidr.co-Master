@@ -4,6 +4,7 @@ from typing import Annotated, Literal, TypedDict
 import operator
 
 from app.schemas import AgentTraceStep, CitationVerificationReport, EvidenceCitation
+from app.schemas import DetailLevel, OutputFormat, ProjectType, RetrievalPromptContext
 
 
 AgentName = Literal[
@@ -19,8 +20,13 @@ AgentName = Literal[
 class EstimationGraphState(TypedDict, total=False):
     estimation_id: str
     transcript: str
+    project_type: ProjectType
+    detail_level: DetailLevel
+    output_format: OutputFormat
+    retrieval_context: RetrievalPromptContext | None
     requirements: list[str]
     source_refs: list[str]
+    retrieved: bool
     retrieved_citations: Annotated[list[EvidenceCitation], operator.add]
     text: str
     model_result: dict
