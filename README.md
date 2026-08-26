@@ -88,6 +88,15 @@ flowchart LR
 | [`doc`](./doc) | Instrucciones y material auxiliar del máster. |
 | [`training-archive`](./training-archive) | Archivado local de contenidos del campus para repaso en Markdown. |
 
+## Archivo offline del máster
+
+Las capturas del campus se conservan en `training-archive/ai-engineering-2026-04/.staging` y se generan como Markdown con sus recursos locales. Para regenerar únicamente una o varias sesiones, sin reconstruir el resto del archivo:
+
+```bash
+python3 scripts/build_training_archive.py --groups 12-session 13-session 14-session 15-session 16-session
+python3 scripts/validate_training_archive.py --groups 12-session 13-session 14-session 15-session 16-session
+```
+
 ## Proyecto secundario
 
 ### [`sih-smart-analysis`](./sih-smart-analysis)

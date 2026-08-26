@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import mimetypes
+import argparse
 import re
 import shutil
 import urllib.error
@@ -51,6 +52,22 @@ def clean_text(value: str) -> str:
 
 def slugify_from_url(url: str) -> str:
     return Path(urllib.parse.urlparse(url).path).name
+
+
+def canonical_manifest_url(url: str) -> str:
+    """Normalize encoded and decoded post URLs to one manifest key."""
+    parsed = urllib.parse.urlsplit(url)
+    if parsed.netloc.lower() != "training.lidr.co" or not parsed.path.startswith("/posts/"):
+        return url
+    return urllib.parse.urlunsplit(
+        (
+            parsed.scheme.lower(),
+            parsed.netloc.lower(),
+            urllib.parse.unquote(parsed.path),
+            parsed.query,
+            parsed.fragment,
+        )
+    )
 
 
 def parse_snapshot_record(path: Path) -> SnapshotRecord:
@@ -108,12 +125,36 @@ def classify_group(record: SnapshotRecord) -> str:
         "filtrado-contextual-y-temporal",
         "contenido-de-este-modulo-98724321",
     ]
+    session_12_markers = [
+        "sesion-12-introduccion-a-agentes",
+        "introduccion-a-agentes-de-ia",
+        "bucle-agentico",
+        "function-calling-en-la-practica",
+        "patrones-de-agentes",
+        "cuanto-cuesta-un-agente",
+        "contenido-de-este-modulo-104106618",
+    ]
+    session_13_markers = [
+        "sesion-13-orquestacion-de-agentes",
+        "orquestacion-de-agentes",
+        "del-bucle-manual-al-grafo",
+        "langgraph-desde-cero",
+        "estado-y-persistencia-reducers",
+        "ejecucion-paralela-y-enrutado",
+        "manejo-de-errores-y-recuperacion",
+        "observabilidad-langsmith",
+        "contenido-de-este-modulo-98724363",
+    ]
     if any(marker in text for marker in session_08_markers):
         return "08-session"
     if any(marker in text for marker in session_09_markers):
         return "09-session"
     if any(marker in text for marker in session_10_markers):
         return "10-session"
+    if any(marker in text for marker in session_12_markers):
+        return "12-session"
+    if any(marker in text for marker in session_13_markers):
+        return "13-session"
     if "sesion-1" in text or "sesión 1" in text:
         return "01-session"
     if "sesion-2" in text or "sesión 2" in text:
@@ -134,6 +175,10 @@ def classify_group(record: SnapshotRecord) -> str:
         return "09-session"
     if "sesion-10" in text or "sesión 10" in text:
         return "10-session"
+    if "sesion-12" in text or "sesión 12" in text:
+        return "12-session"
+    if "sesion-13" in text or "sesión 13" in text:
+        return "13-session"
     if "pre-curso" in text or "pre curso" in text:
         return "00-pre-course"
     if "bienvenida" in text or "plataforma" in text or "modulo-de-bienvenida" in text:
@@ -312,7 +357,8 @@ def build_manifest(records: list[SnapshotRecord]) -> dict:
     discovered_urls: dict[str, dict[str, str]] = {}
     for record in records:
         group = classify_group(record)
-        discovered_urls[record.source_url] = {
+        record_key = canonical_manifest_url(record.source_url)
+        discovered_urls[record_key] = {
             "url": record.source_url,
             "title": record.title,
             "slug": record.slug,
@@ -320,8 +366,9 @@ def build_manifest(records: list[SnapshotRecord]) -> dict:
             "status": "archived" if record.article_html else "partial",
         }
         for link_url in extract_article_post_links(record.article_html):
+            link_key = canonical_manifest_url(link_url)
             discovered_urls.setdefault(
-                link_url,
+                link_key,
                 {
                     "url": link_url,
                     "title": slugify_from_url(link_url),
@@ -402,10 +449,42 @@ def render_record(record: SnapshotRecord) -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Build the offline training archive from staged page snapshots.")
+    parser.add_argument(
+        "--slugs",
+        nargs="+",
+        help="Rebuild only the named staged lessons without deleting the rest of the archive.",
+    )
+    parser.add_argument(
+        "--groups",
+        nargs="+",
+        help="Rebuild every staged lesson in the named archive groups without deleting the rest.",
+    )
+    args = parser.parse_args()
+    if args.slugs and args.groups:
+        parser.error("Use either --slugs or --groups, not both.")
     STAGING_DIR.mkdir(parents=True, exist_ok=True)
-    clear_sessions_dir()
     records = [parse_snapshot_record(path) for path in sorted(STAGING_DIR.glob("*.json"))]
-    for record in records:
+    selected_records = records
+    if args.slugs:
+        requested = set(args.slugs)
+        selected_records = [record for record in records if record.slug in requested]
+        missing = requested - {record.slug for record in selected_records}
+        if missing:
+            parser.error(f"No staged snapshots found for: {', '.join(sorted(missing))}")
+    elif args.groups:
+        requested_groups = set(args.groups)
+        selected_records = [record for record in records if classify_group(record) in requested_groups]
+        missing_groups = requested_groups - {classify_group(record) for record in selected_records}
+        if missing_groups:
+            parser.error(f"No staged snapshots found for: {', '.join(sorted(missing_groups))}")
+    else:
+        clear_sessions_dir()
+    for record in selected_records:
+        if args.slugs or args.groups:
+            lesson_dir = ARCHIVE_ROOT / classify_group(record) / record.slug
+            if lesson_dir.exists():
+                shutil.rmtree(lesson_dir)
         render_record(record)
     MANIFEST_PATH.write_text(json.dumps(build_manifest(records), ensure_ascii=False, indent=2) + "\n")
     return 0

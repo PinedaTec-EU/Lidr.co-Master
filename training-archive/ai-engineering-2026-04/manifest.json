@@ -1,12 +1,12 @@
 {
   "course": "AI Engineering 2026/04",
-  "generated_at": "2026-07-02T12:45:30.389998+00:00",
+  "generated_at": "2026-08-26T16:31:51.002375+00:00",
   "root_dir": "training-archive/ai-engineering-2026-04",
   "summary": {
-    "discovered_posts": 122,
-    "archived_posts": 119,
+    "discovered_posts": 174,
+    "archived_posts": 170,
     "partial_posts": 3,
-    "pending_posts": 0
+    "pending_posts": 1
   },
   "items": [
     {
@@ -829,6 +829,363 @@
       "status": "archived"
     },
     {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-12-introduccion-a-agentes-de-ia-123-min",
+      "title": "Sesión 12: Introducción a agentes de IA — 123 min",
+      "slug": "ai-engineering-202604-sesion-12-introduccion-a-agentes-de-ia-123-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-introduccion-a-agentes-de-ia%F0%9F%94%B4",
+      "title": "✍️ Ejercicio: Introducción a agentes de IA🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-introduccion-a-agentes-de-ia🔴",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-104106618",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-104106618",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-anatomia-de-un-agente-que-ocurre-dentro-del-bucle-%F0%9F%94%B4-22-min",
+      "title": "📄 Anatomía de un agente: qué ocurre dentro del bucle 🔴 —  22 min",
+      "slug": "ai-engineering-202604-📄-anatomia-de-un-agente-que-ocurre-dentro-del-bucle-🔴-22-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-cuanto-cuesta-un-agente%F0%9F%94%B4-18-min",
+      "title": "📄 Cuánto cuesta un agente🔴 —  18 min",
+      "slug": "ai-engineering-202604-📄-cuanto-cuesta-un-agente🔴-18-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-de-pipeline-a-agente-cuando-tu-sistema-rag-necesita-una-capa-de-decision-%F0%9F%94%B4-23-min",
+      "title": "📄 De pipeline a agente: cuándo tu sistema RAG necesita una capa de decisión 🔴 —  23 min",
+      "slug": "ai-engineering-202604-📄-de-pipeline-a-agente-cuando-tu-sistema-rag-necesita-una-capa-de-decision-🔴-23-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-el-bucle-agentico-paso-a-paso%F0%9F%94%B4-18-min",
+      "title": "📄 El bucle agéntico paso a paso🔴 —  18 min",
+      "slug": "ai-engineering-202604-📄-el-bucle-agentico-paso-a-paso🔴-18-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-function-calling-en-la-practica-tools-schemas-y-contrato-con-el-modelo%F0%9F%94%B4-21-min",
+      "title": "📄 Function calling en la práctica: tools, schemas y contrato con el modelo🔴 —  21 min",
+      "slug": "ai-engineering-202604-📄-function-calling-en-la-practica-tools-schemas-y-contrato-con-el-modelo🔴-21-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-patrones-de-agentes-y-diseno-de-tools-de-calidad-%F0%9F%94%B4-21-min",
+      "title": "📄 Patrones de agentes y diseño de tools de calidad 🔴 —  21 min",
+      "slug": "ai-engineering-202604-📄-patrones-de-agentes-y-diseno-de-tools-de-calidad-🔴-21-min",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%BC-grabacion-y-material-de-la-sesion-12",
+      "title": "📼 Grabación y material de la sesión 12",
+      "slug": "ai-engineering-202604-📼-grabacion-y-material-de-la-sesion-12",
+      "group": "12-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-13-orquestacion-de-agentes-76-min",
+      "title": "Sesión 13: Orquestación de agentes — 76 min",
+      "slug": "ai-engineering-202604-sesion-13-orquestacion-de-agentes-76-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-orquestacion-de-agentes%F0%9F%94%B4",
+      "title": "✍️ Ejercicio: Orquestación de agentes🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-orquestacion-de-agentes🔴",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724363",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724363",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-del-bucle-manual-al-grafo-cuando-necesitamos-un-framework-%F0%9F%94%B4-16-min",
+      "title": "📄 Del bucle manual al grafo: cuando necesitamos un framework 🔴 — 16 min",
+      "slug": "ai-engineering-202604-📄-del-bucle-manual-al-grafo-cuando-necesitamos-un-framework-🔴-16-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-ejecucion-paralela-y-enrutado-condicional-%F0%9F%94%B4-12-min",
+      "title": "📄 Ejecución paralela y enrutado condicional 🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄-ejecucion-paralela-y-enrutado-condicional-🔴-12-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-estado-y-persistencia-reducers-checkpointers-y-memoria-%F0%9F%94%B4-min",
+      "title": "📄 Estado y persistencia: reducers, checkpointers y memoria 🔴 — min",
+      "slug": "ai-engineering-202604-📄-estado-y-persistencia-reducers-checkpointers-y-memoria-🔴-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-langgraph-desde-cero-stategraph-nodos-aristas-y-estado-%F0%9F%94%B4-13-min",
+      "title": "📄  LangGraph desde cero: StateGraph, nodos, aristas y estado 🔴 —  13 min",
+      "slug": "ai-engineering-202604-📄-langgraph-desde-cero-stategraph-nodos-aristas-y-estado-🔴-13-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-manejo-de-errores-y-recuperacion-en-flujos-complejos%F0%9F%94%B4-12-min",
+      "title": "📄 Manejo de errores y recuperación en flujos complejos🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄-manejo-de-errores-y-recuperacion-en-flujos-complejos🔴-12-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-observabilidad-langsmith-y-logfire-para-el-servicio-ia-%F0%9F%94%B4-10-min",
+      "title": "📄 Observabilidad: LangSmith y Logfire para el servicio IA 🔴 — 10 min",
+      "slug": "ai-engineering-202604-📄-observabilidad-langsmith-y-logfire-para-el-servicio-ia-🔴-10-min",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%BC-grabacion-y-material-de-la-sesion-13",
+      "title": "📼 Grabación y material de la sesión 13",
+      "slug": "ai-engineering-202604-📼-grabacion-y-material-de-la-sesion-13",
+      "group": "13-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-14-sistemas-multi-agente-y-patrones-avanzados-109-minutos",
+      "title": "Sesión 14: Sistemas multi-agente y patrones avanzados — 109 minutos",
+      "slug": "ai-engineering-202604-sesion-14-sistemas-multi-agente-y-patrones-avanzados-109-minutos",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8F-ejercicio-sistemas-multi-agente-y-patrones-avanzados%F0%9F%94%B4",
+      "title": "✍️ Ejercicio: Sistemas multi-agente y patrones avanzados🔴",
+      "slug": "ai-engineering-202604-✍️-ejercicio-sistemas-multi-agente-y-patrones-avanzados🔴",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724381",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724381",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-cuando-un-sistema-multi-agente-deja-de-ser-un-grafo-con-mas-nodos%F0%9F%94%B4-18-min",
+      "title": "📄 Cuándo un sistema multi-agente deja de ser \"un grafo con más nodos🔴 — 18 min",
+      "slug": "ai-engineering-202604-📄-cuando-un-sistema-multi-agente-deja-de-ser-un-grafo-con-mas-nodos🔴-18-min",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84competicion-y-sintesis-entre-agentes-%F0%9F%94%B4-18-min",
+      "title": "📄Competición y síntesis entre agentes 🔴 — 18 min",
+      "slug": "ai-engineering-202604-📄competicion-y-sintesis-entre-agentes-🔴-18-min",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84el-supervisor-construir-el-enrutado-a-mano-con-stategraph-y-command-%F0%9F%94%B4-19-min",
+      "title": "📄El supervisor: construir el enrutado a mano con StateGraph y Command 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄el-supervisor-construir-el-enrutado-a-mano-con-stategraph-y-command-🔴-19-min",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84human-in-the-loop-interrupt-pausa-y-reanudacion-sobre-el-checkpointer%F0%9F%94%B4-18-min",
+      "title": "📄Human-in-the-loop: interrupt, pausa y reanudación sobre el checkpointer🔴 — 18 min",
+      "slug": "ai-engineering-202604-📄human-in-the-loop-interrupt-pausa-y-reanudacion-sobre-el-checkpointer🔴-18-min",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84minimo-privilegio-validacion-de-acciones-y-auditoria-de-agentes-%F0%9F%94%B4-19-min",
+      "title": "📄Mínimo privilegio, validación de acciones y auditoría de agentes 🔴 — 19 min",
+      "slug": "ai-engineering-202604-📄minimo-privilegio-validacion-de-acciones-y-auditoria-de-agentes-🔴-19-min",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84patrones-de-comunicacion-entre-agentes-estado-compartido-handoff-y-mensajes-%F0%9F%94%B4-17-min",
+      "title": "📄Patrones de comunicación entre agentes: estado compartido, handoff y mensajes 🔴 — 17 min",
+      "slug": "ai-engineering-202604-📄patrones-de-comunicacion-entre-agentes-estado-compartido-handoff-y-mensajes-🔴-17-min",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%BC-grabacion-y-material-de-la-sesion-14",
+      "title": "📼 Grabación y material de la sesión 14",
+      "slug": "ai-engineering-202604-📼-grabacion-y-material-de-la-sesion-14",
+      "group": "14-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ayudanos-a-mejorar-cuentanos-cual-fue-tu-roti-del-5-al-1-y-deja-tus-comentarios-abajo-para-que-el-equipo-pueda-mejorar-cada-semana-como-valorarias-esta-sesion-14-104976758?utm_source=manual",
+      "title": "ayudanos-a-mejorar-cuentanos-cual-fue-tu-roti-del-5-al-1-y-deja-tus-comentarios-abajo-para-que-el-equipo-pueda-mejorar-cada-semana-como-valorarias-esta-sesion-14-104976758",
+      "slug": "ayudanos-a-mejorar-cuentanos-cual-fue-tu-roti-del-5-al-1-y-deja-tus-comentarios-abajo-para-que-el-equipo-pueda-mejorar-cada-semana-como-valorarias-esta-sesion-14-104976758",
+      "group": "14-session",
+      "status": "pending"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-15-puesta-en-produccion-de-proyectos-arquitectura-e-infra-77-min",
+      "title": "Sesión 15. Puesta en producción de proyectos, arquitectura e infra — 77 min",
+      "slug": "ai-engineering-202604-sesion-15-puesta-en-produccion-de-proyectos-arquitectura-e-infra-77-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8Fdockerizacion-del-proyecto-%F0%9F%94%B4",
+      "title": "✍️Dockerización del proyecto 🔴",
+      "slug": "ai-engineering-202604-✍️dockerizacion-del-proyecto-🔴",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-98724399",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724399",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-cicd-con-tokens-%F0%9F%94%B4-12-min",
+      "title": "📄 CI/CD con tokens 🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄-cicd-con-tokens-🔴-12-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-contenerizacion-con-docker-%F0%9F%94%B4-12-min",
+      "title": "📄 Contenerización con Docker 🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄-contenerizacion-con-docker-🔴-12-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-documentar-el-sistema-%F0%9F%94%B4-14-min",
+      "title": "📄 Documentar el sistema 🔴 — 14 min",
+      "slug": "ai-engineering-202604-📄-documentar-el-sistema-🔴-14-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-partir-en-servicios-%F0%9F%94%B4-13-min",
+      "title": "📄 Partir en servicios 🔴 — 13 min",
+      "slug": "ai-engineering-202604-📄-partir-en-servicios-🔴-13-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-que-entendemos-por-produccion-%F0%9F%94%B4-14-min",
+      "title": "📄 Que entendemos por producción 🔴 — 14 min",
+      "slug": "ai-engineering-202604-📄-que-entendemos-por-produccion-🔴-14-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84despliegue-en-clouds-%F0%9F%94%B4-12-min",
+      "title": "📄Despliegue en Clouds 🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄despliegue-en-clouds-🔴-12-min",
+      "group": "15-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-sesion-16-puesta-en-produccion-ii-calidad-y-observabilidad-77-min",
+      "title": "Sesión 16. Puesta en producción II - Calidad y observabilidad — 77 min",
+      "slug": "ai-engineering-202604-sesion-16-puesta-en-produccion-ii-calidad-y-observabilidad-77-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%E2%9C%8D%EF%B8%8Fgolden-set-de-produccion-%F0%9F%94%B4",
+      "title": "✍️Golden set de producción 🔴",
+      "slug": "ai-engineering-202604-✍️golden-set-de-produccion-🔴",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%86%99-evalua-el-contenido-de-este-modulo-105244643",
+      "title": "🆙 Evalúa el contenido de este Módulo",
+      "slug": "ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-105244643",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-evaluacion-en-produccion-%F0%9F%94%B4-13-min",
+      "title": "📄 Evaluacion en producción 🔴 — 13 min",
+      "slug": "ai-engineering-202604-📄-evaluacion-en-produccion-🔴-13-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-introduccion-llmops-%F0%9F%94%B4-11-min",
+      "title": "📄 Introducción LLMOps 🔴 — 11 min",
+      "slug": "ai-engineering-202604-📄-introduccion-llmops-🔴-11-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-observabilidad-%F0%9F%94%B4-12-min",
+      "title": "📄 Observabilidad 🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄-observabilidad-🔴-12-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-tratamiento-de-regresiones-%F0%9F%94%B4-12-min",
+      "title": "📄 Tratamiento de regresiones 🔴 — 12 min",
+      "slug": "ai-engineering-202604-📄-tratamiento-de-regresiones-🔴-12-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84-un-sistema-debe-saber-decir-no-lo-se-%F0%9F%94%B4-14-min",
+      "title": "📄 Un sistema debe saber decir “No lo sé” 🔴 — 14 min",
+      "slug": "ai-engineering-202604-📄-un-sistema-debe-saber-decir-no-lo-se-🔴-14-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84coste-latencia-y-ab-testing-%F0%9F%94%B4-13-min",
+      "title": "📄Coste, latencia y A/B Testing 🔴 — 13 min",
+      "slug": "ai-engineering-202604-📄coste-latencia-y-ab-testing-🔴-13-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%84modelos-en-local-%F0%9F%94%B4-14-min",
+      "title": "📄Modelos en local 🔴 — 14 min",
+      "slug": "ai-engineering-202604-📄modelos-en-local-🔴-14-min",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-%F0%9F%93%BC-grabacion-de-sesion-16",
+      "title": "📼 Grabación de sesión 16",
+      "slug": "ai-engineering-202604-📼-grabacion-de-sesion-16",
+      "group": "16-session",
+      "status": "archived"
+    },
+    {
       "url": "https://training.lidr.co/posts/ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia",
       "title": "1️⃣ Módulo: Fundamentos de productos con IA",
       "slug": "ai-engineering-202604-1️⃣-modulo-fundamentos-de-productos-con-ia",
@@ -848,6 +1205,13 @@
       "slug": "ai-engineering-202604-3️⃣-modulo-data-driven-ai",
       "group": "98-misc",
       "status": "partial"
+    },
+    {
+      "url": "https://training.lidr.co/posts/ai-engineering-202604-6%EF%B8%8F%E2%83%A3-modulo-despliegue-y-puesta-en-produccion",
+      "title": "6️⃣ Módulo: Despliegue y puesta en producción",
+      "slug": "ai-engineering-202604-6️⃣-modulo-despliegue-y-puesta-en-produccion",
+      "group": "98-misc",
+      "status": "archived"
     },
     {
       "url": "https://training.lidr.co/posts/ai-engineering-202604-🆙-evalua-el-contenido-de-este-modulo-98724277",

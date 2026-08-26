@@ -121,12 +121,20 @@ def validate_record(staging_path: Path) -> tuple[bool, dict[str, object]]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate archived training markdown against staging snapshots.")
     parser.add_argument("slugs", nargs="*", help="Optional slugs to validate. Defaults to all staging records.")
+    parser.add_argument("--groups", nargs="+", help="Validate every staged lesson in the named archive groups.")
     args = parser.parse_args()
 
     staging_paths = sorted(STAGING_DIR.glob("*.json"))
     if args.slugs:
         requested = set(args.slugs)
         staging_paths = [path for path in staging_paths if path.stem in requested]
+    elif args.groups:
+        requested_groups = set(args.groups)
+        staging_paths = [
+            path
+            for path in staging_paths
+            if build_training_archive.classify_group(build_training_archive.parse_snapshot_record(path)) in requested_groups
+        ]
 
     if not staging_paths:
         print("No staging records selected.", file=sys.stderr)

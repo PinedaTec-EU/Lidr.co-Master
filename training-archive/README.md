@@ -2,6 +2,11 @@
 
 Archivado local de contenidos de `training.lidr.co` en formato reproducible para lectura y repaso offline.
 
+## Guía de estudio
+
+- [`ai-engineering-2026-04/RESUMEN-CONCEPTOS-POR-SESION.md`](./ai-engineering-2026-04/RESUMEN-CONCEPTOS-POR-SESION.md)
+  - mapa de los conceptos imprescindibles de las sesiones 1 a 16, con relaciones y preguntas de control
+
 ## Estructura
 
 - `ai-engineering-2026-04/00-intro/`, `00-pre-course/`, `01-session/`, `02-session/`...
