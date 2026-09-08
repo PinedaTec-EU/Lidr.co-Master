@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, self-hosted-cloud, Linux, X64]
     defaults:
       run:
         working-directory: estimator-cag
@@ -24,12 +24,10 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+        run: uv python install 3.11
 
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --python 3.11 --extra dev
 
       - name: Run tests
         run: uv run pytest
