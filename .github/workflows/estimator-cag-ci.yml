@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    runs-on: [self-hosted, self-hosted-cloud, Linux, X64]
+    runs-on: [self-hosted, primary, Linux, X64]
     defaults:
       run:
         working-directory: estimator-cag
