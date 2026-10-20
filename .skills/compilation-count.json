@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "mode": "none",
+  "commands": [],
+  "notes": "The tracked applications use interpreted Python with FastAPI/Streamlit. No approved compiler-bearing command is currently defined; do not invent a compilation counter or release-version workflow for Python execution or documentation checks."
+}
